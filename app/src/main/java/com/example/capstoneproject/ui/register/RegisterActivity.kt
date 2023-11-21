@@ -17,11 +17,11 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnLogin.setOnClickListener {
+        binding.loginhere.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
 
-        binding.btnRegister.setOnClickListener {
+        binding.btnregis.setOnClickListener {
             startActivity(Intent(this, OTPActivity::class.java))
         }
     }
