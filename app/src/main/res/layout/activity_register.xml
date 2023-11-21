@@ -4,26 +4,136 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.register.RegisterActivity">
+    tools:context=".ui.register.RegisterActivity"
+    android:backgroundTint="@color/primaryColor">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="290dp"
+        android:layout_height="74dp"
+        android:background="@drawable/wownetlogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="55dp"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/secondaryColor"
+        android:text="Create your account"
+        android:textSize="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:layout_editor_absoluteX="40dp"
+        android:layout_marginLeft="40dp" />
+
+    <com.dicoding.capsregistration.ui.customView.nameEditText
+        android:id="@+id/firstname"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/cutom_edittext"
+        android:hint="   First Name"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:layout_margin="20dp"/>
+
+    <com.dicoding.capsregistration.ui.customView.nameEditText
+        android:id="@+id/lastname"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/cutom_edittext"
+        android:hint="   Last Name"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstname"
+        android:layout_margin="15dp"/>
+
+    <com.dicoding.capsregistration.ui.customView.emailEditText
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/emailtext"
+        android:background="@drawable/cutom_edittext"
+        android:hint="   Email"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lastname"
+        android:layout_margin="15dp"/>
+
+    <com.dicoding.capsregistration.ui.customView.passwordEditText
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/passwordtext"
+        android:background="@drawable/cutom_edittext"
+        android:hint="   Password"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailtext"
+        android:layout_margin="15dp"/>
+
+    <com.dicoding.capsregistration.ui.customView.passwordEditText
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/passwordconfirm"
+        android:background="@drawable/cutom_edittext"
+        android:hint="   Confirm Password"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordtext"
+        android:layout_margin="15dp"/>
 
     <Button
-        android:id="@+id/btn_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/btnregis"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/contentColor"
         android:text="Register"
-        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        android:textColor="@color/primaryColor"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordconfirm"/>
 
-    <Button
-        android:id="@+id/btn_login"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:backgroundTint="@color/teal_200"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_register" />
+        app:layout_constraintTop_toBottomOf="@+id/btnregis"
+        android:layout_marginTop="75dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Have an account?"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:id="@+id/signupText"
+            android:textColor="@color/secondaryColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
+            android:textAlignment="center"
+            android:textColor="@color/contentColor"
+            android:textSize="14sp"
+            android:id="@+id/loginhere"
+            app:layout_constraintStart_toEndOf="@+id/signupText"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
