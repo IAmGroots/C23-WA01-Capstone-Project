@@ -1,0 +1,34 @@
+Alur pengerjaan nya seperti ini
+1. git branch => untuk liat branch saat ini
+2. git branch nameBranch => untuk membuat branch baru (ex. git branch hadi/home-screen)
+3. git checkout nameBranch => pindah ke branch baru (ex. git checkout hadi/home-screen)
+4. git pull origin main => fetch repository
+5. ngoding sendiri sampai fiturnya selesai
+6. git add . => menambahkan seluruh file ke dalam area staging
+7. git commit -m "Add/Update/Remove ..." => ... bisa diisi nama fiturnya (ex. Add Home Screen)
+8. git push origin nameBranch
+9. buka github lalu klik "Compare & pull request"
+10. klik "Create pull request"
+
+
+Jadi singkatnya kita bakal ngelakuin iterasi berikut
+1. git pull branch utama setelah buat branch baru
+2. ngoding sendiri
+3. git push ke branch baru
+4. buat pull request ke branch utama
+5. mau ngerjain fitur lainnya? balik lagi ke langkah 1
+
+
+Jika terjadi conflict setelah git pull
+1. buka filenya lalu pilih kode yg ingin dipertahankan
+2. git add .
+3. git commit -m "fixed conflict"
+4. git pull
+5. done
+
+
+Jika ingin menghapus branch local
+1. git branch -D nameBranch
+
+Jika ingin menghapus branch yg ada di repository Github
+1. git push origin --delete nameBranch
