@@ -1,4 +1,4 @@
-package com.dicoding.capsregistration.ui.customView
+package com.example.capstoneproject.ui.customView
 
 import android.content.Context
 import android.graphics.Canvas
