@@ -1,4 +1,4 @@
-package com.example.capstoneproject.ui.customVIew
+package com.example.capstoneproject.ui.customView
 
 import android.content.Context
 import android.text.Editable
