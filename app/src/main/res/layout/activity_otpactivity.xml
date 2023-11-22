@@ -52,6 +52,8 @@
         android:background="@drawable/cutom_edittext"
         android:hint="   Enter OTP"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:maxLength="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt"
