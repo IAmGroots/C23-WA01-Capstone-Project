@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.otp.OTPActivity"
+    tools:context=".OTPActivity"
     android:backgroundTint="@color/primaryColor">
 
     <ImageView
@@ -17,17 +17,45 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="55dp"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check your phone"
+        android:textColor="@color/secondaryColor"
+        android:id="@+id/txtt"
+        android:textSize="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:layout_marginTop="150dp"
+        android:textAlignment="center"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="We've sent the code to your Email"
+        android:textColor="@color/secPrimary"
+        android:id="@+id/txt"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtt"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textStyle="normal"/>
+
     <EditText
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:id="@+id/otpedit"
         android:background="@drawable/cutom_edittext"
-        android:hint="   Email"
+        android:hint="   Enter OTP"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        android:layout_marginTop="200dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/txt"
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/btnotp"
@@ -35,7 +63,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="15dp"
         android:backgroundTint="@color/contentColor"
-        android:text="Enter OTP"
+        android:text="Verify"
         android:textColor="@color/primaryColor"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
