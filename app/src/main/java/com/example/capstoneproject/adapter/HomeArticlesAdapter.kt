@@ -46,6 +46,12 @@ class HomeArticlesAdapter(private val listArticles: List<Articles>) : RecyclerVi
                 .load(article.image)
                 .into(binding.imgArticles)
 
+            binding.btnDetail.setOnClickListener {
+                val detailArticle = Intent(it.context, DetailArticleActivity::class.java)
+                detailArticle.putExtra(DetailArticleActivity.EXTRA_ARTICLE, article)
+                it.context.startActivity(detailArticle)
+            }
+
             // set margin for first and last item, and then margin for separator each item
             val marginTopBottom = 0
             val marginSeparator = 4

@@ -51,7 +51,7 @@ class ArticlesAdapter(private val listArticles: List<Articles>) : RecyclerView.A
 
             // set margin for first and last item, and then margin for separator each item
             val marginTopBottom = 16
-            val marginSeparator = 4
+            val marginSeparator = 6
             val density = binding.root.context.resources.displayMetrics.density
             val topBottom = (marginTopBottom * density).toInt()
             val separator = (marginSeparator * density).toInt()

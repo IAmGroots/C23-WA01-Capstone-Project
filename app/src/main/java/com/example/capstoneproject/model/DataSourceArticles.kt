@@ -50,7 +50,7 @@ object DataSourceArticles {
             2,
             "https://wow.net.id/bagaimana-cara-memilih-isp",
             "https://wow.net.id/wp-content/uploads/2020/11/isp.jpg",
-            "Tip dan Trik Cara Memilih ISP",
+            "Tips dan Trik Cara Memilih Internet Service Provider",
             "06 November 2020",
             "Memilih ISP adalah hal yang penting dalam kehidupan sekarang, dikarenakan kebanyakan ter-digitalisasi maka dibutuhkan koneksi yang handal untuk memperoleh koneksi internet yang stabil.\n" +
                     "\n" +

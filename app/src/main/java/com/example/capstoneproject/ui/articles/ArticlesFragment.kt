@@ -23,7 +23,7 @@ class ArticlesFragment : Fragment() {
 
     private var _binding: FragmentArticlesBinding? = null
     private val binding get() = _binding!!
-    private val viewModel : ArticlesViewModel by viewModels()
+    private val viewModel: ArticlesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
