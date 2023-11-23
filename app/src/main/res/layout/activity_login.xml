@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
+    tools:context=".ui.login.LoginActivity"
     android:backgroundTint="@color/primaryColor">
 
     <ImageView
@@ -29,7 +29,7 @@
         tools:layout_editor_absoluteX="40dp"
         android:layout_marginLeft="40dp" />
 
-    <com.dicoding.capsregistration.ui.customView.emailEditText
+    <com.example.capstoneproject.ui.customView.emailEditText
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:id="@+id/emaillogin"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewlogin"
         android:layout_margin="15dp"/>
 
-    <com.dicoding.capsregistration.ui.customView.passwordEditText
+    <com.example.capstoneproject.ui.customView.passwordEditText
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:id="@+id/passwordlogin"
