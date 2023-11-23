@@ -29,25 +29,27 @@
         tools:layout_editor_absoluteX="40dp"
         android:layout_marginLeft="40dp" />
 
-    <com.dicoding.capsregistration.ui.customView.emailEditText
+    <com.example.capstoneproject.ui.customView.emailEditText
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:id="@+id/emaillogin"
         android:background="@drawable/cutom_edittext"
         android:hint="   Email"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewlogin"
         android:layout_margin="15dp"/>
 
-    <com.dicoding.capsregistration.ui.customView.passwordEditText
+    <com.example.capstoneproject.ui.customView.passwordEditText
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:id="@+id/passwordlogin"
         android:background="@drawable/cutom_edittext"
         android:hint="   Password"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emaillogin"
