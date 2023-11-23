@@ -1,21 +1,18 @@
 package com.example.capstoneproject.adapter
 
-
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.capstoneproject.databinding.ArticlesItemsBinding
+import com.example.capstoneproject.databinding.HomeArticleItemsBinding
 import com.example.capstoneproject.model.Articles
 import com.example.capstoneproject.ui.articles.detail_article.DetailArticleActivity
-import com.example.capstoneproject.ui.wifi.WifiActivity
 
-class ArticlesAdapter(private val listArticles: List<Articles>) : RecyclerView.Adapter<ArticlesAdapter.ArticleViewHolder>() {
+class HomeArticlesAdapter(private val listArticles: List<Articles>) : RecyclerView.Adapter<HomeArticlesAdapter.ArticleViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
-        val binding = ArticlesItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = HomeArticleItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ArticleViewHolder(binding)
     }
 
@@ -41,16 +38,16 @@ class ArticlesAdapter(private val listArticles: List<Articles>) : RecyclerView.A
         }
     }
 
-    inner class ArticleViewHolder(private val binding: ArticlesItemsBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ArticleViewHolder(private val binding: HomeArticleItemsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(article: Articles) {
             binding.titleArticles.text = article.title
-            binding.descArticles.text = article.content
+            binding.publishDate.text = article.publishDate
             Glide.with(binding.root)
                 .load(article.image)
                 .into(binding.imgArticles)
 
             // set margin for first and last item, and then margin for separator each item
-            val marginTopBottom = 16
+            val marginTopBottom = 0
             val marginSeparator = 4
             val density = binding.root.context.resources.displayMetrics.density
             val topBottom = (marginTopBottom * density).toInt()

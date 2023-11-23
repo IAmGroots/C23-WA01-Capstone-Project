@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -55,4 +56,7 @@ dependencies {
 
     // kalau bisa beritahu dependecies nya untuk apa pakai komentar
     // ex. glide, retrofit, dll
+
+    // glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }
