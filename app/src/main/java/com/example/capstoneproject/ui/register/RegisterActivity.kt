@@ -3,6 +3,7 @@ package com.example.capstoneproject.ui.register
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.databinding.ActivityRegisterBinding
 import com.example.capstoneproject.ui.login.LoginActivity
@@ -22,7 +23,11 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.btnregis.setOnClickListener {
-            startActivity(Intent(this, OTPActivity::class.java))
+            if(binding.firstname.text.toString().isEmpty() || binding.lastname.text.toString().isEmpty() || binding.emailtext.text.toString().isEmpty() || binding.passwordtext.text.toString().isEmpty() || binding.passwordconfirm.text.toString().isEmpty()) {
+                Toast.makeText(this, "Fill all the data!", Toast.LENGTH_SHORT).show()
+            } else {
+                startActivity(Intent(this, OTPActivity::class.java))
+            }
         }
     }
 }
