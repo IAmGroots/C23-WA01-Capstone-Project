@@ -31,8 +31,8 @@ class LoginActivity : AppCompatActivity() {
         databaseReference = firebaseDatabase.reference.child("users")
 
         binding.btnlogin.setOnClickListener {
-            val email = binding.emaillogin.text.toString()
-            val password = binding.passwordlogin.text.toString()
+            val email = binding.email.text.toString()
+            val password = binding.password.text.toString()
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 Log.e("email", email)
                 Log.e("password", password)

@@ -1,107 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".ui.login.LoginActivity"
     android:backgroundTint="@color/primaryColor">
 
-    <ImageView
-        android:id="@+id/imageViewlogin"
-        android:layout_width="290dp"
-        android:layout_height="74dp"
-        android:background="@drawable/wownetlogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="55dp"/>
-
-    <TextView
-        android:id="@+id/textViewlogin"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:backgroundTint="@color/secPrimary"
-        android:text="Sign in to your account"
-        android:textSize="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewlogin"
-        tools:layout_editor_absoluteX="40dp"
-        android:layout_marginLeft="40dp" />
+        android:layout_height="match_parent">
 
-    <com.example.capstoneproject.ui.customView.emailEditText
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:id="@+id/emaillogin"
-        android:background="@drawable/cutom_edittext"
-        android:hint="   Email"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewlogin"
-        android:layout_margin="15dp"/>
-
-    <com.example.capstoneproject.ui.customView.passwordEditText
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:id="@+id/passwordlogin"
-        android:background="@drawable/cutom_edittext"
-        android:hint="   Password"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:drawableRight="@drawable/ic_visibility_off"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emaillogin"
-        android:layout_margin="15dp"/>
-
-    <Button
-        android:id="@+id/btnlogin"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/contentColor"
-        android:text="Login"
-        android:textColor="@color/primaryColor"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordlogin"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnlogin"
-        android:layout_marginTop="190dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Don't have an account?"
-            android:textSize="14sp"
-            android:textAlignment="center"
-            android:id="@+id/signupText"
-            android:textColor="@color/secPrimary"
+        <ImageView
+            android:id="@+id/imageViewlogin"
+            android:layout_width="290dp"
+            android:layout_height="74dp"
+            android:background="@drawable/wownetlogo"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="55dp"/>
 
         <TextView
+            android:id="@+id/textViewlogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:backgroundTint="@color/secPrimary"
+            android:text="Sign in to your account"
+            android:textSize="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewlogin"
+            tools:layout_editor_absoluteX="40dp"
+            android:textAlignment="center" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:id="@+id/emaillayout"
+            app:layout_constraintTop_toBottomOf="@+id/textViewlogin"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"
+            style="@style/editTextStyle"
+            app:hintEnabled="false">
+
+            <com.example.capstoneproject.ui.customView.emailEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/email"
+                android:background="@drawable/cutom_edittext"
+                android:hint="Email"
+                style="@style/editTextStyle"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            app:passwordToggleEnabled="true"
+            android:id="@+id/passwordtext"
+            app:layout_constraintTop_toBottomOf="@+id/emaillayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"
+            style="@style/editTextStyle"
+            app:hintEnabled="false">
+
+            <com.example.capstoneproject.ui.customView.passwordEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/password"
+                android:inputType="textPassword"
+                android:background="@drawable/cutom_edittext"
+                android:hint="Password"
+                style="@style/editTextStyle"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnlogin"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/contentColor"
+            android:text="Login"
+            android:textColor="@color/primaryColor"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordtext"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign Up "
-            android:textAlignment="center"
-            android:textColor="@color/contentColor"
-            android:textSize="14sp"
-            android:id="@+id/regishere"
-            app:layout_constraintStart_toEndOf="@+id/signupText"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnlogin"
+            android:layout_marginTop="190dp">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Don't have an account?"
+                android:textSize="14sp"
+                android:textAlignment="center"
+                android:id="@+id/signupText"
+                android:textColor="@color/secPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Up "
+                android:textAlignment="center"
+                android:textColor="@color/contentColor"
+                android:textSize="14sp"
+                android:id="@+id/regishere"
+                app:layout_constraintStart_toEndOf="@+id/signupText"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
