@@ -44,7 +44,7 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.password.text.toString()
             val confirmPassword = binding.passwordconfirm.text.toString()
 
-            if (firstname.isNotEmpty() && lastname.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
+            if (firstname.isNotEmpty() && lastname.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && mobile.isNotEmpty()) {
                 if (password == confirmPassword) {
                     viewModel.regist(firstname, mobile, email, lastname, password)
                     /*databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object :
@@ -90,7 +90,7 @@ class RegisterActivity : AppCompatActivity() {
                 startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
                 finish()
             } else {
-                Toast.makeText(this@RegisterActivity, "SignUp Failed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@RegisterActivity, "Email already used!", Toast.LENGTH_SHORT).show()
             }
         })
     }

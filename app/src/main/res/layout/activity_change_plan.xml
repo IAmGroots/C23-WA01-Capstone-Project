@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.change_plan.ChangePlanActivity">
+    tools:context=".ui.change_plan.ChangePlanActivity"
+    android:backgroundTint="@color/primaryColor">
 
     <Button
         android:id="@+id/btn_upgrade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Upgrade"
+        android:textColor="@color/primaryColor"
+        android:backgroundTint="@color/contentColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,9 +31,11 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/icon_back"
-            app:navigationIconTint="@color/white"
+            app:navigationIconTint="@color/primaryColor"
             app:title="Change Package"
-            app:titleCentered="true" />
+            app:titleCentered="true"
+            app:titleTextColor="@color/primaryColor"
+            android:backgroundTint="@color/contentColor"/>
     </com.google.android.material.appbar.AppBarLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

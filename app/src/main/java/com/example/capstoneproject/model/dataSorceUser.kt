@@ -1,7 +1,7 @@
 package com.example.capstoneproject.model
 
 object dataSorceUser {
-    val user = listOf(
+    var user = listOf(
         dataUser(
             "hadiseptian",
             "",

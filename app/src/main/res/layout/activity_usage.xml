@@ -18,9 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/icon_back"
-            app:navigationIconTint="@color/white"
+            app:navigationIconTint="@color/primaryColor"
             app:title="Traffic Usage"
-            app:titleCentered="true" />
+            app:titleTextColor="@color/primaryColor"
+            app:titleCentered="true"
+            android:backgroundTint="@color/contentColor"/>
     </com.google.android.material.appbar.AppBarLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,14 +64,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:background="@drawable/article_item_bg">
+                    android:background="@drawable/article_item_bg"
+                    android:backgroundTint="@color/primaryColor">
 
                     <TextView
                         android:id="@+id/plan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Current Plan"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -93,7 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Silver Package"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:layout_marginTop="4dp"
@@ -106,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Speed up to 30 Mbps"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/current_plan" />
@@ -117,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Service Date : 15 September 2023"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/speed" />
@@ -128,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Location : Dharmasusada Indah VI No.100, Surabaya"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/date" />
@@ -228,14 +229,15 @@
                     android:layout_height="wrap_content"
                     android:paddingVertical="16dp"
                     android:paddingStart="16dp"
-                    android:background="@drawable/article_item_bg">
+                    android:background="@drawable/article_item_bg"
+                    android:backgroundTint="@color/primaryColor">
 
                     <TextView
                         android:id="@+id/usage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Traffic Usage"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -245,7 +247,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:background="@color/white"
+                        android:background="@color/primaryColor"
                         android:contentDescription="null"
                         android:paddingVertical="8dp"
                         android:paddingHorizontal="16dp"
@@ -260,7 +262,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Surabaya"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintTop_toBottomOf="@+id/usage"
@@ -272,7 +274,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Agustus 2023 : 200GB"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/current_location" />
@@ -283,7 +285,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Juli 2023 : 300GB"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/speeds" />
@@ -294,7 +296,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Juni 2023 : 150GB"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/dates" />
@@ -317,14 +319,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:background="@drawable/article_item_bg">
+                    android:background="@drawable/article_item_bg"
+                    android:backgroundTint="@color/primaryColor">
 
                     <TextView
                         android:id="@+id/articles"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="News Articles"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
