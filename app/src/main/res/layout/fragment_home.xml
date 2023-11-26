@@ -19,8 +19,10 @@
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/notifications_menu"
             app:navigationIcon="@drawable/icon_logout"
-            app:navigationIconTint="@color/white"
+            app:navigationIconTint="@color/primaryColor"
+            android:backgroundTint="@color/contentColor"
             app:title="Home"
+            app:titleTextColor="@color/primaryColor"
             app:titleCentered="true" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -79,7 +81,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Change Plan"
-                        android:textColor="@color/white"
+                        android:textColor="@color/primaryColor"
+                        android:backgroundTint="@color/contentColor"
                         android:textAllCaps="false"
                         android:textSize="14sp"
                         app:layout_constraintTop_toTopOf="@+id/plan"
@@ -159,19 +162,20 @@
                         android:paddingVertical="10dp"
                         android:paddingHorizontal="16dp"
                         android:background="@color/secondaryColor"
+                        android:backgroundTint="@color/contentColor"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="WiFi"
-                            android:textColor="@color/white"
+                            android:textColor="@color/primaryColor"
                             android:textSize="20sp"
                             android:layout_marginEnd="8dp"/>
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/icon_wifi"
-                            app:tint="@color/white" />
+                            app:tint="@color/primaryColor" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
 
@@ -190,19 +194,20 @@
                         android:paddingVertical="10dp"
                         android:paddingHorizontal="16dp"
                         android:background="@color/secondaryColor"
+                        android:backgroundTint="@color/contentColor"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Shop"
-                            android:textColor="@color/white"
+                            android:textColor="@color/primaryColor"
                             android:textSize="20sp"
                             android:layout_marginEnd="8dp"/>
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/icon_shop"
-                            app:tint="@color/white"/>
+                            app:tint="@color/primaryColor"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
             </androidx.appcompat.widget.LinearLayoutCompat>

@@ -49,8 +49,12 @@ class LoginActivity : AppCompatActivity() {
         viewModel.loginUser.observe(this, Observer { userLogin ->
             if (userLogin != null) {
                 Toast.makeText(this@LoginActivity, "SignIn is success", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@LoginActivity, HomeFragment::class.java))
-                finish()
+                MainActivity.isLogin = true
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                /*startActivity(Intent(this@LoginActivity, HomeFragment::class.java))
+                finish()*/
             } else {
                 Toast.makeText(this@LoginActivity, "SignIn is failed", Toast.LENGTH_SHORT).show()
             }
