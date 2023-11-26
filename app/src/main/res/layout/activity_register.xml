@@ -82,8 +82,31 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:id="@+id/emaillayout"
+            android:id="@+id/mobilelayout"
             app:layout_constraintTop_toBottomOf="@+id/lastnamelayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"
+            style="@style/editTextStyle"
+            app:hintEnabled="false">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/mobile"
+                android:inputType="number"
+                android:background="@drawable/cutom_edittext"
+                android:hint="Mobile Number"
+                style="@style/editTextStyle"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:id="@+id/emaillayout"
+            app:layout_constraintTop_toBottomOf="@+id/mobilelayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.databinding.ActivityLoginBinding
 import com.example.capstoneproject.model.dataUser
@@ -21,6 +23,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var databaseReference: DatabaseReference
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,18 +39,29 @@ class LoginActivity : AppCompatActivity() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 Log.e("email", email)
                 Log.e("password", password)
-                login(email, password)
+                /*login(email, password)*/
+                viewModel.login(email, password)
             } else {
                 Toast.makeText(this, "Fill all the data!", Toast.LENGTH_SHORT).show()
             }
         }
+
+        viewModel.loginUser.observe(this, Observer { userLogin ->
+            if (userLogin != null) {
+                Toast.makeText(this@LoginActivity, "SignIn is success", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@LoginActivity, HomeFragment::class.java))
+                finish()
+            } else {
+                Toast.makeText(this@LoginActivity, "SignIn is failed", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         binding.regishere.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
-    private fun login(email: String, password: String) {
+    /*private fun login(email: String, password: String) {
         databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -69,5 +83,5 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
-    }
+    }*/
 }
