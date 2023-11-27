@@ -19,6 +19,11 @@ import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.register.RegisterActivity
 import com.example.capstoneproject.ui.register.RegisterViewModel
 import kotlin.random.Random
+//import com.google.firebase.database.DataSnapshot
+//import com.google.firebase.database.DatabaseError
+//import com.google.firebase.database.DatabaseReference
+//import com.google.firebase.database.FirebaseDatabase
+//import com.google.firebase.database.ValueEventListener
 
 class OTPActivity : AppCompatActivity() {
 
