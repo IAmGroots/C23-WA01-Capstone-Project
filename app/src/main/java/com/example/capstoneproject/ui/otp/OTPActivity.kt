@@ -1,6 +1,9 @@
 package com.example.capstoneproject.ui.otp
 
+import android.Manifest
 import android.content.Intent
+import android.Manifest.permission.SEND_SMS
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -8,6 +11,8 @@ import android.telephony.SmsManager
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.example.capstoneproject.databinding.ActivityOtpactivityBinding
 import com.example.capstoneproject.ui.login.LoginActivity
@@ -21,6 +26,10 @@ import kotlin.random.Random
 //import com.google.firebase.database.ValueEventListener
 
 class OTPActivity : AppCompatActivity() {
+
+    companion object {
+        const val MY_PERMISSIONS_REQUEST_SEND_SMS = 1
+    }
 
     private lateinit var binding: ActivityOtpactivityBinding
     private val viewModel: RegisterViewModel by viewModels()
@@ -48,6 +57,18 @@ class OTPActivity : AppCompatActivity() {
         email = intent.getStringExtra("email").toString()
         mobile = intent.getStringExtra("mobile").toString()
         password = intent.getStringExtra("password").toString()
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.SEND_SMS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.SEND_SMS),
+                MY_PERMISSIONS_REQUEST_SEND_SMS
+            )
+        }
 
         val otpCode = generateRandomOTP()
         sendOtpSms(mobile, otpCode)
