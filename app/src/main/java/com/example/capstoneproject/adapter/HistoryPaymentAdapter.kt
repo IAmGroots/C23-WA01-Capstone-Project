@@ -1,51 +1,41 @@
 package com.example.capstoneproject.adapter
 
-
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.capstoneproject.databinding.ArticlesItemsBinding
+import com.example.capstoneproject.databinding.HistoryPaymentItemsBinding
 import com.example.capstoneproject.model.Articles
-import com.example.capstoneproject.ui.articles.detail_article.DetailArticleActivity
+import com.example.capstoneproject.model.HistoryPayment
 
-class ArticlesAdapter(private val listArticles: List<Articles>) : RecyclerView.Adapter<ArticlesAdapter.ArticleViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
-        val binding = ArticlesItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ArticleViewHolder(binding)
+class HistoryPaymentAdapter (private val listHistoryPayment: List<HistoryPayment>) : RecyclerView.Adapter<HistoryPaymentAdapter.HistoryPaymentViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryPaymentAdapter.HistoryPaymentViewHolder {
+        val binding = HistoryPaymentItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return HistoryPaymentViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        val article = listArticles[position]
-        holder.bind(article)
-        holder.itemView.setOnClickListener { item ->
-            val detailArticle = Intent(item.context, DetailArticleActivity::class.java)
-            detailArticle.putExtra(DetailArticleActivity.EXTRA_ARTICLE, article)
-            item.context.startActivity(detailArticle)
-        }
+    override fun onBindViewHolder(holder: HistoryPaymentAdapter.HistoryPaymentViewHolder, position: Int) {
+        val historyPayment = listHistoryPayment[position]
+        holder.bind(historyPayment)
     }
 
     override fun getItemCount(): Int {
-        return listArticles.size
+        return listHistoryPayment.size
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
-            0 -> ViewType.FIRST_ITEM.ordinal
-            listArticles.size - 1 -> ViewType.LAST_ITEM.ordinal
-            else -> ViewType.OTHER_ITEMS.ordinal
+            0 -> ArticlesAdapter.ViewType.FIRST_ITEM.ordinal
+            listHistoryPayment.size - 1 -> ArticlesAdapter.ViewType.LAST_ITEM.ordinal
+            else -> ArticlesAdapter.ViewType.OTHER_ITEMS.ordinal
         }
     }
 
-    inner class ArticleViewHolder(private val binding: ArticlesItemsBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(article: Articles) {
-            binding.titleArticles.text = article.title
-            binding.descArticles.text = article.content
-            Glide.with(binding.root)
-                .load(article.image)
-                .into(binding.imgArticles)
+    inner class HistoryPaymentViewHolder(private val binding: HistoryPaymentItemsBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(historyPayment: HistoryPayment) {
+            binding.tvInvoiceDate.text = historyPayment.invoiceDate
+            binding.tvPayment.text = historyPayment.payment.toString()
 
             // set margin for first and last item, and then margin for separator each item
             val marginTopBottom = 16

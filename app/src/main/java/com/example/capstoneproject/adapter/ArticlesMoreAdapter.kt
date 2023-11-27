@@ -30,6 +30,14 @@ class ArticlesMoreAdapter(private val listArticles: List<Articles>) : RecyclerVi
         return listArticles.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return when (position) {
+            0 -> ViewType.FIRST_ITEM.ordinal
+            listArticles.size - 1 -> ViewType.LAST_ITEM.ordinal
+            else -> ViewType.OTHER_ITEMS.ordinal
+        }
+    }
+
     inner class ArticleViewHolder(private val binding: ArticlesMoreItemsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(article: Articles) {
             binding.titleArticles.text = article.title
@@ -37,6 +45,37 @@ class ArticlesMoreAdapter(private val listArticles: List<Articles>) : RecyclerVi
             Glide.with(binding.root)
                 .load(article.image)
                 .into(binding.imgArticles)
+
+            // set margin for first and last item, and then margin for separator each item
+            val marginStartEnd = 0
+            val marginSeparator = 6
+            val density = binding.root.context.resources.displayMetrics.density
+            val startEnd = (marginStartEnd * density).toInt()
+            val separator = (marginSeparator * density).toInt()
+            val layoutParams = binding.root.layoutParams as RecyclerView.LayoutParams
+
+            when (getItemViewType(adapterPosition)) {
+                ViewType.FIRST_ITEM.ordinal -> {
+                    layoutParams.marginStart = startEnd
+                    layoutParams.marginEnd = separator
+                }
+                ViewType.LAST_ITEM.ordinal -> {
+                    layoutParams.marginStart = separator
+                    layoutParams.marginEnd = startEnd
+                }
+                else -> {
+                    layoutParams.marginStart = separator
+                    layoutParams.marginEnd = separator
+                }
+            }
+
+            binding.root.layoutParams = layoutParams
         }
+    }
+
+    enum class ViewType {
+        FIRST_ITEM,
+        LAST_ITEM,
+        OTHER_ITEMS
     }
 }
