@@ -8,17 +8,17 @@ import android.widget.Toast
 import com.example.capstoneproject.databinding.ActivityOtpactivityBinding
 import com.example.capstoneproject.model.dataUser
 import com.example.capstoneproject.ui.login.LoginActivity
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+// import com.google.firebase.database.DataSnapshot
+// import com.google.firebase.database.DatabaseError
+// import com.google.firebase.database.DatabaseReference
+// import com.google.firebase.database.FirebaseDatabase
+// import com.google.firebase.database.ValueEventListener
 
 class OTPActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOtpactivityBinding
-    private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var databaseReference: DatabaseReference
+    // private lateinit var firebaseDatabase: FirebaseDatabase
+    // private lateinit var databaseReference: DatabaseReference
     var firstname: String=""
     var lastname: String=""
     var email: String=""
@@ -29,15 +29,15 @@ class OTPActivity : AppCompatActivity() {
         binding = ActivityOtpactivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        databaseReference = firebaseDatabase.reference.child("users")
+        //firebaseDatabase = FirebaseDatabase.getInstance()
+        //databaseReference = firebaseDatabase.reference.child("users")
 
         firstname = intent.getStringExtra("firstname").toString()
         lastname = intent.getStringExtra("lastname").toString()
         email = intent.getStringExtra("email").toString()
         password = intent.getStringExtra("password").toString()
 
-        binding.btnotp.setOnClickListener {
+        binding.btnverifydotp.setOnClickListener {
             if(binding.otp.text.toString().isEmpty()) {
                 Toast.makeText(this@OTPActivity, "Enter the OTP code!", Toast.LENGTH_SHORT).show()
             } else {
