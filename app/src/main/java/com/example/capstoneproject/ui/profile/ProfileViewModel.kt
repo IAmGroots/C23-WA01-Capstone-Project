@@ -22,9 +22,6 @@ class ProfileViewModel(private val preferences: SettingPreferences) : ViewModel(
         _listHistoryPayment.value = DataSourceHistoryPayment.dataHistoryPayment
     }
 
-    fun getEmail(): LiveData<String> = preferences.getEmail().asLiveData()
-    fun getFullname(): LiveData<String> = preferences.getFullname().asLiveData()
-    fun getPhone(): LiveData<String> = preferences.getPhone().asLiveData()
     fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
 
     fun saveBiometric(isBiometricActive : Boolean) {

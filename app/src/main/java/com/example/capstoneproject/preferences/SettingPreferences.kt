@@ -16,8 +16,6 @@ class SettingPreferences constructor(private val dataStore: DataStore<Preference
 
     private val BIOMETRIC_KEY = booleanPreferencesKey("biometric_setting")
     private val EMAIL_KEY = stringPreferencesKey("email_string")
-    private val FULLNAME_KEY = stringPreferencesKey("fullname_string")
-    private val PHONE_KEY = stringPreferencesKey("phone_key")
 
     fun getEmail(): Flow<String> {
         return dataStore.data.map { preferences ->
@@ -27,28 +25,6 @@ class SettingPreferences constructor(private val dataStore: DataStore<Preference
     suspend fun saveEmail(email : String) {
         dataStore.edit { preferences ->
             preferences[EMAIL_KEY] = email
-        }
-    }
-
-    fun getFullname(): Flow<String> {
-        return dataStore.data.map { preferences ->
-            preferences[FULLNAME_KEY] ?: "empty"
-        }
-    }
-    suspend fun saveFullname(fullname : String) {
-        dataStore.edit { preferences ->
-            preferences[FULLNAME_KEY] = fullname
-        }
-    }
-
-    fun getPhone(): Flow<String> {
-        return dataStore.data.map { preferences ->
-            preferences[PHONE_KEY] ?: "empty"
-        }
-    }
-    suspend fun savePhone(phone : String) {
-        dataStore.edit { preferences ->
-            preferences[PHONE_KEY] = phone
         }
     }
 

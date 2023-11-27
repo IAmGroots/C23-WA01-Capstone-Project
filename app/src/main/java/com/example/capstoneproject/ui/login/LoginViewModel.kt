@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.capstoneproject.model.DataSourceUser
 import com.example.capstoneproject.model.DataUser
 import com.example.capstoneproject.preferences.SettingPreferences
+import kotlinx.coroutines.launch
 
 class LoginViewModel(private val preferences: SettingPreferences) : ViewModel() {
 
@@ -31,21 +32,16 @@ class LoginViewModel(private val preferences: SettingPreferences) : ViewModel() 
         val userLogin = _userDummy.value?.find {
             it.email == email && it.password == password
         }
-// <<<<<<< Hadi
-//         loginUser.value = userLogin
-
-//         if (loginUser.value != null) {
-//             viewModelScope.launch {
-//                 preferences.saveFullname("${loginUser.value!!.firstname} ${loginUser.value!!.lastname}")
-//                 preferences.saveEmail(loginUser.value!!.email.toString())
-//                 preferences.savePhone(loginUser.value!!.mobile.toString())
-//             }
-// =======
         _loggedInUser.value = userLogin
+
+        if (loggedInUser.value != null) {
+            viewModelScope.launch {
+                preferences.saveEmail(loggedInUser.value!!.email.toString())
+            }
+        }
 
         userLogin?.let {
             Log.e("LoginViewModel", "User logged in: ${it.firstname}, ${it.lastname}, ${it.email}")
-// >>>>>>> main
         }
     }
 }
