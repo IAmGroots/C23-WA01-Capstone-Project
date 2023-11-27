@@ -15,11 +15,13 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:backgroundTint="@color/contentColor"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/icon_back"
-            app:navigationIconTint="@color/white"
+            app:navigationIconTint="@color/primaryColor"
             app:title="Wownet Hotspot"
+            app:titleTextColor="@color/primaryColor"
             app:titleCentered="true" />
     </com.google.android.material.appbar.AppBarLayout>
 

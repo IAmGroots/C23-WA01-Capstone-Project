@@ -19,8 +19,10 @@
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/notifications_menu"
             app:navigationIcon="@drawable/icon_logout"
-            app:navigationIconTint="@color/white"
+            app:navigationIconTint="@color/primaryColor"
+            android:backgroundTint="@color/contentColor"
             app:title="Home"
+            app:titleTextColor="@color/primaryColor"
             app:titleCentered="true" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -62,15 +64,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:background="@drawable/article_item_bg">
+                    android:background="@drawable/article_item_bg"
+                    android:backgroundTint="@color/primaryColor">
 
                     <TextView
                         android:id="@+id/plan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Current Plan"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,7 +82,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Change Plan"
-                        android:textColor="@color/white"
+                        android:textColor="@color/primaryColor"
+                        android:backgroundTint="@color/contentColor"
                         android:textAllCaps="false"
                         android:textSize="14sp"
                         app:layout_constraintTop_toTopOf="@+id/plan"
@@ -90,8 +94,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Silver Package"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:layout_marginTop="4dp"
                         app:layout_constraintTop_toBottomOf="@+id/plan"
@@ -103,8 +107,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Speed up to 30 Mbps"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/current_plan" />
 
@@ -114,8 +118,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Service Date : 15 September 2023"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/speed" />
 
@@ -125,8 +129,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Location : Dharmasusada Indah VI No.100, Surabaya"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/date" />
 
@@ -158,21 +162,21 @@
                         android:layout_height="match_parent"
                         android:paddingVertical="10dp"
                         android:paddingHorizontal="16dp"
-                        android:background="@color/contentColor"
+                        android:background="@color/secondaryColor"
+                        android:backgroundTint="@color/contentColor"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="WiFi"
-                            android:textColor="@color/white"
+                            android:textColor="@color/primaryColor"
                             android:textSize="20sp"
                             android:layout_marginEnd="8dp"/>
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/icon_wifi"
-                            app:tint="@color/white"
-                            android:contentDescription="@null" />
+                            app:tint="@color/primaryColor" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
 
@@ -190,21 +194,21 @@
                         android:layout_height="match_parent"
                         android:paddingVertical="10dp"
                         android:paddingHorizontal="16dp"
-                        android:background="@color/contentColor"
+                        android:background="@color/secondaryColor"
+                        android:backgroundTint="@color/contentColor"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Shop"
-                            android:textColor="@color/white"
+                            android:textColor="@color/primaryColor"
                             android:textSize="20sp"
                             android:layout_marginEnd="8dp"/>
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/icon_shop"
-                            app:tint="@color/white"
-                            android:contentDescription="@null"/>
+                            app:tint="@color/primaryColor"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -225,15 +229,16 @@
                     android:layout_height="wrap_content"
                     android:paddingVertical="16dp"
                     android:paddingStart="16dp"
-                    android:background="@drawable/article_item_bg">
+                    android:background="@drawable/article_item_bg"
+                    android:backgroundTint="@color/primaryColor">
 
                     <TextView
                         android:id="@+id/usage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Traffic Usage"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -242,8 +247,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:background="@color/white"
-                        android:contentDescription="@null"
+                        android:background="@color/primaryColor"
+                        android:contentDescription="null"
                         android:paddingVertical="8dp"
                         android:paddingHorizontal="16dp"
                         android:src="@drawable/icon_more"
@@ -257,8 +262,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Surabaya"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintTop_toBottomOf="@+id/usage"
                         tools:ignore="MissingConstraints" />
@@ -269,8 +274,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Agustus 2023 : 200GB"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/current_location" />
 
@@ -280,8 +285,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Juli 2023 : 300GB"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/speeds" />
 
@@ -291,8 +296,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Juni 2023 : 150GB"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/dates" />
 
@@ -314,15 +319,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:background="@drawable/article_item_bg">
+                    android:background="@drawable/article_item_bg"
+                    android:backgroundTint="@color/primaryColor">
 
                     <TextView
                         android:id="@+id/articles"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="News Articles"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

@@ -1,146 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".ui.register.RegisterActivity"
     android:backgroundTint="@color/primaryColor">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="290dp"
-        android:layout_height="74dp"
-        android:background="@drawable/wownetlogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="55dp"/>
-
-    <TextView
-        android:id="@+id/textView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="@color/secPrimary"
-        android:text="Create your account"
-        android:textSize="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:layout_editor_absoluteX="40dp"
-        android:layout_marginLeft="40dp" />
+        android:layout_height="match_parent">
 
-    <com.example.capstoneproject.ui.customView.nameEditText
-        android:id="@+id/firstname"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:background="@drawable/cutom_edittext"
-        android:hint="   First Name"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:layout_margin="20dp"/>
 
-    <com.example.capstoneproject.ui.customView.nameEditText
-        android:id="@+id/lastname"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:background="@drawable/cutom_edittext"
-        android:hint="   Last Name"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstname"
-        android:layout_margin="15dp"/>
-
-    <com.example.capstoneproject.ui.customView.emailEditText
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:id="@+id/emailtext"
-        android:background="@drawable/cutom_edittext"
-        android:hint="   Email"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lastname"
-        android:layout_margin="15dp"/>
-
-    <com.example.capstoneproject.ui.customView.passwordEditText
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:id="@+id/passwordtext"
-        android:background="@drawable/cutom_edittext"
-        android:hint="   Password"
-        android:inputType="textPassword"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailtext"
-        android:layout_margin="15dp"/>
-
-    <com.example.capstoneproject.ui.customView.passwordEditText
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:id="@+id/passwordconfirm"
-        android:background="@drawable/cutom_edittext"
-        android:hint="   Confirm Password"
-        android:inputType="textPassword"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordtext"
-        android:layout_margin="15dp"/>
-
-    <Button
-        android:id="@+id/btnregis"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/contentColor"
-        android:text="Register"
-        android:textColor="@color/primaryColor"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordconfirm"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnregis"
-        android:layout_marginTop="75dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Have an account?"
-            android:textSize="14sp"
-            android:textAlignment="center"
-            android:id="@+id/signupText"
-            android:textColor="@color/secPrimary"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="290dp"
+            android:layout_height="74dp"
+            android:background="@drawable/wownetlogo"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="55dp"/>
 
         <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:backgroundTint="@color/secPrimary"
+            android:text="Create your account"
+            android:textSize="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            tools:layout_editor_absoluteX="40dp"
+            android:textAlignment="center" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:id="@+id/firstnamelayout"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"
+            style="@style/editTextStyle"
+            app:hintEnabled="false">
+
+            <com.example.capstoneproject.ui.customView.nameEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/firstname"
+                android:background="@drawable/cutom_edittext"
+                android:hint="First Name"
+                style="@style/editTextStyle"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:id="@+id/lastnamelayout"
+            app:layout_constraintTop_toBottomOf="@+id/firstnamelayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"
+            style="@style/editTextStyle"
+            app:hintEnabled="false">
+
+            <com.example.capstoneproject.ui.customView.nameEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lastname"
+                android:background="@drawable/cutom_edittext"
+                android:hint="Last Name"
+                style="@style/editTextStyle"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:id="@+id/mobilelayout"
+            app:layout_constraintTop_toBottomOf="@+id/lastnamelayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"
+            style="@style/editTextStyle"
+            app:hintEnabled="false">
+
+            <com.example.capstoneproject.ui.customView.mobileEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/mobile"
+                android:inputType="number"
+                android:background="@drawable/cutom_edittext"
+                android:hint="Mobile Number"
+                style="@style/editTextStyle"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:id="@+id/emaillayout"
+            app:layout_constraintTop_toBottomOf="@+id/mobilelayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"
+            style="@style/editTextStyle"
+            app:hintEnabled="false">
+
+            <com.example.capstoneproject.ui.customView.emailEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/email"
+                android:background="@drawable/cutom_edittext"
+                android:hint="Email"
+                style="@style/editTextStyle"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            app:passwordToggleEnabled="true"
+            android:id="@+id/passwordtext"
+            app:layout_constraintTop_toBottomOf="@+id/emaillayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"
+            style="@style/editTextStyle"
+            app:hintEnabled="false">
+
+            <com.example.capstoneproject.ui.customView.passwordEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/password"
+                android:inputType="textPassword"
+                android:background="@drawable/cutom_edittext"
+                android:hint="Password"
+                style="@style/editTextStyle"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:id="@+id/passwordconfirmlayout"
+            app:passwordToggleEnabled="true"
+            app:layout_constraintTop_toBottomOf="@+id/passwordtext"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"
+            style="@style/editTextStyle"
+            app:hintEnabled="false">
+
+            <com.example.capstoneproject.ui.customView.passwordEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/passwordconfirm"
+                android:inputType="textPassword"
+                android:background="@drawable/cutom_edittext"
+                android:hint="Confirm Password"
+                style="@style/editTextStyle"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnregis"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/contentColor"
+            android:text="Register"
+            android:textColor="@color/primaryColor"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordconfirmlayout"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign In"
-            android:textAlignment="center"
-            android:textColor="@color/contentColor"
-            android:textSize="14sp"
-            android:id="@+id/loginhere"
-            app:layout_constraintStart_toEndOf="@+id/signupText"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnregis"
+            android:layout_marginTop="75dp">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Have an account?"
+                android:textSize="14sp"
+                android:textAlignment="center"
+                android:id="@+id/signupText"
+                android:textColor="@color/secPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign In"
+                android:textAlignment="center"
+                android:textColor="@color/contentColor"
+                android:textSize="14sp"
+                android:id="@+id/loginhere"
+                app:layout_constraintStart_toEndOf="@+id/signupText"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

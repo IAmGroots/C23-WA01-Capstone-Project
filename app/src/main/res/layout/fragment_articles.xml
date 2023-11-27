@@ -18,6 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="News Articles"
+            app:titleTextColor="@color/primaryColor"
+            android:backgroundTint="@color/contentColor"
             app:titleCentered="true" />
     </com.google.android.material.appbar.AppBarLayout>
 
