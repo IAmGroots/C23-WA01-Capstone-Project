@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.profile.ProfileFragment">
+    tools:context=".ui.profile.ProfileFragment"
+    android:backgroundTint="@color/primaryColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -82,7 +83,7 @@
                         android:id="@+id/imgProfile"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/profile_default"
+                        android:src="@drawable/icon_profile"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -93,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="John"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/imgProfile"
@@ -105,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:text="Doe"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/tvFirstName"
@@ -118,7 +119,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="johndoe@gmail.com"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         app:layout_constraintStart_toStartOf="@+id/tvFirstName"
                         app:layout_constraintTop_toBottomOf="@+id/tvLastName" />
 
@@ -130,7 +131,7 @@
                         android:src="@drawable/icon_edit_profile"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/black" />
+                        app:tint="@color/secondaryColor" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -157,7 +158,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Current Plan"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -168,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:text="Change Plan"
                         android:backgroundTint="@color/contentColor"
-                        android:textColor="@color/white"
+                        android:textColor="@color/primaryColor"
                         android:textAllCaps="false"
                         android:textSize="14sp"
                         app:layout_constraintTop_toTopOf="@+id/plan"
@@ -179,7 +180,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Silver Package"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="24sp"
                         android:textStyle="bold"
                         android:layout_marginTop="4dp"
@@ -192,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Speed up to 30 Mbps"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/current_plan" />
@@ -203,7 +204,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Service Date : 15 September 2023"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/speed" />
@@ -214,7 +215,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Location : Dharmasusada Indah VI No.100, Surabaya"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/date" />
@@ -246,7 +247,7 @@
                         android:layout_height="wrap_content"
                         android:text="History Payment"
                         android:textStyle="bold"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -284,7 +285,7 @@
                         android:layout_height="wrap_content"
                         android:text="Enabled Biometric Fingerprint"
                         android:textStyle="bold"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -324,7 +325,7 @@
                         android:layout_height="wrap_content"
                         android:text="Social Media"
                         android:textStyle="bold"
-                        android:textColor="@color/black"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
