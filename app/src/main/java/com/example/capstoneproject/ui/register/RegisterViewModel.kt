@@ -8,9 +8,9 @@ import com.example.capstoneproject.model.DataUser
 
 class RegisterViewModel : ViewModel() {
 
-    val _userDummy = MutableLiveData<MutableList<dataUser>>()
-    val userDummy: MutableLiveData<MutableList<dataUser>> = _userDummy
-    val registUser = MutableLiveData<dataUser?>()
+    val _userDummy = MutableLiveData<MutableList<DataUser>>()
+    val userDummy: MutableLiveData<MutableList<DataUser>> = _userDummy
+    val registUser = MutableLiveData<DataUser?>()
 
     init {
         setUser()

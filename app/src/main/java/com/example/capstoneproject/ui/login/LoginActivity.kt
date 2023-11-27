@@ -15,7 +15,7 @@ import com.example.capstoneproject.databinding.ActivityLoginBinding
 import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
 import com.example.capstoneproject.preferences.dataStore
-import com.example.capstoneproject.model.dataUser
+import com.example.capstoneproject.model.DataUser
 import com.example.capstoneproject.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -109,12 +109,13 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserDataToSharedPreferences(user: dataUser) {
+    private fun saveUserDataToSharedPreferences(user: DataUser) {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("firstName", user.firstname)
         editor.putString("lastName", user.lastname)
         editor.putString("email", user.email)
+        editor.putString("phone", user.mobile)
         editor.apply()
     }
 

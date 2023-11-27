@@ -9,17 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.capstoneproject.model.DataSourceUser
 import com.example.capstoneproject.model.DataUser
 import com.example.capstoneproject.preferences.SettingPreferences
-import kotlinx.coroutines.launch
-import com.example.capstoneproject.model.DataSourceArticles
-import com.example.capstoneproject.model.dataSorceUser
-import com.example.capstoneproject.model.dataUser
 
 class LoginViewModel(private val preferences: SettingPreferences) : ViewModel() {
 
-    val _userDummy = MutableLiveData<List<dataUser>>()
+    val _userDummy = MutableLiveData<List<DataUser>>()
 
-    private val _loggedInUser = MutableLiveData<dataUser?>()
-    val loggedInUser: LiveData<dataUser?> = _loggedInUser
+    private val _loggedInUser = MutableLiveData<DataUser?>()
+    val loggedInUser: LiveData<DataUser?> = _loggedInUser
 
     fun getEmail(): LiveData<String> = preferences.getEmail().asLiveData()
 
