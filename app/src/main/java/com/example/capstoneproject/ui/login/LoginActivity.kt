@@ -12,17 +12,17 @@ import com.example.capstoneproject.databinding.ActivityLoginBinding
 import com.example.capstoneproject.model.dataUser
 import com.example.capstoneproject.ui.home.HomeFragment
 import com.example.capstoneproject.ui.register.RegisterActivity
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+// import com.google.firebase.database.DataSnapshot
+// import com.google.firebase.database.DatabaseError
+// import com.google.firebase.database.DatabaseReference
+// import com.google.firebase.database.FirebaseDatabase
+// import com.google.firebase.database.ValueEventListener
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var databaseReference: DatabaseReference
+    // private lateinit var firebaseDatabase: FirebaseDatabase
+    // private lateinit var databaseReference: DatabaseReference
     private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,8 +30,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        databaseReference = firebaseDatabase.reference.child("users")
+        // firebaseDatabase = FirebaseDatabase.getInstance()
+        // databaseReference = firebaseDatabase.reference.child("users")
 
         binding.btnlogin.setOnClickListener {
             val email = binding.email.text.toString()
