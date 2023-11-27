@@ -1,9 +1,11 @@
 package com.example.capstoneproject.ui.login
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -13,12 +15,8 @@ import com.example.capstoneproject.databinding.ActivityLoginBinding
 import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
 import com.example.capstoneproject.preferences.dataStore
+import com.example.capstoneproject.model.dataUser
 import com.example.capstoneproject.ui.register.RegisterActivity
-//import com.google.firebase.database.DataSnapshot
-//import com.google.firebase.database.DatabaseError
-//import com.google.firebase.database.DatabaseReference
-//import com.google.firebase.database.FirebaseDatabase
-//import com.google.firebase.database.ValueEventListener
 
 class LoginActivity : AppCompatActivity() {
 
@@ -26,6 +24,13 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var viewModel: LoginViewModel
 //    private lateinit var firebaseDatabase: FirebaseDatabase
 //    private lateinit var databaseReference: DatabaseReference
+
+    private var attemptsRemaining = 3 // Jumlah percobaan tersisa
+    private var isCountdownActive = false // Apakah countdown aktif
+    private lateinit var countdownTimer: CountDownTimer
+    private var countdownTimeLeft: Long = 0
+    private var isLoggingIn = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +53,6 @@ class LoginActivity : AppCompatActivity() {
                 binding.email.text = Editable.Factory.getInstance().newEditable(email)
             }
         }
-
         binding.btnlogin.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
@@ -65,17 +69,38 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.loginUser.observe(this) { userLogin ->
+        viewModel.loggedInUser.observe(this) { userLogin ->
+            isLoggingIn = false
             if (userLogin != null) {
                 Toast.makeText(this@LoginActivity, "SignIn is success", Toast.LENGTH_SHORT).show()
+                saveUserDataToSharedPreferences(userLogin)
                 MainActivity.isLogin = true
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
-                /*startActivity(Intent(this@LoginActivity, HomeFragment::class.java))
-                finish()*/
             } else {
-                Toast.makeText(this@LoginActivity, "SignIn is failed", Toast.LENGTH_SHORT).show()
+                // Jika login gagal, kurangi percobaan dan mulai countdown jika sudah 3 kali salah
+                attemptsRemaining--
+                if (attemptsRemaining == 0 && !isCountdownActive) {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "SignIn is failed. Remaining attempts: $attemptsRemaining",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    startCountdown()
+                } else if (isCountdownActive) {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Coba lagi dalam ${countdownTimeLeft / 1000} detik",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "SignIn is failed. Remaining attempts: $attemptsRemaining",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 
@@ -84,27 +109,34 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    /*private fun login(email: String, password: String) {
-        databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    for (userSnapshot in snapshot.children) {
-                        val dataUser = userSnapshot.getValue(dataUser::class.java)
+    private fun saveUserDataToSharedPreferences(user: dataUser) {
+        val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("firstName", user.firstname)
+        editor.putString("lastName", user.lastname)
+        editor.putString("email", user.email)
+        editor.apply()
+    }
 
-                        if(dataUser != null && dataUser.password == password) {
-                            Toast.makeText(this@LoginActivity, "SignIn is success", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@LoginActivity, HomeFragment::class.java))
-                            finish()
-                            return
-                        }
-                    }
-                }
-                Toast.makeText(this@LoginActivity, "SignIn is failed", Toast.LENGTH_SHORT).show()
+    private fun startCountdown() {
+        isCountdownActive = true
+        countdownTimer = object : CountDownTimer(300000, 1000) { // 300000 ms = 5 menit
+            override fun onTick(millisUntilFinished: Long) {
+                countdownTimeLeft = millisUntilFinished // Simpan waktu yang tersisa
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@LoginActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+            override fun onFinish() {
+                isCountdownActive = false
+                Toast.makeText(this@LoginActivity, "Anda dapat mencoba login lagi", Toast.LENGTH_SHORT).show()
+                attemptsRemaining = 3
             }
-        })
-    }*/
+        }.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isCountdownActive) {
+            countdownTimer.cancel() // Hentikan countdown jika aktiv
+        }
+    }
 }
