@@ -17,6 +17,8 @@
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:navigationIconTint="@color/primaryColor"
+            android:backgroundTint="@color/contentColor"
             app:title="Profile"
             app:titleCentered="true" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -80,6 +82,7 @@
                         android:id="@+id/imgProfile"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
+                        android:src="@drawable/profile_default"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -110,7 +113,7 @@
                         app:layout_constraintTop_toTopOf="@+id/tvFirstName" />
 
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/tvEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -164,6 +167,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Change Plan"
+                        android:backgroundTint="@color/contentColor"
                         android:textColor="@color/white"
                         android:textAllCaps="false"
                         android:textSize="14sp"
