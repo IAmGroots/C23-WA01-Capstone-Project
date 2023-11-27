@@ -11,11 +11,11 @@ import com.example.capstoneproject.databinding.ActivityRegisterBinding
 import com.example.capstoneproject.model.dataUser
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.otp.OTPActivity
-// import com.google.firebase.database.DataSnapshot
-// import com.google.firebase.database.DatabaseError
-// import com.google.firebase.database.DatabaseReference
-// import com.google.firebase.database.FirebaseDatabase
-// import com.google.firebase.database.ValueEventListener
+//import com.google.firebase.database.DataSnapshot
+//import com.google.firebase.database.DatabaseError
+//import com.google.firebase.database.DatabaseReference
+//import com.google.firebase.database.FirebaseDatabase
+//import com.google.firebase.database.ValueEventListener
 
 class RegisterActivity : AppCompatActivity() {
 
