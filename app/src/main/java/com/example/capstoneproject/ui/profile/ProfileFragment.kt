@@ -51,18 +51,6 @@ class ProfileFragment : Fragment() {
             viewModel.saveBiometric(isChecked)
         }
 
-//        viewModel.getFullname().observe(viewLifecycleOwner) { fullname ->
-//            binding.tvFullName.text = fullname
-//        }
-//
-//        viewModel.getEmail().observe(viewLifecycleOwner) { email ->
-//            binding.tvEmail.text = email
-//        }
-//
-//        viewModel.getPhone().observe(viewLifecycleOwner) { phone ->
-//            binding.tvPhone.text = phone
-//        }
-
         binding.btnChangePlan.setOnClickListener {
             startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
         }

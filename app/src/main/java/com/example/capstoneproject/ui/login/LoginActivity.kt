@@ -53,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
                 binding.email.text = Editable.Factory.getInstance().newEditable(email)
             }
         }
+
         binding.btnlogin.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
