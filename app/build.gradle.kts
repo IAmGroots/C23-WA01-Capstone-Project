@@ -62,7 +62,16 @@ dependencies {
     // glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
+    // circle image view
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+
     //firebase
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
+
+    // fingerprint biometric
+    implementation("androidx.biometric:biometric-ktx:1.2.0-alpha05")
+
+    // datastore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 }

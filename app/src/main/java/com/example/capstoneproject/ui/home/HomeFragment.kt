@@ -28,6 +28,7 @@ import com.example.capstoneproject.adapter.HomeArticlesAdapter
 import com.example.capstoneproject.databinding.FragmentHomeBinding
 import com.example.capstoneproject.model.Banner
 import com.example.capstoneproject.ui.articles.ArticlesViewModel
+import com.example.capstoneproject.ui.biometric.BiometricActivity
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
 import com.example.capstoneproject.ui.usage.UsageActivity
@@ -76,13 +77,6 @@ class HomeFragment : Fragment() {
     // for setup toolbar
     private fun setupToolbar() {
         val toolbar = binding.toolbar
-
-        toolbar.setNavigationOnClickListener {
-            MainActivity.isLogin = false
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        }
 
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {

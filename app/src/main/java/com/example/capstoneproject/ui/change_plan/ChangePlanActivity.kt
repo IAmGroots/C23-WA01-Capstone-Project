@@ -27,7 +27,7 @@ class ChangePlanActivity : AppCompatActivity() {
         val toolbar = binding.toolbar
 
         toolbar.setNavigationOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            super.onBackPressed()
         }
     }
 }

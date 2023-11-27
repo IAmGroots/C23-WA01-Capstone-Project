@@ -38,8 +38,8 @@ class HistoryPaymentAdapter (private val listHistoryPayment: List<HistoryPayment
             binding.tvPayment.text = historyPayment.payment.toString()
 
             // set margin for first and last item, and then margin for separator each item
-            val marginTopBottom = 16
-            val marginSeparator = 6
+            val marginTopBottom = 0
+            val marginSeparator = 3
             val density = binding.root.context.resources.displayMetrics.density
             val topBottom = (marginTopBottom * density).toInt()
             val separator = (marginSeparator * density).toInt()

@@ -29,7 +29,11 @@ class emailEditText : AppCompatEditText {
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(text: Editable?) {
-                validateEmail(text.toString())
+                if (text.isNullOrEmpty()) {
+                    error = null
+                } else {
+                    validateEmail(text.toString())
+                }
             }
         })
     }

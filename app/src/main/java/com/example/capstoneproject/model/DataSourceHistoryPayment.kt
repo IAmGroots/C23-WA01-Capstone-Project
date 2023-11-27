@@ -20,6 +20,15 @@ object DataSourceHistoryPayment {
         HistoryPayment(4,
             "December 2023",
             599000
+        ),
+        HistoryPayment(5,
+            "January 2024",
+            699000
+        ),
+        HistoryPayment(6,
+            "December 2023",
+            599000
         )
+
     )
 }

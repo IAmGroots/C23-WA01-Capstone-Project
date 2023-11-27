@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/notifications_menu"
-            app:navigationIcon="@drawable/icon_logout"
             app:navigationIconTint="@color/primaryColor"
             android:backgroundTint="@color/contentColor"
             app:title="Home"
@@ -72,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:text="Current Plan"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:text="Silver Package"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         android:textStyle="bold"
                         android:layout_marginTop="4dp"
                         app:layout_constraintTop_toBottomOf="@+id/plan"
@@ -107,7 +106,7 @@
                         android:layout_marginTop="2dp"
                         android:text="Speed up to 30 Mbps"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="12sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/current_plan" />
 
@@ -118,7 +117,7 @@
                         android:layout_marginTop="2dp"
                         android:text="Service Date : 15 September 2023"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="12sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/speed" />
 
@@ -129,7 +128,7 @@
                         android:layout_marginTop="2dp"
                         android:text="Location : Dharmasusada Indah VI No.100, Surabaya"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="12sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/date" />
 
@@ -161,8 +160,7 @@
                         android:layout_height="match_parent"
                         android:paddingVertical="10dp"
                         android:paddingHorizontal="16dp"
-                        android:background="@color/secondaryColor"
-                        android:backgroundTint="@color/contentColor"
+                        android:background="@color/contentColor"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
@@ -193,8 +191,7 @@
                         android:layout_height="match_parent"
                         android:paddingVertical="10dp"
                         android:paddingHorizontal="16dp"
-                        android:background="@color/secondaryColor"
-                        android:backgroundTint="@color/contentColor"
+                        android:background="@color/contentColor"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
@@ -236,7 +233,7 @@
                         android:layout_height="wrap_content"
                         android:text="Traffic Usage"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -261,7 +258,7 @@
                         android:layout_marginTop="4dp"
                         android:text="Surabaya"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         android:textStyle="bold"
                         app:layout_constraintTop_toBottomOf="@+id/usage"
                         tools:ignore="MissingConstraints" />
@@ -273,7 +270,7 @@
                         android:layout_marginTop="2dp"
                         android:text="Agustus 2023 : 200GB"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="12sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/current_location" />
 
@@ -284,7 +281,7 @@
                         android:layout_marginTop="2dp"
                         android:text="Juli 2023 : 300GB"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="12sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/speeds" />
 
@@ -295,7 +292,7 @@
                         android:layout_marginTop="2dp"
                         android:text="Juni 2023 : 150GB"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="12sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/dates" />
 
@@ -325,7 +322,7 @@
                         android:layout_height="wrap_content"
                         android:text="News Articles"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

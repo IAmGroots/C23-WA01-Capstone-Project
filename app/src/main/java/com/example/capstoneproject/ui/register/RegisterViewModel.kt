@@ -3,8 +3,8 @@ package com.example.capstoneproject.ui.register
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.capstoneproject.model.dataSorceUser
-import com.example.capstoneproject.model.dataUser
+import com.example.capstoneproject.model.DataSourceUser
+import com.example.capstoneproject.model.DataUser
 
 class RegisterViewModel : ViewModel() {
 
@@ -22,7 +22,7 @@ class RegisterViewModel : ViewModel() {
     }
 
     private fun loadInitialData() {
-        val initialUsers = dataSorceUser.user.toMutableList()
+        val initialUsers = DataSourceUser.user.toMutableList()
         _userDummy.value?.addAll(initialUsers)
     }
 
@@ -38,7 +38,7 @@ class RegisterViewModel : ViewModel() {
         if (existingUser != null) {
             registUser.value = null
         } else {
-            val newUser = dataUser(
+            val newUser = DataUser(
                 firstname = firstname,
                 mobile = mobile,
                 id = _userDummy.value?.size?.plus(1) ?: 1,
@@ -52,7 +52,7 @@ class RegisterViewModel : ViewModel() {
                 registUser.value = newUser
             }
 
-            dataSorceUser.user = updatedUserList.toList()
+            DataSourceUser.user = updatedUserList.toList()
 
             _userDummy.value?.let { users ->
                 for (user in users) {
