@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/primaryColor">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_image"
@@ -25,10 +26,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="16dp"
             android:text="Invoice"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textColor="@color/secondaryColor"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,8 +40,8 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginStart="4dp"
             android:text="December 2023"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textColor="@color/secondaryColor"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/title_invoice"
             app:layout_constraintStart_toEndOf="@+id/title_invoice"
             app:layout_constraintTop_toTopOf="@+id/title_invoice"
@@ -54,8 +54,8 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginStart="4dp"
             android:text="IDR"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textColor="@color/secondaryColor"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvInvoiceDate"
             app:layout_constraintStart_toEndOf="@+id/tvInvoiceDate"
             app:layout_constraintTop_toTopOf="@+id/tvInvoiceDate"
@@ -68,8 +68,8 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginStart="4dp"
             android:text="299.000"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textColor="@color/secondaryColor"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvTitleIdr"
             app:layout_constraintStart_toEndOf="@+id/tvTitleIdr"
             app:layout_constraintTop_toTopOf="@+id/tvTitleIdr"
@@ -80,14 +80,13 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:contentDescription="@null"
             android:src="@drawable/icon_download"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.666"
-            app:tint="@color/black" />
+            app:tint="@color/secondaryColor" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

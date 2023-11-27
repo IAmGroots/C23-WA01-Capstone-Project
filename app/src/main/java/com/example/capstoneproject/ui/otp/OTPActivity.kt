@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.capstoneproject.databinding.ActivityOtpactivityBinding
-import com.example.capstoneproject.model.dataUser
 import com.example.capstoneproject.ui.login.LoginActivity
 //import com.google.firebase.database.DataSnapshot
 //import com.google.firebase.database.DatabaseError

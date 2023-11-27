@@ -3,14 +3,12 @@ package com.example.capstoneproject.ui.register
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.example.capstoneproject.databinding.ActivityRegisterBinding
-import com.example.capstoneproject.model.dataUser
 import com.example.capstoneproject.ui.login.LoginActivity
-import com.example.capstoneproject.ui.otp.OTPActivity
+
 //import com.google.firebase.database.DataSnapshot
 //import com.google.firebase.database.DatabaseError
 //import com.google.firebase.database.DatabaseReference
