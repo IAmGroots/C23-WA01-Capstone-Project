@@ -93,6 +93,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordtext"/>
 
+        <TextView
+            android:id="@+id/textforgotpassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Forgot Password?"
+            android:textAlignment="center"
+            android:textColor="@color/secPrimary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnlogin" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

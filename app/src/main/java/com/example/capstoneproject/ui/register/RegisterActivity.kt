@@ -3,19 +3,11 @@ package com.example.capstoneproject.ui.register
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import com.example.capstoneproject.databinding.ActivityRegisterBinding
-import com.example.capstoneproject.model.dataUser
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.otp.OTPActivity
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -46,7 +38,13 @@ class RegisterActivity : AppCompatActivity() {
 
             if (firstname.isNotEmpty() && lastname.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && mobile.isNotEmpty()) {
                 if (password == confirmPassword) {
-                    viewModel.regist(firstname, mobile, email, lastname, password)
+                    var intent= Intent(this@RegisterActivity, OTPActivity::class.java)
+                    intent.putExtra("firstname", firstname)
+                    intent.putExtra("lastname", lastname)
+                    intent.putExtra("email", email)
+                    intent.putExtra("mobile", mobile)
+                    intent.putExtra("password", password)
+                    startActivity(intent)
                     /*databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object :
                         ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
@@ -83,18 +81,7 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Fill all the data!", Toast.LENGTH_SHORT).show()
             }
         }
-
-        viewModel.registUser.observe(this, Observer { newUser ->
-            if (newUser != null) {
-                Toast.makeText(this@RegisterActivity, "SignUp Success", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
-                finish()
-            } else {
-                Toast.makeText(this@RegisterActivity, "Email already used!", Toast.LENGTH_SHORT).show()
-            }
-        })
     }
-
     /*private fun regist(*//*firstname: String, *//*email: String*//*, lastname: String, password: String*//*) {
         databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object :
             ValueEventListener {
