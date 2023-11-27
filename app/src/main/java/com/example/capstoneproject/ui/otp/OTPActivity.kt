@@ -3,11 +3,17 @@ package com.example.capstoneproject.ui.otp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import android.telephony.SmsManager
+import android.util.Log
+import android.view.View
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.example.capstoneproject.databinding.ActivityOtpactivityBinding
-import com.example.capstoneproject.model.dataUser
 import com.example.capstoneproject.ui.login.LoginActivity
+import com.example.capstoneproject.ui.register.RegisterActivity
+import com.example.capstoneproject.ui.register.RegisterViewModel
+import kotlin.random.Random
 //import com.google.firebase.database.DataSnapshot
 //import com.google.firebase.database.DatabaseError
 //import com.google.firebase.database.DatabaseReference
@@ -17,40 +23,95 @@ import com.example.capstoneproject.ui.login.LoginActivity
 class OTPActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOtpactivityBinding
-//    private lateinit var firebaseDatabase: FirebaseDatabase
-//    private lateinit var databaseReference: DatabaseReference
+    private val viewModel: RegisterViewModel by viewModels()
+    /*private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var databaseReference: DatabaseReference*/
     var firstname: String=""
     var lastname: String=""
+    var mobile: String= ""
     var email: String=""
     var password: String=""
+    var resendCounter: Int = 0
+    val maxResendCount = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOtpactivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        firebaseDatabase = FirebaseDatabase.getInstance()
-//        databaseReference = firebaseDatabase.reference.child("users")
+        /*firebaseDatabase = FirebaseDatabase.getInstance()
+        databaseReference = firebaseDatabase.reference.child("users")*/
+        /*FirebaseApp.initializeApp(this)*/
 
         firstname = intent.getStringExtra("firstname").toString()
         lastname = intent.getStringExtra("lastname").toString()
         email = intent.getStringExtra("email").toString()
+        mobile = intent.getStringExtra("mobile").toString()
         password = intent.getStringExtra("password").toString()
+
+        val otpCode = generateRandomOTP()
+        sendOtpSms(mobile, otpCode)
+
+        viewModel.registUser.observe(this, Observer { newUser ->
+            if (newUser != null) {
+                Toast.makeText(this@OTPActivity, "SignUp Success", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@OTPActivity, LoginActivity::class.java))
+                finish()
+            } else {
+                Toast.makeText(this@OTPActivity, "Upss the email already used! SignUp failed", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@OTPActivity, RegisterActivity::class.java))
+                finish()
+            }
+        })
 
         binding.btnverifydotp.setOnClickListener {
             if(binding.otp.text.toString().isEmpty()) {
                 Toast.makeText(this@OTPActivity, "Enter the OTP code!", Toast.LENGTH_SHORT).show()
             } else {
-                Log.e("firstname", firstname)
+                if (binding.otp.text.toString() == otpCode) {
+                    Toast.makeText(this@OTPActivity, "Verification Success", Toast.LENGTH_SHORT).show()
+                    viewModel.regist(firstname, mobile, email, lastname, password)
+                    Log.e("firstname", firstname)
+                    Log.e("lastname", lastname)
+                    Log.e("email", email)
+                    Log.e("mobile", mobile)
+                    Log.e("password", password)
+                } else {
+                    Toast.makeText(this@OTPActivity, "Verification Failed", Toast.LENGTH_SHORT).show()
+                }
+                /*Log.e("firstname", firstname)
                 Log.e("lastname", lastname)
                 Log.e("email", email)
+                Log.e("mobile", mobile)
                 Log.e("password", password)
-                /*regist(firstname, email, lastname, password)*/
+                *//*verifyOtp(email, password)*//*
+                *//*regist(firstname, email, lastname, password)*//*
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
+                startActivity(intent)*/
             }
         }
+
+        binding.resendotphere.setOnClickListener {
+            if (resendCounter < maxResendCount) {
+
+                resendCounter++
+                val otpCode = generateRandomOTP()
+                sendOtpSms(mobile, otpCode)
+            } else {
+                binding.resendotphere.visibility = View.INVISIBLE
+                binding.resendText.visibility = View.INVISIBLE
+            }
+        }
+    }
+
+    private fun generateRandomOTP(): String {
+        return Random.nextInt(1000, 9999).toString()
+    }
+
+    private fun sendOtpSms(phoneNumber: String, otpCode: String) {
+        val smsManager = SmsManager.getDefault()
+        smsManager.sendTextMessage(phoneNumber, null, "Your OTP code is: $otpCode", null, null)
     }
 
     /*private fun regist(firstname: String, mobile: String, email: String, lastname: String, password: String) {
