@@ -1,8 +1,8 @@
 package com.example.capstoneproject.model
 
-object dataSorceUser {
+object DataSourceUser {
     var user = listOf(
-        dataUser(
+        DataUser(
             "hadiseptian",
             "",
             1,
@@ -10,7 +10,7 @@ object dataSorceUser {
             "nursukamto",
             "hadi12345"
         ),
-        dataUser(
+        DataUser(
             "dinda",
             "08115582588",
             2,
@@ -18,7 +18,7 @@ object dataSorceUser {
             "afifah",
             "dinda12345"
         ),
-        dataUser(
+        DataUser(
             "muchlis",
             "081350502003",
             3,
@@ -26,5 +26,13 @@ object dataSorceUser {
             "abimanyu",
             "muchlis12345"
         ),
+        DataUser(
+            "account",
+            "081234567890",
+            4,
+            "test@gmail.com",
+            "test",
+            "12345678"
+        )
     )
 }

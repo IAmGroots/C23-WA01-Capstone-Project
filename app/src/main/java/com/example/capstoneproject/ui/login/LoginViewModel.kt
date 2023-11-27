@@ -4,23 +4,28 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.capstoneproject.model.DataSourceArticles
-import com.example.capstoneproject.model.dataSorceUser
-import com.example.capstoneproject.model.dataUser
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.capstoneproject.model.DataSourceUser
+import com.example.capstoneproject.model.DataUser
+import com.example.capstoneproject.preferences.SettingPreferences
+import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(private val preferences: SettingPreferences) : ViewModel() {
 
-    val _userDummy = MutableLiveData<List<dataUser>>()
+    val _userDummy = MutableLiveData<List<DataUser>>()
 
-    private val _loggedInUser = MutableLiveData<dataUser?>()
-    val loggedInUser: LiveData<dataUser?> = _loggedInUser
+    private val _loggedInUser = MutableLiveData<DataUser?>()
+    val loggedInUser: LiveData<DataUser?> = _loggedInUser
+
+    fun getEmail(): LiveData<String> = preferences.getEmail().asLiveData()
 
     init {
         getLogin()
     }
 
     private fun getLogin() {
-        _userDummy.value = dataSorceUser.user
+        _userDummy.value = DataSourceUser.user
     }
 
     fun login(email: String, password: String) {
@@ -28,6 +33,12 @@ class LoginViewModel : ViewModel() {
             it.email == email && it.password == password
         }
         _loggedInUser.value = userLogin
+
+        if (loggedInUser.value != null) {
+            viewModelScope.launch {
+                preferences.saveEmail(loggedInUser.value!!.email.toString())
+            }
+        }
 
         userLogin?.let {
             Log.e("LoginViewModel", "User logged in: ${it.firstname}, ${it.lastname}, ${it.email}")

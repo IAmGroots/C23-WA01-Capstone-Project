@@ -27,12 +27,4 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
     </fragment>
-
-    <fragment
-        android:id="@+id/navigation_settings"
-        android:name="com.example.capstoneproject.ui.settings.SettingsFragment"
-        android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings">
-
-    </fragment>
 </navigation>

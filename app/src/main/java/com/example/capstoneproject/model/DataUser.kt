@@ -1,6 +1,6 @@
 package com.example.capstoneproject.model
 
-data class dataUser(
+data class DataUser(
     val firstname: String? = null,
     val mobile: String? = null,
     val id: Int? = null,

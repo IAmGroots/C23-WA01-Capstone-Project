@@ -4,20 +4,26 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.databinding.ActivityLoginBinding
-import com.example.capstoneproject.model.dataUser
+import com.example.capstoneproject.preferences.SettingPreferences
+import com.example.capstoneproject.preferences.ViewModelFactory
+import com.example.capstoneproject.preferences.dataStore
+import com.example.capstoneproject.model.DataUser
 import com.example.capstoneproject.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private val viewModel: LoginViewModel by viewModels()
+    private lateinit var viewModel: LoginViewModel
+//    private lateinit var firebaseDatabase: FirebaseDatabase
+//    private lateinit var databaseReference: DatabaseReference
 
     private var attemptsRemaining = 3 // Jumlah percobaan tersisa
     private var isCountdownActive = false // Apakah countdown aktif
@@ -31,20 +37,40 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val preferences = SettingPreferences.getInstance(application.dataStore)
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(preferences)
+        )[LoginViewModel::class.java]
+
+//        firebaseDatabase = FirebaseDatabase.getInstance()
+//        databaseReference = firebaseDatabase.reference.child("users")
+
+        viewModel.getEmail().observe(this) { email ->
+            if (email == "empty") {
+                binding.email.text = Editable.Factory.getInstance().newEditable("")
+            } else {
+                binding.email.text = Editable.Factory.getInstance().newEditable(email)
+            }
+        }
+
         binding.btnlogin.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                isLoggingIn = true
-                Log.e("email", email)
-                Log.e("password", password)
-                viewModel.login(email, password)
+                if (password.length >= 8) {
+                    Log.e("email", email)
+                    Log.e("password", password)
+                    /*login(email, password)*/
+                    viewModel.login(email, password)
+                } else {
+                    Toast.makeText(this, "Please check your password!", Toast.LENGTH_SHORT).show()
+                }
             } else {
-                Toast.makeText(this, "Fill all the data!", Toast.LENGTH_SHORT).show()
             }
         }
 
-        viewModel.loggedInUser.observe(this, Observer { userLogin ->
+        viewModel.loggedInUser.observe(this) { userLogin ->
             isLoggingIn = false
             if (userLogin != null) {
                 Toast.makeText(this@LoginActivity, "SignIn is success", Toast.LENGTH_SHORT).show()
@@ -77,19 +103,20 @@ class LoginActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-        })
+        }
 
         binding.regishere.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
-    private fun saveUserDataToSharedPreferences(user: dataUser) {
+    private fun saveUserDataToSharedPreferences(user: DataUser) {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("firstName", user.firstname)
         editor.putString("lastName", user.lastname)
         editor.putString("email", user.email)
+        editor.putString("phone", user.mobile)
         editor.apply()
     }
 
