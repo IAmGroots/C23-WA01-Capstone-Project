@@ -26,12 +26,8 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-// <<<<<<< Hadi
     private lateinit var viewModel: ProfileViewModel
-// =======
-    private val viewModel: ProfileViewModel by viewModels()
     private val loginViewModel: LoginViewModel by viewModels()
-// >>>>>>> main
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +37,6 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-// <<<<<<< Hadi
         val preferences = SettingPreferences.getInstance(requireActivity().application.dataStore)
         viewModel = ViewModelProvider(
             this,
@@ -56,17 +51,17 @@ class ProfileFragment : Fragment() {
             viewModel.saveBiometric(isChecked)
         }
 
-        viewModel.getFullname().observe(viewLifecycleOwner) { fullname ->
-            binding.tvFullName.text = fullname
-        }
-
-        viewModel.getEmail().observe(viewLifecycleOwner) { email ->
-            binding.tvEmail.text = email
-        }
-
-        viewModel.getPhone().observe(viewLifecycleOwner) { phone ->
-            binding.tvPhone.text = phone
-        }
+//        viewModel.getFullname().observe(viewLifecycleOwner) { fullname ->
+//            binding.tvFullName.text = fullname
+//        }
+//
+//        viewModel.getEmail().observe(viewLifecycleOwner) { email ->
+//            binding.tvEmail.text = email
+//        }
+//
+//        viewModel.getPhone().observe(viewLifecycleOwner) { phone ->
+//            binding.tvPhone.text = phone
+//        }
 
         binding.btnChangePlan.setOnClickListener {
             startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
@@ -79,9 +74,7 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
 
-=======
         loadUserDataFromSharedPreferences()
-// >>>>>>> main
         setupListHistoryPayment()
 
         return root
@@ -92,11 +85,12 @@ class ProfileFragment : Fragment() {
         val firstName = sharedPreferences.getString("firstName", "")
         val lastName = sharedPreferences.getString("lastName", "")
         val email = sharedPreferences.getString("email", "")
+        val phone = sharedPreferences.getString("phone", "")
 
         // Menampilkan informasi pengguna di TextView pada profil
-        binding.tvFirstName.text = firstName
-        binding.tvLastName.text = lastName
+        binding.tvFullName.text = firstName + " " + lastName
         binding.tvEmail.text = email
+        binding.tvPhone.text = phone
     }
 
     private fun setupListHistoryPayment() {
