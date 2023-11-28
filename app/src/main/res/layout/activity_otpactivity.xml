@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="We've sent the code to your Email"
+            android:text="We've sent the code to your mobile number"
             android:textAlignment="center"
             android:textColor="@color/secondaryColor"
             android:textSize="12dp"
