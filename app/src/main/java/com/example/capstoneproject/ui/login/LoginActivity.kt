@@ -9,6 +9,7 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.biometric.BiometricManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.databinding.ActivityLoginBinding
@@ -43,6 +44,8 @@ class LoginActivity : AppCompatActivity() {
             ViewModelFactory(preferences)
         )[LoginViewModel::class.java]
 
+        checkHasBiometric()
+
 //        firebaseDatabase = FirebaseDatabase.getInstance()
 //        databaseReference = firebaseDatabase.reference.child("users")
 
@@ -57,16 +60,23 @@ class LoginActivity : AppCompatActivity() {
         binding.btnlogin.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                if (password.length >= 8) {
-                    Log.e("email", email)
-                    Log.e("password", password)
-                    /*login(email, password)*/
-                    viewModel.login(email, password)
-                } else {
-                    Toast.makeText(this, "Please check your password!", Toast.LENGTH_SHORT).show()
+            when {
+                email.isEmpty() -> {
+                    binding.email.error = "Please enter your email"
                 }
-            } else {
+                password.isEmpty() -> {
+                    binding.password.error = "Please enter your password"
+                }
+                else -> {
+                    if (password.length >= 8) {
+                        Log.e("email", email)
+                        Log.e("password", password)
+                        /*login(email, password)*/
+                        viewModel.login(email, password)
+                    } else {
+                        Toast.makeText(this, "Please check your password!", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 
@@ -133,6 +143,18 @@ class LoginActivity : AppCompatActivity() {
                 attemptsRemaining = 3
             }
         }.start()
+    }
+
+    private fun checkHasBiometric() {
+        val biometricManager = BiometricManager.from(this)
+        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                viewModel.saveHasBiometric(true)
+            }
+            else -> {
+                viewModel.saveHasBiometric(false)
+            }
+        }
     }
 
     override fun onDestroy() {
