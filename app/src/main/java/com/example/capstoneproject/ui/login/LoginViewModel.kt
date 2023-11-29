@@ -44,4 +44,10 @@ class LoginViewModel(private val preferences: SettingPreferences) : ViewModel() 
             Log.e("LoginViewModel", "User logged in: ${it.firstname}, ${it.lastname}, ${it.email}")
         }
     }
+
+    fun saveHasBiometric(hasBiometric : Boolean) {
+        viewModelScope.launch {
+            preferences.saveHasBiometric(hasBiometric)
+        }
+    }
 }

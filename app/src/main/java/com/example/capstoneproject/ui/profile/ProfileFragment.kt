@@ -43,10 +43,25 @@ class ProfileFragment : Fragment() {
             ViewModelFactory(preferences)
         )[ProfileViewModel::class.java]
 
+        setBiometric()
+        setAction()
+        loadUserDataFromSharedPreferences()
+        setupListHistoryPayment()
+
+        return root
+    }
+
+    private fun setBiometric() {
+        viewModel.getHasBiometric().observe(viewLifecycleOwner) { hasBiometric ->
+            binding.cardBiometricFingerprint.visibility = if (hasBiometric) View.VISIBLE else View.GONE
+        }
+
         viewModel.getBiometric().observe(viewLifecycleOwner) { isEnableBiometric ->
             binding.switchBiometric.isChecked = isEnableBiometric
         }
+    }
 
+    private fun setAction() {
         binding.switchBiometric.setOnCheckedChangeListener { _, isChecked ->
             viewModel.saveBiometric(isChecked)
         }
@@ -61,11 +76,6 @@ class ProfileFragment : Fragment() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
-
-        loadUserDataFromSharedPreferences()
-        setupListHistoryPayment()
-
-        return root
     }
 
     private fun loadUserDataFromSharedPreferences() {

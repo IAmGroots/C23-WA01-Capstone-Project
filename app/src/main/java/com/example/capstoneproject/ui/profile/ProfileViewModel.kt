@@ -22,6 +22,7 @@ class ProfileViewModel(private val preferences: SettingPreferences) : ViewModel(
         _listHistoryPayment.value = DataSourceHistoryPayment.dataHistoryPayment
     }
 
+    fun getHasBiometric(): LiveData<Boolean> = preferences.getHasBiometric().asLiveData()
     fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
 
     fun saveBiometric(isBiometricActive : Boolean) {
