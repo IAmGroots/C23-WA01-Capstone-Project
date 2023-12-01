@@ -104,7 +104,7 @@ class BiometricActivity : AppCompatActivity() {
 
     private fun createPromptInfo() {
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Biometric login for App")
+            .setTitle("Biometric login for Wownet App")
             .setSubtitle("Log in using your biometric credential")
             .setNegativeButtonText("CANCEL BIOMETRIC")
             .build()
