@@ -1,6 +1,8 @@
 package com.example.capstoneproject.ui.otp
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -8,11 +10,12 @@ import android.telephony.SmsManager
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.example.capstoneproject.databinding.ActivityOtpactivityBinding
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.register.RegisterActivity
-import com.example.capstoneproject.ui.register.RegisterViewModel
 import kotlin.random.Random
 //import com.google.firebase.database.DataSnapshot
 //import com.google.firebase.database.DatabaseError
@@ -22,8 +25,12 @@ import kotlin.random.Random
 
 class OTPActivity : AppCompatActivity() {
 
+    companion object {
+        const val MY_PERMISSIONS_REQUEST_SEND_SMS = 1
+    }
+
     private lateinit var binding: ActivityOtpactivityBinding
-    private val viewModel: RegisterViewModel by viewModels()
+    private val viewModel: OTPViewModel by viewModels()
     /*private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var databaseReference: DatabaseReference*/
     var firstname: String=""
@@ -31,8 +38,8 @@ class OTPActivity : AppCompatActivity() {
     var mobile: String= ""
     var email: String=""
     var password: String=""
-    var resendCounter: Int = 0
-    val maxResendCount = 3
+    var resendCounter = 0
+    var sendAttemp = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +55,20 @@ class OTPActivity : AppCompatActivity() {
         email = intent.getStringExtra("email").toString()
         mobile = intent.getStringExtra("mobile").toString()
         password = intent.getStringExtra("password").toString()
+        binding.resendotphere.visibility = View.INVISIBLE
+        binding.resendText.visibility = View.INVISIBLE
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.SEND_SMS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.SEND_SMS),
+                MY_PERMISSIONS_REQUEST_SEND_SMS
+            )
+        }
 
         val otpCode = generateRandomOTP()
         sendOtpSms(mobile, otpCode)
@@ -77,7 +98,12 @@ class OTPActivity : AppCompatActivity() {
                     Log.e("mobile", mobile)
                     Log.e("password", password)
                 } else {
+                    sendAttemp++
                     Toast.makeText(this@OTPActivity, "Verification Failed", Toast.LENGTH_SHORT).show()
+                    if (sendAttemp >= 3 && sendAttemp < 4) {
+                        binding.resendotphere.visibility = View.VISIBLE
+                        binding.resendText.visibility = View.VISIBLE
+                    }
                 }
                 /*Log.e("firstname", firstname)
                 Log.e("lastname", lastname)
@@ -93,14 +119,18 @@ class OTPActivity : AppCompatActivity() {
         }
 
         binding.resendotphere.setOnClickListener {
-            if (resendCounter < maxResendCount) {
+            if (resendCounter <= 3) {
 
                 resendCounter++
+                sendAttemp = 0
                 val otpCode = generateRandomOTP()
                 sendOtpSms(mobile, otpCode)
-            } else {
                 binding.resendotphere.visibility = View.INVISIBLE
                 binding.resendText.visibility = View.INVISIBLE
+            } else {
+                Toast.makeText(this@OTPActivity, "You have failed three times!", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@OTPActivity, RegisterActivity::class.java))
+                finish()
             }
         }
     }
