@@ -3,7 +3,6 @@ package com.example.capstoneproject.preferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.MainViewModel
-import com.example.capstoneproject.ui.biometric.BiometricViewModel
 import com.example.capstoneproject.ui.change_plan.ChangePlanViewModel
 import com.example.capstoneproject.ui.login.LoginViewModel
 import com.example.capstoneproject.ui.profile.ProfileViewModel
@@ -23,9 +22,6 @@ class ViewModelFactory(private val preferences: SettingPreferences) : ViewModelP
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(preferences) as T
-            }
-            modelClass.isAssignableFrom(BiometricViewModel::class.java) -> {
-                BiometricViewModel(preferences) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

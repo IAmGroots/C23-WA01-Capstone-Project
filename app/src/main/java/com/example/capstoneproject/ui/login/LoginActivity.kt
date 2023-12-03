@@ -1,5 +1,6 @@
 package com.example.capstoneproject.ui.login
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -53,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        checkHasBiometric()
+        getBiometric()
 
 //        firebaseDatabase = FirebaseDatabase.getInstance()
 //        databaseReference = firebaseDatabase.reference.child("users")
@@ -67,6 +69,8 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        setFocusable()
+
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
@@ -74,9 +78,11 @@ class LoginActivity : AppCompatActivity() {
                 email.isEmpty() -> {
                     binding.etEmail.error = "Please enter your email"
                 }
+
                 password.isEmpty() -> {
                     binding.etPassword.error = "Please enter your password"
                 }
+
                 else -> {
                     if (password.length >= 8) {
                         Log.e("email", email)
@@ -84,7 +90,8 @@ class LoginActivity : AppCompatActivity() {
                         /*login(email, password)*/
                         viewModel.login(email, password)
                     } else {
-                        Toast.makeText(this, "Please check your password!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Please check your password!", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -129,38 +136,94 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
-//        viewModel.getBiometric().observe(this) { isEnableBiometric ->
-//            if (isEnableBiometric) {
-//                binding.btnBiometric.visibility = View.VISIBLE
-//            } else {
-//                binding.btnBiometric.visibility = View.GONE
-//            }
-//        }
+        viewModel.getBiometric().observe(this) { isEnableBiometric ->
+            if (isEnableBiometric) {
+                binding.btnBiometric.visibility = View.VISIBLE
+            } else {
+                binding.btnBiometric.visibility = View.GONE
+            }
+        }
 
 
-//        binding.btnBiometric.setOnClickListener {
-//            val biometricManager = BiometricManager.from(this)
-//            when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
-//                BiometricManager.BIOMETRIC_SUCCESS -> {
-//                    Toast.makeText(this, "App can authenticate is using bimetric", Toast.LENGTH_SHORT).show()
-//                    createBiometricListener()
-//                    createPromptInfo()
-//                    biometricPrompt.authenticate(promptInfo)
-//                }
-//                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-//                    Toast.makeText(this, "No biometric feature available on this device", Toast.LENGTH_SHORT).show()
-//                }
-//                BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-//                    Toast.makeText(this, "Biometric feature are currently unavailable", Toast.LENGTH_SHORT).show()
-//                }
-//                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-//                    Toast.makeText(this, "Device not enable biometric feature", Toast.LENGTH_SHORT).show()
-//                }
-//                else -> {
-//                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
+        binding.btnBiometric.setOnClickListener {
+            val biometricManager = BiometricManager.from(this)
+            when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+                BiometricManager.BIOMETRIC_SUCCESS -> {
+                    Toast.makeText(
+                        this,
+                        "App can authenticate is using bimetric",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    createBiometricListener()
+                    createPromptInfo()
+                    biometricPrompt.authenticate(promptInfo)
+                }
+
+                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                    Toast.makeText(
+                        this,
+                        "No biometric feature available on this device",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+                    Toast.makeText(
+                        this,
+                        "Biometric feature are currently unavailable",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                    Toast.makeText(this, "Device not enable biometric feature", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                else -> {
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setFocusable() {
+        binding.etEmail.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    binding.etEmail.isFocusable = true
+                    binding.etEmail.isFocusableInTouchMode = true
+                }
+                MotionEvent.ACTION_UP -> {
+                    binding.etEmail.requestFocus()
+                }
+            }
+            false
+        }
+
+        binding.etPassword.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    binding.etPassword.isFocusable = true
+                    binding.etPassword.isFocusableInTouchMode = true
+                }
+                MotionEvent.ACTION_UP -> {
+                    binding.etPassword.requestFocus()
+                }
+            }
+            false
+        }
+    }
+
+    private fun getBiometric() {
+        viewModel.getBiometric().observe(this) { isEnableBiometric ->
+            if (isEnableBiometric) {
+                binding.btnBiometric.visibility = View.VISIBLE
+            } else {
+                binding.btnBiometric.visibility = View.GONE
+            }
+        }
     }
 
     private fun saveUserDataToSharedPreferences(user: DataUser) {
@@ -184,7 +247,11 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 isCountdownActive = false
-                Toast.makeText(this@LoginActivity, "Anda dapat mencoba login lagi", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@LoginActivity,
+                    "Anda dapat mencoba login lagi",
+                    Toast.LENGTH_SHORT
+                ).show()
                 attemptsRemaining = 3
             }
         }.start()
@@ -192,27 +259,31 @@ class LoginActivity : AppCompatActivity() {
 
     private fun createBiometricListener() {
         executor = ContextCompat.getMainExecutor(this)
-        biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+        biometricPrompt =
+            BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
 
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                super.onAuthenticationSucceeded(result)
-                Toast.makeText(this@LoginActivity, "Authenticated Success", Toast.LENGTH_SHORT).show()
-                MainActivity.isLogin = true
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-            }
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    Toast.makeText(this@LoginActivity, "Authenticated Success", Toast.LENGTH_SHORT)
+                        .show()
+                    MainActivity.isLogin = true
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                }
 
-            override fun onAuthenticationFailed() {
-                super.onAuthenticationFailed()
-                Toast.makeText(this@LoginActivity, "Authenticated Failed", Toast.LENGTH_SHORT).show()
-            }
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    Toast.makeText(this@LoginActivity, "Authenticated Failed", Toast.LENGTH_SHORT)
+                        .show()
+                }
 
-            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                super.onAuthenticationError(errorCode, errString)
-                Toast.makeText(this@LoginActivity, errString.toString(), Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    Toast.makeText(this@LoginActivity, errString.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
     }
 
     private fun createPromptInfo() {
@@ -221,18 +292,6 @@ class LoginActivity : AppCompatActivity() {
             .setSubtitle("Log in using your biometric credential")
             .setNegativeButtonText("CANCEL BIOMETRIC")
             .build()
-    }
-
-    private fun checkHasBiometric() {
-        val biometricManager = BiometricManager.from(this)
-        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
-            BiometricManager.BIOMETRIC_SUCCESS -> {
-                viewModel.saveHasBiometric(true)
-            }
-            else -> {
-                viewModel.saveHasBiometric(false)
-            }
-        }
     }
 
     override fun onDestroy() {

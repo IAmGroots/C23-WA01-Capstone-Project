@@ -7,7 +7,7 @@
     <color name="red">#FF7272</color>
     <color name="secwhite">#e8e8e8</color>
     <color name="secblack">#616060</color>
-    <color name="lightGray">#F6F6F6</color>
+    <color name="lightGray">#ECECEC</color>
     <color name="darkGray">#595959</color>
     <color name="gold">#C07B00</color>
     <color name="silver">#989898</color>
@@ -15,4 +15,5 @@
     <color name="lightGray2">#AEAEAE</color>
     <color name="lightGray3">#EFEFED</color>
     <color name="green">#00B700</color>
+    <color name="darkBlue">#254077</color>
 </resources>

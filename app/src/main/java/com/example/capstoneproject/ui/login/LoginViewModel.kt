@@ -49,10 +49,4 @@ class LoginViewModel(private val preferences: SettingPreferences) : ViewModel() 
     fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
 
 
-    fun saveHasBiometric(hasBiometric : Boolean) {
-        viewModelScope.launch {
-            preferences.saveHasBiometric(hasBiometric)
-        }
-    }
-
 }
