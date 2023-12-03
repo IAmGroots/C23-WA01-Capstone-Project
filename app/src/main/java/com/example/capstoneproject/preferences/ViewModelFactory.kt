@@ -24,6 +24,9 @@ class ViewModelFactory(private val preferences: SettingPreferences) : ViewModelP
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(preferences) as T
             }
+            modelClass.isAssignableFrom(BiometricViewModel::class.java) -> {
+                BiometricViewModel(preferences) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }

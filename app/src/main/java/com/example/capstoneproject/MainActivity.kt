@@ -3,6 +3,7 @@ package com.example.capstoneproject
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // untuk sementara false
+//        val isLogin = false
+        if (!isLogin) {
+            Log.d("DISINI", "DISINI")
+            val intent = Intent(this, BiometricActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
+
         val preferences = SettingPreferences.getInstance(application.dataStore)
         viewModel = ViewModelProvider(
             this,
@@ -41,18 +55,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
-        }
-
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        // untuk sementara false
-//        val isLogin = false
-        if (!isLogin) {
-            val intent = Intent(this, BiometricActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
         }
         
         val navView: BottomNavigationView = binding.navView

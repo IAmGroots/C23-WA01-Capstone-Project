@@ -111,7 +111,7 @@ class OTPActivity : AppCompatActivity() {
                     Log.e("email", email)
                     Log.e("mobile", mobile)
                     Log.e("password", password)
-                    Log.e("password", plan)
+                    Log.e("plan", plan)
                 } else {
                     sendAttemp++
                     Toast.makeText(this@OTPActivity, "Verification Failed", Toast.LENGTH_SHORT).show()

@@ -252,7 +252,7 @@
 
                                 <androidx.cardview.widget.CardView
                                     android:id="@+id/btnChangePlan"
-                                    android:layout_width="137dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:backgroundTint="@color/silver"
                                     android:foreground="?attr/selectableItemBackground"
@@ -261,7 +261,7 @@
 
                                     <androidx.appcompat.widget.LinearLayoutCompat
                                         android:id="@+id/btnChangePlanStyle"
-                                        android:layout_width="match_parent"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:background="@drawable/cardview_change_plan_border"
                                         android:gravity="center"
@@ -319,7 +319,7 @@
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/linearLayoutButton3"
-                            android:layout_width="137dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -341,7 +341,7 @@
                                     app:cardElevation="0dp">
 
                                     <androidx.appcompat.widget.LinearLayoutCompat
-                                        android:layout_width="match_parent"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:background="@drawable/cardview_change_plan_border"
                                         android:gravity="center">

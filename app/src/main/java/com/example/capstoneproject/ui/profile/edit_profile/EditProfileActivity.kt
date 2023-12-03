@@ -34,7 +34,16 @@ class EditProfileActivity : AppCompatActivity() {
 
         }
 
+        setupToolbar()
         loadUserDataFromSharedPreferences()
+    }
+
+    private fun setupToolbar() {
+        val toolbar = binding.toolbar
+
+        toolbar.setNavigationOnClickListener {
+            super.onBackPressed()
+        }
     }
 
     private fun loadUserDataFromSharedPreferences() {

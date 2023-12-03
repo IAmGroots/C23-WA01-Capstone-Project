@@ -59,11 +59,11 @@ class RegisterActivity : AppCompatActivity() {
             if (firstname.isNotEmpty() && lastname.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && mobile.isNotEmpty()) {
                 if (password == confirmPassword) {
                     viewModel.userEmail.observe(this, Observer { check ->
-                        val firstname = binding.firstname.text.toString()
-                        val lastname = binding.lastname.text.toString()
-                        val mobile = binding.mobile.text.toString()
-                        val email = binding.email.text.toString()
-                        val password = binding.password.text.toString()
+                        val firstname = binding.etFirstName.text.toString()
+                        val lastname = binding.etLastName.text.toString()
+                        val mobile = binding.etMobile.text.toString()
+                        val email = binding.etEmail.text.toString()
+                        val password = binding.etPassword.text.toString()
                         if (check != null) {
                             Toast.makeText(this@RegisterActivity, "This email already used! Try to SignIn", Toast.LENGTH_SHORT).show()
                         } else {
