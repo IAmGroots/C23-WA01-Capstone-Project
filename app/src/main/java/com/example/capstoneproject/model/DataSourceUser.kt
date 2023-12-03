@@ -8,7 +8,8 @@ object DataSourceUser {
             1,
             "a269bsy2325@bangkit.academy",
             "nursukamto",
-            "hadi12345"
+            "hadi12345",
+            "gold"
         ),
         DataUser(
             "dinda",
@@ -16,7 +17,8 @@ object DataSourceUser {
             2,
             "din@gmail.com",
             "afifah",
-            "dinda12345"
+            "dinda12345",
+            "silver"
         ),
         DataUser(
             "muchlis",
@@ -24,7 +26,8 @@ object DataSourceUser {
             3,
             "a269bsy2847@gmail.com",
             "abimanyu",
-            "muchlis12345"
+            "muchlis12345",
+            "bronze"
         ),
         DataUser(
             "account",
@@ -32,7 +35,8 @@ object DataSourceUser {
             4,
             "test@gmail.com",
             "test",
-            "12345678"
+            "12345678",
+            "none"
         )
     )
 }

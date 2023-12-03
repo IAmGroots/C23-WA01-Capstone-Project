@@ -25,9 +25,18 @@ class ProfileViewModel(private val preferences: SettingPreferences) : ViewModel(
     fun getHasBiometric(): LiveData<Boolean> = preferences.getHasBiometric().asLiveData()
     fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
 
+    fun getTheme(): LiveData<Boolean> = preferences.getThemeSetting().asLiveData()
+
+
     fun saveBiometric(isBiometricActive : Boolean) {
         viewModelScope.launch {
             preferences.saveBiometricSetting(isBiometricActive)
+        }
+    }
+
+    fun saveTheme(isDarkModeActive : Boolean) {
+        viewModelScope.launch {
+            preferences.saveThemeSetting(isDarkModeActive)
         }
     }
 }

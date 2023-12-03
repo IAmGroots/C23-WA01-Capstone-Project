@@ -38,13 +38,27 @@ class OTPActivity : AppCompatActivity() {
     var mobile: String= ""
     var email: String=""
     var password: String=""
+    val plan: String="none"
     var resendCounter = 0
     var sendAttemp = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOtpactivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.SEND_SMS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.SEND_SMS),
+                MY_PERMISSIONS_REQUEST_SEND_SMS
+            )
+        }
 
         /*firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("users")*/
@@ -91,12 +105,13 @@ class OTPActivity : AppCompatActivity() {
             } else {
                 if (binding.otp.text.toString() == otpCode) {
                     Toast.makeText(this@OTPActivity, "Verification Success", Toast.LENGTH_SHORT).show()
-                    viewModel.regist(firstname, mobile, email, lastname, password)
+                    viewModel.regist(firstname, mobile, email, lastname, password, plan)
                     Log.e("firstname", firstname)
                     Log.e("lastname", lastname)
                     Log.e("email", email)
                     Log.e("mobile", mobile)
                     Log.e("password", password)
+                    Log.e("password", plan)
                 } else {
                     sendAttemp++
                     Toast.makeText(this@OTPActivity, "Verification Failed", Toast.LENGTH_SHORT).show()

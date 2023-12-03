@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#131313</color>
+    <color name="black">#252525</color>
+    <color name="black2">#323232</color>
     <color name="white">#FEFEFE</color>
     <color name="blue">#01A1DD</color>
     <color name="red">#FF7272</color>
     <color name="secwhite">#e8e8e8</color>
     <color name="secblack">#616060</color>
+    <color name="lightGray">#F6F6F6</color>
+    <color name="darkGray">#595959</color>
+    <color name="gold">#C07B00</color>
+    <color name="silver">#989898</color>
+    <color name="bronze">#994716</color>
+    <color name="lightGray2">#AEAEAE</color>
+    <color name="lightGray3">#EFEFED</color>
+    <color name="green">#00B700</color>
 </resources>

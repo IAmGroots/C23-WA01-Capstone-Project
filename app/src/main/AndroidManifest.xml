@@ -38,6 +38,9 @@
             android:value="AIzaSyCx4EGtGSBurUtNPvbRmLw9u8rSPJcIssU" />
 
         <activity
+            android:name=".ui.profile.edit_profile.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.biometric.BiometricActivity"
             android:exported="false" />
         <activity

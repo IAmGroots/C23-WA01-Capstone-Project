@@ -6,5 +6,5 @@
         android:icon="@drawable/icon_notifications"
         android:title="@string/title_notifications"
         app:showAsAction="always"
-        android:iconTint="@color/primaryColor"/>
+        app:tint="@color/white"/>
 </menu>

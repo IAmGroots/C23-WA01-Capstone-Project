@@ -14,6 +14,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings"
 
 class SettingPreferences constructor(private val dataStore: DataStore<Preferences>) {
 
+    private val THEME_KEY = booleanPreferencesKey("theme_setting")
     private val BIOMETRIC_KEY = booleanPreferencesKey("biometric_setting")
     private val EMAIL_KEY = stringPreferencesKey("email_string")
     private val HAS_BIOMETRIC = booleanPreferencesKey("has_biometric")
@@ -34,9 +35,21 @@ class SettingPreferences constructor(private val dataStore: DataStore<Preference
             preferences[BIOMETRIC_KEY] ?: false
         }
     }
-    suspend fun saveBiometricSetting(biometricActive : Boolean) {
+
+    suspend fun saveBiometricSetting(isBiometricActive : Boolean) {
         dataStore.edit { preferences ->
-            preferences[BIOMETRIC_KEY] = biometricActive
+            preferences[BIOMETRIC_KEY] = isBiometricActive
+        }
+    }
+
+    fun getThemeSetting(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[THEME_KEY] ?: false
+        }
+    }
+    suspend fun saveThemeSetting(isDarkModeActive : Boolean) {
+        dataStore.edit { preferences ->
+            preferences[THEME_KEY] = isDarkModeActive
         }
     }
 
