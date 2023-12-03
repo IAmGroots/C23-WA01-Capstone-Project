@@ -48,9 +48,16 @@ class LoginActivity : AppCompatActivity() {
             ViewModelFactory(preferences)
         )[LoginViewModel::class.java]
 
+
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        checkHasBiometric()
+
+//        firebaseDatabase = FirebaseDatabase.getInstance()
+//        databaseReference = firebaseDatabase.reference.child("users")
+
 
         viewModel.getEmail().observe(this) { email ->
             if (email == "empty") {
@@ -60,19 +67,26 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnLogin.setOnClickListener {
-            val email = binding.etEmail.text.toString()
-            val password = binding.etPassword.text.toString()
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                if (password.length >= 8) {
-                    Log.e("email", email)
-                    Log.e("password", password)
-                    /*login(email, password)*/
-                    viewModel.login(email, password)
-                } else {
-                    Toast.makeText(this, "Please check your password!", Toast.LENGTH_SHORT).show()
+        binding.btnlogin.setOnClickListener {
+            val email = binding.email.text.toString()
+            val password = binding.password.text.toString()
+            when {
+                email.isEmpty() -> {
+                    binding.email.error = "Please enter your email"
                 }
-            } else {
+                password.isEmpty() -> {
+                    binding.password.error = "Please enter your password"
+                }
+                else -> {
+                    if (password.length >= 8) {
+                        Log.e("email", email)
+                        Log.e("password", password)
+                        /*login(email, password)*/
+                        viewModel.login(email, password)
+                    } else {
+                        Toast.makeText(this, "Please check your password!", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 
@@ -207,6 +221,17 @@ class LoginActivity : AppCompatActivity() {
             .setSubtitle("Log in using your biometric credential")
             .setNegativeButtonText("CANCEL BIOMETRIC")
             .build()
+
+    private fun checkHasBiometric() {
+        val biometricManager = BiometricManager.from(this)
+        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                viewModel.saveHasBiometric(true)
+            }
+            else -> {
+                viewModel.saveHasBiometric(false)
+            }
+        }
     }
 
     override fun onDestroy() {

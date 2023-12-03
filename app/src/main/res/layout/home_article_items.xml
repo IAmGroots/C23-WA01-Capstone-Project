@@ -41,21 +41,6 @@
         app:layout_constraintTop_toTopOf="@+id/card_image"
         app:layout_constraintStart_toEndOf="@+id/card_image" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/title_articles"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:maxWidth="200dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:ellipsize="end"-->
-<!--        android:maxLines="2"-->
-<!--        android:textColor="@color/secondaryColor"-->
-<!--        android:text="@string/sample_title_articles"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/card_image"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/btn_detail"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/card_image"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/card_image" />-->
-
     <TextView
         android:id="@+id/title_articles"
         android:layout_width="0dp"
@@ -82,7 +67,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

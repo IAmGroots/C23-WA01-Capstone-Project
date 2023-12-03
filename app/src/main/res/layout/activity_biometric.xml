@@ -6,109 +6,96 @@
     android:layout_height="match_parent"
     tools:context=".ui.biometric.BiometricActivity">
 
-    <ImageView
-        android:id="@+id/imageViewlogin"
-        android:layout_width="290dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="55dp"
-        android:background="@drawable/wownetlogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/background"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:src="@drawable/background"
-        android:layout_marginTop="50dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewlogin" />
+        app:layout_constraintTop_toTopOf="parent">
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_login"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Login"-->
-<!--        android:layout_marginTop="40dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/background" />-->
+        <ImageView
+            android:id="@+id/imageViewlogin"
+            android:layout_width="290dp"
+            android:layout_height="74dp"
+            android:background="@drawable/wownetlogo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_login_biometric"-->
-<!--        android:layout_width="300dp"-->
-<!--        android:layout_height="60dp"-->
-<!--        android:text="Login"-->
-<!--        android:layout_marginTop="40dp"-->
-<!--        android:drawableLeft="@drawable/icon_fingerprint"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/background" />-->
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/btn_login_biometric"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/background">
-
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <ImageView
+            android:id="@+id/background"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/contentColor"
-            android:gravity="center"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="10dp">
+            android:layout_height="250dp"
+            android:src="@drawable/background"
+            android:layout_marginTop="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewlogin" />
 
-            <ImageView
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:src="@drawable/icon_fingerprint"
-                app:tint="@color/primaryColor" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_login_biometric"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            android:layout_marginTop="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/background">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="LOGIN"
-                android:textColor="@color/primaryColor"
-                android:textSize="18sp" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.cardview.widget.CardView>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/contentColor"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="10dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/btn_login_email"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/background">
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/icon_fingerprint"
+                    app:tint="@color/primaryColor" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/contentColor"
-            android:gravity="center"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="LOGIN"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="18sp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="LOGIN"
-                android:textColor="@color/primaryColor"
-                android:textSize="18sp" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_login_email"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            android:layout_marginTop="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/background">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/contentColor"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="LOGIN"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="18sp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

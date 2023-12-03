@@ -1,6 +1,7 @@
 package com.example.capstoneproject
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -49,7 +50,9 @@ class MainActivity : AppCompatActivity() {
         // untuk sementara false
 //        val isLogin = false
         if (!isLogin) {
-            startActivity(Intent(this, LoginActivity::class.java))
+            val intent = Intent(this, BiometricActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
         
         val navView: BottomNavigationView = binding.navView

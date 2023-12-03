@@ -6,14 +6,17 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.example.capstoneproject.databinding.ActivityRegisterBinding
 import com.example.capstoneproject.ui.login.LoginActivity
+import com.example.capstoneproject.ui.login.LoginViewModel
 //import com.google.firebase.database.DataSnapshot
 //import com.google.firebase.database.DatabaseError
 //import com.google.firebase.database.DatabaseReference
 //import com.google.firebase.database.FirebaseDatabase
 //import com.google.firebase.database.ValueEventListener
 import com.example.capstoneproject.ui.otp.OTPActivity
+import com.example.capstoneproject.ui.otp.OTPViewModel
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -53,16 +56,34 @@ class RegisterActivity : AppCompatActivity() {
             Log.e("password", password)
             Log.e("confirmPassword", confirmPassword)
 
-
             if (firstname.isNotEmpty() && lastname.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && mobile.isNotEmpty()) {
                 if (password == confirmPassword) {
-                    var intent= Intent(this@RegisterActivity, OTPActivity::class.java)
-                    intent.putExtra("firstname", firstname)
-                    intent.putExtra("lastname", lastname)
-                    intent.putExtra("email", email)
-                    intent.putExtra("mobile", mobile)
-                    intent.putExtra("password", password)
-                    startActivity(intent)
+                    viewModel.userEmail.observe(this, Observer { check ->
+                        val firstname = binding.firstname.text.toString()
+                        val lastname = binding.lastname.text.toString()
+                        val mobile = binding.mobile.text.toString()
+                        val email = binding.email.text.toString()
+                        val password = binding.password.text.toString()
+                        if (check != null) {
+                            Toast.makeText(this@RegisterActivity, "This email already used! Try to SignIn", Toast.LENGTH_SHORT).show()
+                        } else {
+                            viewModel.userMobile.observe(this, Observer { checkMobile ->
+                                if(checkMobile != null) {
+                                    Toast.makeText(this@RegisterActivity, "This mobile number already used!", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    var intent= Intent(this@RegisterActivity, OTPActivity::class.java)
+                                    intent.putExtra("firstname", firstname)
+                                    intent.putExtra("lastname", lastname)
+                                    intent.putExtra("mobile", mobile)
+                                    intent.putExtra("email", email)
+                                    intent.putExtra("password", password)
+                                    startActivity(intent)
+                                }
+                            })
+                        }
+                    })
+                    viewModel.checkEmail(email)
+                    viewModel.checkMobile(mobile)
                     /*databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object :
                         ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
@@ -98,6 +119,10 @@ class RegisterActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Fill all the data!", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.loginhere.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
     /*private fun regist(*//*firstname: String, *//*email: String*//*, lastname: String, password: String*//*) {

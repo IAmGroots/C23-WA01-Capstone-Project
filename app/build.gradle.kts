@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -75,6 +76,12 @@ dependencies {
     // datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
+
     // lottie animation
     implementation(group = "com.airbnb.android", name = "lottie", version = "6.0.0")
+
+    // google maps
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
 }

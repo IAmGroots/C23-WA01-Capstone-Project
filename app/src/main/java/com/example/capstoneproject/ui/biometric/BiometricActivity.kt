@@ -35,14 +35,25 @@ class BiometricActivity : AppCompatActivity() {
         binding = ActivityBiometricBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        getBiometric()
+
+        // login with email
+        binding.btnLoginEmail.setOnClickListener { startActivity(Intent(this, LoginActivity::class.java)) }
+        // login with biometric
+        binding.btnLoginBiometric.setOnClickListener { setActionBiometric() }
+    }
+
+    private fun getBiometric() {
         val preferences = SettingPreferences.getInstance(application.dataStore)
         viewModel = ViewModelProvider(
             this,
             ViewModelFactory(preferences)
         )[BiometricViewModel::class.java]
 
+        var hasBiometric = false
+        viewModel.getHasBiometric().observe(this) { hasBiometric = it }
         viewModel.getBiometric().observe(this) { isEnableBiometric ->
-            if (isEnableBiometric) {
+            if (isEnableBiometric && hasBiometric) {
                 binding.btnLoginEmail.visibility = View.GONE
                 binding.btnLoginBiometric.visibility = View.VISIBLE
             } else {
@@ -50,33 +61,18 @@ class BiometricActivity : AppCompatActivity() {
                 binding.btnLoginBiometric.visibility = View.GONE
             }
         }
+    }
 
-        // login with email
-        binding.btnLoginEmail.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
-
-        binding.btnLoginBiometric.setOnClickListener {
-            val biometricManager = BiometricManager.from(this)
-            when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
-                BiometricManager.BIOMETRIC_SUCCESS -> {
-                    Toast.makeText(this, "App can authenticate is using bimetric", Toast.LENGTH_SHORT).show()
-                    createBiometricListener()
-                    createPromptInfo()
-                    biometricPrompt.authenticate(promptInfo)
-                }
-                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                    Toast.makeText(this, "No biometric feature available on this device", Toast.LENGTH_SHORT).show()
-                }
-                BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-                    Toast.makeText(this, "Biometric feature are currently unavailable", Toast.LENGTH_SHORT).show()
-                }
-                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                    Toast.makeText(this, "Device not enable biometric feature", Toast.LENGTH_SHORT).show()
-                }
-                else -> {
-                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
-                }
+    private fun setActionBiometric() {
+        val biometricManager = BiometricManager.from(this)
+        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                createBiometricListener()
+                createPromptInfo()
+                biometricPrompt.authenticate(promptInfo)
+            }
+            else -> {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -108,7 +104,7 @@ class BiometricActivity : AppCompatActivity() {
 
     private fun createPromptInfo() {
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Biometric login for App")
+            .setTitle("Biometric login for Wownet App")
             .setSubtitle("Log in using your biometric credential")
             .setNegativeButtonText("CANCEL BIOMETRIC")
             .build()
