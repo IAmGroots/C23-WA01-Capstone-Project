@@ -281,7 +281,7 @@
 
                                 <androidx.cardview.widget.CardView
                                     android:id="@+id/btnChangePlan"
-                                    android:layout_width="137dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:backgroundTint="@color/silver"
                                     android:foreground="?attr/selectableItemBackground"
@@ -290,7 +290,7 @@
 
                                     <androidx.appcompat.widget.LinearLayoutCompat
                                         android:id="@+id/btnChangePlanStyle"
-                                        android:layout_width="match_parent"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:background="@drawable/cardview_change_plan_border"
                                         android:gravity="center"
@@ -348,7 +348,7 @@
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/linearLayoutButton3"
-                            android:layout_width="137dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -370,7 +370,7 @@
                                     app:cardElevation="0dp">
 
                                     <androidx.appcompat.widget.LinearLayoutCompat
-                                        android:layout_width="match_parent"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:background="@drawable/cardview_change_plan_border"
                                         android:gravity="center">
@@ -419,10 +419,8 @@
                     android:layout_marginBottom="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
                     tools:listitem="@layout/history_payment_items" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -459,6 +457,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/goToTwitter"
                         android:layout_width="85dp"
                         android:layout_height="85dp"
                         android:layout_rowWeight="1"
@@ -472,6 +471,7 @@
                         android:layout_marginBottom="8dp" />
 
                     <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/goToInstagram"
                         android:layout_width="85dp"
                         android:layout_height="85dp"
                         android:layout_rowWeight="1"
@@ -485,6 +485,7 @@
                         android:layout_marginBottom="8dp" />
 
                     <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/goToFacebook"
                         android:layout_width="85dp"
                         android:layout_height="85dp"
                         android:layout_rowWeight="1"
@@ -498,6 +499,7 @@
                         android:layout_marginBottom="8dp" />
 
                     <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/goToLinkedIn"
                         android:layout_width="85dp"
                         android:layout_height="85dp"
                         android:layout_rowWeight="1"

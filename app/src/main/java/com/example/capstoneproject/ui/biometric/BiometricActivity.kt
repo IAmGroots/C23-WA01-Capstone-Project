@@ -35,6 +35,12 @@ class BiometricActivity : AppCompatActivity() {
         binding = ActivityBiometricBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val preferences = SettingPreferences.getInstance(application.dataStore)
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(preferences)
+        )[BiometricViewModel::class.java]
+
         getBiometric()
 
         // login with email
@@ -44,12 +50,6 @@ class BiometricActivity : AppCompatActivity() {
     }
 
     private fun getBiometric() {
-        val preferences = SettingPreferences.getInstance(application.dataStore)
-        viewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(preferences)
-        )[BiometricViewModel::class.java]
-
         var hasBiometric = false
         viewModel.getHasBiometric().observe(this) { hasBiometric = it }
         viewModel.getBiometric().observe(this) { isEnableBiometric ->

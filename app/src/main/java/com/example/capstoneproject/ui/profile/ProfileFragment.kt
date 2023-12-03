@@ -25,7 +25,6 @@ import com.airbnb.lottie.LottieAnimationView
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
 import com.example.capstoneproject.adapter.HistoryPaymentAdapter
-import com.example.capstoneproject.databinding.DialogSocialMediaBinding
 import com.example.capstoneproject.databinding.FragmentProfileBinding
 import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
@@ -65,105 +64,22 @@ class ProfileFragment : Fragment() {
         }
 
         binding.switchMode.setOnCheckedChangeListener { _, isChecked ->
-            setAppTheme(isChecked)
             viewModel.saveTheme(isChecked)
-            
-        binding.cardSocialMedia.setOnClickListener {
-            showSocialMedia()
+            setAppTheme(isChecked)
         }
 
         setBiometric()
         setAction()
+        setupSocialMediaLinks()
         loadUserDataFromSharedPreferences()
         setupListHistoryPayment()
 
         return root
     }
 
-    private fun showSocialMedia() {
-//        val dialog = RoundedBottomSheetDialog(requireContext())
-        val dialog = BottomSheetDialog(requireContext())
-        val binding = DialogSocialMediaBinding.inflate(layoutInflater)
-        dialog.setContentView(binding.root)
-        binding.btnFacebook.setOnClickListener {
-            openSocialMedia("Facebook")
-        }
-        binding.btnInstagram.setOnClickListener {
-            openSocialMedia("Instagram")
-        }
-        binding.btnTwitter.setOnClickListener {
-            openSocialMedia("Twitter")
-        }
-        binding.btnLinkedIn.setOnClickListener {
-            openSocialMedia("LinkedIn")
-        }
-        dialog.show()
-    }
-
-    private fun openSocialMedia(app: String) {
-        when (app) {
-            "Facebook" -> {
-                val facebookUrl = "https://www.facebook.com/"
-                val facebookIntent = Intent(Intent.ACTION_VIEW)
-                facebookIntent.data = Uri.parse(facebookUrl)
-
-                if (isAppInstalled("com.facebook.katana")) {
-                    facebookIntent.setPackage("com.facebook.katana")
-                }
-
-                startActivity(facebookIntent)
-            }
-            "Instagram" -> {
-                val instagramUrl = "https://www.instagram.com/"
-                val instagramIntent = Intent(Intent.ACTION_VIEW)
-                instagramIntent.data = Uri.parse(instagramUrl)
-
-                if (isAppInstalled("com.instagram.android")) {
-                    instagramIntent.setPackage("com.instagram.android")
-                }
-
-                startActivity(instagramIntent)
-            }
-            "Twitter" -> {
-                val twitterUrl = "https://twitter.com/"
-                val twitterIntent = Intent(Intent.ACTION_VIEW)
-                twitterIntent.data = Uri.parse(twitterUrl)
-
-                if (isAppInstalled("com.twitter.android")) {
-                    twitterIntent.setPackage("com.twitter.android")
-                }
-
-                startActivity(twitterIntent)
-            }
-            "LinkedIn" -> {
-                val linkedinUrl = "https://www.linkedin.com/"
-                val linkedinIntent = Intent(Intent.ACTION_VIEW)
-                linkedinIntent.data = Uri.parse(linkedinUrl)
-
-                if (isAppInstalled("com.linkedin.android")) {
-                    linkedinIntent.setPackage("com.linkedin.android")
-                }
-
-                startActivity(linkedinIntent)
-            }
-            else -> {
-                Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun isAppInstalled(packageName: String): Boolean {
-        return try {
-            requireContext().packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
-            true
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
-        }
-    }
-
     private fun setBiometric() {
         viewModel.getHasBiometric().observe(viewLifecycleOwner) { hasBiometric ->
-            binding.cardBiometricFingerprint.visibility = if (hasBiometric) View.VISIBLE else View.GONE
+            binding.containerBiometricFingerprint.visibility = if (hasBiometric) View.VISIBLE else View.GONE
 
         }
 
@@ -191,17 +107,16 @@ class ProfileFragment : Fragment() {
 
         binding.containerLogout.setOnClickListener {
             MainActivity.isLogin = false
+            viewModel.saveBiometric(false)
             val intent = Intent(requireContext(), LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
 
-        loadUserDataFromSharedPreferences()
-        setupListHistoryPayment()
-        setupSocialMediaLinks()
-
-
-        return root
+        binding.goToTwitter.setOnClickListener {
+            Toast.makeText(requireContext(), "TWITTER", Toast.LENGTH_SHORT).show()
+//            showSocialMedia()
+        }
     }
 
     private fun setAppTheme(isDarkMode: Boolean) {
@@ -362,9 +277,8 @@ class ProfileFragment : Fragment() {
                 // Set tag untuk setiap LottieAnimationView, misalnya menggunakan nama sosial media
                 view.setTag(getSocialMediaName(i)) // getSocialMediaName harus mengembalikan string yang unik
                 view.setOnClickListener {
-                    openSocialMedia(
-                        view.getTag()?.toString() ?: ""
-                    ) // Memanggil fungsi untuk membuka media sosial
+                    Log.d("SOCIAL", view.getTag().toString())
+                    openSocialMedia(view.getTag().toString()) // Memanggil fungsi untuk membuka media sosial
                 }
             }
         }
@@ -383,25 +297,17 @@ class ProfileFragment : Fragment() {
 
 
     private fun openSocialMedia(socialMedia: String) {
-        val intent = Intent(Intent.ACTION_VIEW)
         val url = getSocialMediaURL(socialMedia)
+        val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
 
         if (intent.resolveActivity(requireContext().packageManager) != null) {
             startActivity(intent)
         } else {
             // Jika aplikasi tidak terpasang, arahkan ke Google menggunakan browser
-            val googleURL = "https://www.google.com/search?q=$socialMedia"
             val googleIntent = Intent(Intent.ACTION_VIEW)
-            googleIntent.data = Uri.parse(googleURL)
-
-            if (googleIntent.resolveActivity(requireContext().packageManager) != null) {
-                startActivity(googleIntent)
-            } else {
-                // Jika tidak ada aplikasi browser yang terpasang, tampilkan pesan kesalahan
-                Toast.makeText(requireContext(), "Tidak dapat membuka browser", Toast.LENGTH_SHORT)
-                    .show()
-            }
+            googleIntent.data = Uri.parse(url)
+            startActivity(googleIntent)
         }
     }
 

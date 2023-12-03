@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -46,24 +47,12 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         loadUserDataFromSharedPreferences()
         setupToolbar()
         setupBanner()
         setupAction()
         setupArticles()
 
-//        val navController = requireActivity().findNavController(R.id.nav_host_fragment)
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//            when (destination.id) {
-//                R.id.navigation_news -> {
-//                    Toast.makeText(requireContext(), "News", Toast.LENGTH_SHORT).show()
-//                }
-//                R.id.navigation_settings -> {
-//                    Toast.makeText(requireContext(), "Settings", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
         return root
     }
 
@@ -167,14 +156,6 @@ class HomeFragment : Fragment() {
             val adapter = HomeArticlesAdapter(listArticles)
             binding.rvArticles.adapter = adapter
         }
-
-//        val marginTopBottom = 16
-//        val marginSeparator = 4
-//        val density = binding.root.context.resources.displayMetrics.density
-//        val topBottom = (marginTopBottom * density).toInt()
-//        val separator = (marginSeparator * density).toInt()
-//        val layoutParams = binding.cardArticles.layoutParams as CardView.LayoutParams
-//        layoutParams.bottomMargin = topBottom
     }
 
     private fun loadUserDataFromSharedPreferences() {

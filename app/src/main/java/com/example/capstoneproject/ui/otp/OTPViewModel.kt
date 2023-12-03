@@ -31,7 +31,8 @@ class OTPViewModel : ViewModel() {
         mobile: String,
         email: String,
         lastname: String,
-        password: String
+        password: String,
+        plan: String
     ) {
         val existingUser = _userDummy.value?.find { it.email == email }
 
@@ -44,7 +45,8 @@ class OTPViewModel : ViewModel() {
                 id = _userDummy.value?.size?.plus(1) ?: 1,
                 email = email,
                 lastname = lastname,
-                password = password
+                password = password,
+                plan = plan
             )
 
             val updatedUserList = _userDummy.value.orEmpty().toMutableList().apply {
