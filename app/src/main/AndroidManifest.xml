@@ -41,9 +41,6 @@
             android:name=".ui.profile.edit_profile.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.biometric.BiometricActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.articles.detail_article.DetailArticleActivity"
             android:exported="false" />
         <activity

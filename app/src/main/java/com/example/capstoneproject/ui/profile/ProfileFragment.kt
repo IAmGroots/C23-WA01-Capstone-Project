@@ -2,7 +2,6 @@ package com.example.capstoneproject.ui.profile
 
 import android.content.Intent
 import android.content.Context
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -15,8 +14,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
@@ -29,7 +26,6 @@ import com.example.capstoneproject.databinding.FragmentProfileBinding
 import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
 import com.example.capstoneproject.preferences.dataStore
-import com.example.capstoneproject.ui.biometric.BiometricActivity
 import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.login.LoginViewModel
@@ -37,7 +33,7 @@ import com.example.capstoneproject.ui.payment.PaymentActivity
 import com.example.capstoneproject.ui.profile.edit_profile.EditProfileActivity
 import com.example.capstoneproject.ui.usage.UsageActivity
 import com.example.capstoneproject.ui.wifi.WifiActivity
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.biometric.BiometricManager
 
 class ProfileFragment : Fragment() {
 
@@ -52,46 +48,14 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         val preferences = SettingPreferences.getInstance(requireActivity().application.dataStore)
         viewModel = ViewModelProvider(
             this,
             ViewModelFactory(preferences)
         )[ProfileViewModel::class.java]
 
-        viewModel.getTheme().observe(viewLifecycleOwner) { isDarkModeActive ->
-            binding.switchMode.isChecked = isDarkModeActive
-        }
-
-        binding.switchMode.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.saveTheme(isChecked)
-            setAppTheme(isChecked)
-        }
-
+        setTheme()
         setBiometric()
-        setAction()
-        setupSocialMediaLinks()
-        loadUserDataFromSharedPreferences()
-        setupListHistoryPayment()
-
-        return root
-    }
-
-    private fun setBiometric() {
-        viewModel.getHasBiometric().observe(viewLifecycleOwner) { hasBiometric ->
-            binding.containerBiometricFingerprint.visibility = if (hasBiometric) View.VISIBLE else View.GONE
-
-        }
-
-        viewModel.getBiometric().observe(viewLifecycleOwner) { isEnableBiometric ->
-            binding.switchBiometric.isChecked = isEnableBiometric
-        }
-    }
-
-    private fun setAction() {
-        binding.switchBiometric.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.saveBiometric(isChecked)
-        }
 
         binding.btnEditProfile.setOnClickListener {
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
@@ -107,24 +71,50 @@ class ProfileFragment : Fragment() {
 
         binding.containerLogout.setOnClickListener {
             MainActivity.isLogin = false
-            viewModel.saveBiometric(false)
             val intent = Intent(requireContext(), LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
 
-        binding.goToTwitter.setOnClickListener {
-            Toast.makeText(requireContext(), "TWITTER", Toast.LENGTH_SHORT).show()
-//            showSocialMedia()
+        loadUserDataFromSharedPreferences()
+        setupListHistoryPayment()
+        setupSocialMediaLinks()
+
+
+        return root
+    }
+
+    private fun setTheme() {
+        viewModel.getTheme().observe(viewLifecycleOwner) { isDarkModeActive ->
+            binding.switchMode.isChecked = isDarkModeActive
+        }
+
+        binding.switchMode.setOnCheckedChangeListener { _, isChecked ->
+            setAppTheme(isChecked)
+            viewModel.saveTheme(isChecked)
+        }
+    }
+
+    private fun setBiometric() {
+        val biometricManager = BiometricManager.from(requireContext())
+        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                binding.containerBiometricFingerprint.visibility = View.GONE
+            }
+        }
+
+        viewModel.getBiometric().observe(viewLifecycleOwner) { isEnableBiometric ->
+            binding.switchBiometric.isChecked = isEnableBiometric
+        }
+        binding.switchBiometric.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.saveBiometric(isChecked)
         }
     }
 
     private fun setAppTheme(isDarkMode: Boolean) {
         if (isDarkMode) {
-            // Ubah tema ke Dark Mode
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
-            // Ubah tema ke Light Mode
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
@@ -277,8 +267,9 @@ class ProfileFragment : Fragment() {
                 // Set tag untuk setiap LottieAnimationView, misalnya menggunakan nama sosial media
                 view.setTag(getSocialMediaName(i)) // getSocialMediaName harus mengembalikan string yang unik
                 view.setOnClickListener {
-                    Log.d("SOCIAL", view.getTag().toString())
-                    openSocialMedia(view.getTag().toString()) // Memanggil fungsi untuk membuka media sosial
+                    openSocialMedia(
+                        view.getTag()?.toString() ?: ""
+                    ) // Memanggil fungsi untuk membuka media sosial
                 }
             }
         }
@@ -297,17 +288,25 @@ class ProfileFragment : Fragment() {
 
 
     private fun openSocialMedia(socialMedia: String) {
-        val url = getSocialMediaURL(socialMedia)
         val intent = Intent(Intent.ACTION_VIEW)
+        val url = getSocialMediaURL(socialMedia)
         intent.data = Uri.parse(url)
 
         if (intent.resolveActivity(requireContext().packageManager) != null) {
             startActivity(intent)
         } else {
             // Jika aplikasi tidak terpasang, arahkan ke Google menggunakan browser
+            val googleURL = "https://www.google.com/search?q=$socialMedia"
             val googleIntent = Intent(Intent.ACTION_VIEW)
-            googleIntent.data = Uri.parse(url)
-            startActivity(googleIntent)
+            googleIntent.data = Uri.parse(googleURL)
+
+            if (googleIntent.resolveActivity(requireContext().packageManager) != null) {
+                startActivity(googleIntent)
+            } else {
+                // Jika tidak ada aplikasi browser yang terpasang, tampilkan pesan kesalahan
+                Toast.makeText(requireContext(), "Tidak dapat membuka browser", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 

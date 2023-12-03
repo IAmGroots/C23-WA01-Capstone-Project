@@ -42,6 +42,7 @@
 
         <com.example.capstoneproject.ui.customView.nameEditText
             android:id="@+id/etFirstName"
+            android:focusable="false"
             style="@style/EditText"
             android:layout_width="0dp"
             android:layout_height="48dp"
@@ -57,6 +58,7 @@
 
         <com.example.capstoneproject.ui.customView.nameEditText
             android:id="@+id/etLastName"
+            android:focusable="false"
             style="@style/EditText"
             android:layout_width="0dp"
             android:layout_height="48dp"
@@ -72,6 +74,7 @@
 
         <com.example.capstoneproject.ui.customView.emailEditText
             android:id="@+id/etEmail"
+            android:focusable="false"
             style="@style/EditText"
             android:layout_width="0dp"
             android:layout_height="48dp"
@@ -87,6 +90,7 @@
 
         <com.example.capstoneproject.ui.customView.mobileEditText
             android:id="@+id/etMobile"
+            android:focusable="false"
             style="@style/EditText"
             android:layout_width="0dp"
             android:layout_height="48dp"
@@ -118,10 +122,13 @@
             <com.example.capstoneproject.ui.customView.passwordEditText
                 android:id="@+id/etPassword"
                 style="@style/EditText"
+                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:background="@drawable/edit_text_bg"
                 android:hint="Password"
+                android:textSize="14sp"
                 android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -145,7 +152,10 @@
                 android:id="@+id/etConfirmPassword"
                 style="@style/EditText"
                 android:layout_width="match_parent"
+                android:focusable="false"
                 android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:imeOptions="actionNext"
                 android:background="@drawable/edit_text_bg"
                 android:hint="Confirm Password"
                 android:inputType="textPassword" />

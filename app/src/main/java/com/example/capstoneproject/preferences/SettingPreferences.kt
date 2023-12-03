@@ -53,17 +53,6 @@ class SettingPreferences constructor(private val dataStore: DataStore<Preference
         }
     }
 
-    fun getHasBiometric(): Flow<Boolean> {
-        return dataStore.data.map { preferences ->
-            preferences[HAS_BIOMETRIC] ?: false
-        }
-    }
-    suspend fun saveHasBiometric(hasBiometric : Boolean) {
-        dataStore.edit { preferences ->
-            preferences[HAS_BIOMETRIC] = hasBiometric
-        }
-    }
-
     companion object {
         @Volatile
         private var INSTANCE: SettingPreferences? = null

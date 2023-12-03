@@ -1,9 +1,11 @@
 package com.example.capstoneproject.ui.profile.edit_profile
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.capstoneproject.MainActivity
@@ -22,13 +24,15 @@ class EditProfileActivity : AppCompatActivity() {
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setFocusable()
+
         binding.btnCancel.setOnClickListener {
             // ??? Intent balik ProfileFragment
 
             startActivity(Intent(this, MainActivity::class.java))
         }
 
-        binding.btnSaveChanges.setOnClickListener{
+        binding.btnSaveChanges.setOnClickListener {
             saveChanges()
             startActivity(Intent(this, MainActivity::class.java))
 
@@ -79,10 +83,8 @@ class EditProfileActivity : AppCompatActivity() {
 
         editor.apply()
 
-        if (loggedInUserId != null) {
-            updateDataSourceUser(loggedInUserId, firstName, lastName, email, phone)
-            Toast.makeText(this, "Data berhasil diubah", Toast.LENGTH_SHORT).show()
-        }
+        updateDataSourceUser(loggedInUserId, firstName, lastName, email, phone)
+        Toast.makeText(this, "Data berhasil diubah", Toast.LENGTH_SHORT).show()
     }
 
     private fun updateDataSourceUser(
@@ -104,6 +106,63 @@ class EditProfileActivity : AppCompatActivity() {
         return false // Return false if user data update failed
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setFocusable() {
+        binding.etFirstName.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    binding.etFirstName.isFocusable = true
+                    binding.etFirstName.isFocusableInTouchMode = true
+                }
 
+                MotionEvent.ACTION_UP -> {
+                    binding.etFirstName.requestFocus()
+                }
+            }
+            false
+        }
+
+        binding.etLastName.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    binding.etLastName.isFocusable = true
+                    binding.etLastName.isFocusableInTouchMode = true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    binding.etLastName.requestFocus()
+                }
+            }
+            false
+        }
+
+        binding.etEmail.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    binding.etEmail.isFocusable = true
+                    binding.etEmail.isFocusableInTouchMode = true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    binding.etEmail.requestFocus()
+                }
+            }
+            false
+        }
+
+        binding.etMobile.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    binding.etMobile.isFocusable = true
+                    binding.etMobile.isFocusableInTouchMode = true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    binding.etMobile.requestFocus()
+                }
+            }
+            false
+        }
+    }
 }
 
