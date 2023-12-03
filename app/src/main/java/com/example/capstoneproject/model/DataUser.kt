@@ -1,10 +1,11 @@
 package com.example.capstoneproject.model
 
 data class DataUser(
-    val firstname: String? = null,
-    val mobile: String? = null,
+    var firstname: String? = null,
+    var mobile: String? = null,
     val id: Int? = null,
-    val email: String? = null,
-    val lastname: String? = null,
-    val password: String? = null
+    var email: String? = null,
+    var lastname: String? = null,
+    val password: String? = null,
+    var plan: String? = null
 )

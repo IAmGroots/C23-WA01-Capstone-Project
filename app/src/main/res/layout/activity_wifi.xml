@@ -21,7 +21,7 @@
             app:navigationIcon="@drawable/icon_back"
             app:navigationIconTint="@color/primaryColor"
             app:title="Wownet Hotspot"
-            app:titleTextColor="@color/primaryColor"
+            app:titleTextColor="@color/white"
             app:titleCentered="true" />
     </com.google.android.material.appbar.AppBarLayout>
 

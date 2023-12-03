@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavAction
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -12,15 +14,34 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.capstoneproject.databinding.ActivityMainBinding
+import com.example.capstoneproject.preferences.SettingPreferences
+import com.example.capstoneproject.preferences.ViewModelFactory
+import com.example.capstoneproject.preferences.dataStore
 import com.example.capstoneproject.ui.biometric.BiometricActivity
 import com.example.capstoneproject.ui.home.HomeFragment
 import com.example.capstoneproject.ui.login.LoginActivity
+import com.example.capstoneproject.ui.login.LoginViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val preferences = SettingPreferences.getInstance(application.dataStore)
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(preferences)
+        )[MainViewModel::class.java]
+
+        viewModel.getTheme().observe(this) { isDarkModeEnabled ->
+            if (isDarkModeEnabled) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -28,9 +49,9 @@ class MainActivity : AppCompatActivity() {
         // untuk sementara false
 //        val isLogin = false
         if (!isLogin) {
-            startActivity(Intent(this, BiometricActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
         }
-
+        
         val navView: BottomNavigationView = binding.navView
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController

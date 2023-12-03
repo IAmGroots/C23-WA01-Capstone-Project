@@ -31,7 +31,8 @@ class RegisterViewModel : ViewModel() {
         mobile: String,
         email: String,
         lastname: String,
-        password: String
+        password: String,
+        plan: String
     ) {
         val existingUser = _userDummy.value?.find { it.email == email }
 
@@ -44,7 +45,8 @@ class RegisterViewModel : ViewModel() {
                 id = _userDummy.value?.size?.plus(1) ?: 1,
                 email = email,
                 lastname = lastname,
-                password = password
+                password = password,
+                plan = plan
             )
 
             val updatedUserList = _userDummy.value.orEmpty().toMutableList().apply {
@@ -58,7 +60,7 @@ class RegisterViewModel : ViewModel() {
                 for (user in users) {
                     Log.e(
                         "UserData",
-                        "ID: ${user.id}, Firstname: ${user.firstname}, Lastname: ${user.lastname}, Email: ${user.email}, Mobile: ${user.mobile}, Password: ${user.password}"
+                        "ID: ${user.id}, Firstname: ${user.firstname}, Lastname: ${user.lastname}, Email: ${user.email}, Mobile: ${user.mobile}, Password: ${user.password}, Plan: ${user.plan}"
                     )
                 }
             }

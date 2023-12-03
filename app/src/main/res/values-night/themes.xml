@@ -8,6 +8,8 @@
     <color name="contentColor">@color/blue</color>
     <color name="errorColor">@color/red</color>
     <color name="secPrimary">@color/secwhite</color>
+    <color name="lightPrimaryColor">@color/black2</color>
+    <color name="lightSecondaryColor">@color/darkGray</color>
     <style name="editTextStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColorHint">@color/secPrimary</item>
         <item name="hintTextColor">@color/secondaryColor</item>

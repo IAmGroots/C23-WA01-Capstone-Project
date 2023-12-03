@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MontserratSemiBold">
+        <item name="android:fontFamily">@font/montserrat_semi_bold</item>
+    </style>
+    <style name="MontserratMedium">
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+    </style>
+    <style name="EditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:textColor">@color/lightGray2</item>
+        <item name="android:background">@drawable/edit_text_bg</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+    <style name="EditTextNoPadding" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:textColor">@color/lightGray2</item>
+        <item name="android:background">@drawable/edit_text_bg</item>
+    </style>
+</resources>

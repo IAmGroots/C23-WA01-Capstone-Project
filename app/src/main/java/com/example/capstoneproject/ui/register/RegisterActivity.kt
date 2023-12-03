@@ -3,6 +3,7 @@ package com.example.capstoneproject.ui.register
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.capstoneproject.databinding.ActivityRegisterBinding
@@ -33,13 +34,25 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
         }
 
-        binding.btnregis.setOnClickListener {
-            val firstname = binding.firstname.text.toString()
-            val lastname = binding.lastname.text.toString()
-            val mobile = binding.mobile.text.toString()
-            val email = binding.email.text.toString()
-            val password = binding.password.text.toString()
-            val confirmPassword = binding.passwordconfirm.text.toString()
+        binding.btnBack.setOnClickListener{
+                startActivity(Intent(this, LoginActivity::class.java))
+        }
+
+        binding.btnRegister.setOnClickListener {
+            val firstname = binding.etFirstName.text.toString()
+            val lastname = binding.etLastName.text.toString()
+            val mobile = binding.etMobile.text.toString()
+            val email = binding.etEmail.text.toString()
+            val password = binding.etPassword.text.toString()
+            val confirmPassword = binding.etConfirmPassword.text.toString()
+
+            Log.e("firstname", firstname)
+            Log.e("lastname", lastname)
+            Log.e("mobile", mobile)
+            Log.e("email", email)
+            Log.e("password", password)
+            Log.e("confirmPassword", confirmPassword)
+
 
             if (firstname.isNotEmpty() && lastname.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && mobile.isNotEmpty()) {
                 if (password == confirmPassword) {

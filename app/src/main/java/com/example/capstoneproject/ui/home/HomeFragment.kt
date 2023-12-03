@@ -1,15 +1,18 @@
 package com.example.capstoneproject.ui.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
@@ -20,6 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
 import com.example.capstoneproject.adapter.ArticlesMoreAdapter
@@ -54,7 +59,7 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
 
-
+        loadUserDataFromSharedPreferences()
         setupToolbar()
         setupBanner()
         setupAction()
@@ -100,6 +105,21 @@ class HomeFragment : Fragment() {
         viewPager = binding.banner
         val adapter = BannerAdapter(bannerList)
         viewPager.adapter = adapter
+
+        // Supaya gambar ga load dulu
+        val requestManager = Glide.with(this)
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                // Preload gambar untuk memuat ke dalam cache
+                val preloadItems = bannerList.subList(positionStart, positionStart + itemCount)
+                preloadItems.forEach { banner ->
+                    requestManager.load(banner.url)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA) // atau jenis lainnya
+                        .preload()
+                }
+            }
+        })
     }
 
     override fun onResume() {
@@ -113,7 +133,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun startSlideShow() {
-        val slideDelay = 5000L
+        val slideDelay = 4000L
         timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
@@ -148,7 +168,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnShop.setOnClickListener {
-            Toast.makeText(requireContext(), "Shop was Clicked", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
         }
     }
 
@@ -167,6 +187,69 @@ class HomeFragment : Fragment() {
 //        val separator = (marginSeparator * density).toInt()
 //        val layoutParams = binding.cardArticles.layoutParams as CardView.LayoutParams
 //        layoutParams.bottomMargin = topBottom
+    }
+
+    private fun loadUserDataFromSharedPreferences() {
+        val sharedPreferences = requireActivity().getSharedPreferences("UserData", Context.MODE_PRIVATE)
+        val plan = sharedPreferences.getString("plan", "")
+
+        when (plan) {
+            "gold" -> {
+                binding.cardPackageNone.visibility = View.GONE
+
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
+
+                binding.tvCurrentPackage.text = "Gold"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+
+                binding.tvCurrentSpeed.text = "Speed up to 50 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gold)
+            }
+            "silver" -> {
+                binding.cardPackageNone.visibility = View.GONE
+
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
+
+                binding.tvCurrentPackage.text = "Silver"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+
+                binding.tvCurrentSpeed.text = "Speed up to 30 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.silver)
+            }
+            "bronze" -> {
+                binding.cardPackageNone.visibility = View.GONE
+
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
+
+                binding.tvCurrentPackage.text = "Bronze"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+
+                binding.tvCurrentSpeed.text = "Speed up to 15 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.bronze)
+
+            }
+            else -> {
+                binding.cardPackage.visibility = View.GONE
+            }
+        }
     }
 
     override fun onDestroyView() {

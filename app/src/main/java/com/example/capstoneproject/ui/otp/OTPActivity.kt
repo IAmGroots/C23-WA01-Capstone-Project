@@ -1,6 +1,8 @@
 package com.example.capstoneproject.ui.otp
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -8,6 +10,8 @@ import android.telephony.SmsManager
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.example.capstoneproject.databinding.ActivityOtpactivityBinding
 import com.example.capstoneproject.ui.login.LoginActivity
@@ -22,6 +26,10 @@ import kotlin.random.Random
 
 class OTPActivity : AppCompatActivity() {
 
+    companion object {
+        const val MY_PERMISSIONS_REQUEST_SEND_SMS = 1
+    }
+
     private lateinit var binding: ActivityOtpactivityBinding
     private val viewModel: RegisterViewModel by viewModels()
     /*private lateinit var firebaseDatabase: FirebaseDatabase
@@ -31,6 +39,7 @@ class OTPActivity : AppCompatActivity() {
     var mobile: String= ""
     var email: String=""
     var password: String=""
+    val plan: String="none"
     var resendCounter: Int = 0
     val maxResendCount = 3
 
@@ -38,6 +47,18 @@ class OTPActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOtpactivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.SEND_SMS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.SEND_SMS),
+                MY_PERMISSIONS_REQUEST_SEND_SMS
+            )
+        }
 
         /*firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("users")*/
@@ -70,12 +91,13 @@ class OTPActivity : AppCompatActivity() {
             } else {
                 if (binding.otp.text.toString() == otpCode) {
                     Toast.makeText(this@OTPActivity, "Verification Success", Toast.LENGTH_SHORT).show()
-                    viewModel.regist(firstname, mobile, email, lastname, password)
+                    viewModel.regist(firstname, mobile, email, lastname, password, plan)
                     Log.e("firstname", firstname)
                     Log.e("lastname", lastname)
                     Log.e("email", email)
                     Log.e("mobile", mobile)
                     Log.e("password", password)
+                    Log.e("password", plan)
                 } else {
                     Toast.makeText(this@OTPActivity, "Verification Failed", Toast.LENGTH_SHORT).show()
                 }
