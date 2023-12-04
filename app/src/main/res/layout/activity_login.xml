@@ -62,10 +62,9 @@
             <com.example.capstoneproject.ui.customView.passwordEditText
                 android:id="@+id/etPassword"
                 android:focusable="false"
-                style="@style/EditText"
+                style="@style/EditTextPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_bg"
+                android:layout_height="50dp"
                 android:imeOptions="actionNext"
                 android:textSize="14sp"
                 android:hint="Password"
