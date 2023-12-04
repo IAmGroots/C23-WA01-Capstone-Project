@@ -35,6 +35,7 @@ class RegisterActivity : AppCompatActivity() {
 
         /*firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("users")*/
+        setFocusable()
 
         binding.loginhere.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))

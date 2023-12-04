@@ -121,12 +121,11 @@
 
             <com.example.capstoneproject.ui.customView.passwordEditText
                 android:id="@+id/etPassword"
-                style="@style/EditText"
+                style="@style/EditTextPassword"
                 android:focusable="false"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:imeOptions="actionNext"
-                android:background="@drawable/edit_text_bg"
                 android:hint="Password"
                 android:textSize="14sp"
                 android:inputType="textPassword" />
@@ -150,13 +149,12 @@
 
             <com.example.capstoneproject.ui.customView.passwordEditText
                 android:id="@+id/etConfirmPassword"
-                style="@style/EditText"
+                style="@style/EditTextPassword"
                 android:layout_width="match_parent"
                 android:focusable="false"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:textSize="14sp"
                 android:imeOptions="actionNext"
-                android:background="@drawable/edit_text_bg"
                 android:hint="Confirm Password"
                 android:inputType="textPassword" />
 
