@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.databinding.ActivityRegisterBinding
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.login.LoginViewModel
@@ -35,13 +36,18 @@ class RegisterActivity : AppCompatActivity() {
 
         /*firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("users")*/
+        setFocusable()
 
         binding.loginhere.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
 
         binding.btnBack.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
 
         binding.btnRegister.setOnClickListener {
@@ -82,13 +88,13 @@ class RegisterActivity : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 } else {
-                                    val intent =
-                                        Intent(this@RegisterActivity, OTPActivity::class.java)
+                                    val intent = Intent(this, OTPActivity::class.java)
                                     intent.putExtra("firstname", firstname)
                                     intent.putExtra("lastname", lastname)
                                     intent.putExtra("mobile", mobile)
                                     intent.putExtra("email", email)
                                     intent.putExtra("password", password)
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                                     startActivity(intent)
                                 }
                             })
@@ -103,10 +109,6 @@ class RegisterActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Fill all the data!", Toast.LENGTH_SHORT).show()
             }
-        }
-
-        binding.loginhere.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 

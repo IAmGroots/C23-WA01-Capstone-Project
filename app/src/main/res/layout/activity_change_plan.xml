@@ -13,16 +13,16 @@
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolbar"
-                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:navigationIcon="@drawable/icon_back"
-                    app:navigationIconTint="@color/primaryColor"
-                    app:title="Change Package"
-                    app:titleCentered="true"
-                    app:titleTextColor="@color/white"
-                    android:backgroundTint="@color/contentColor"/>
+            android:id="@+id/toolbar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/icon_back"
+            app:navigationIconTint="@color/primaryColor"
+            app:title="Change Package"
+            app:titleCentered="true"
+            app:titleTextColor="@color/white"
+            android:backgroundTint="@color/contentColor"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
@@ -56,7 +56,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="15dp"
+                    app:cardCornerRadius="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/content">
 
                         <TextView
-                            android:id="@+id/tvPackageGold"
+                            android:id="@+id/tvPackageFrom"
                             style="@style/MontserratSemiBold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -84,21 +84,20 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/tvSpeedGold"
+                            android:id="@+id/tvSpeedFrom"
                             style="@style/MontserratSemiBold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="-8dp"
                             android:text="Speed up to 50mb/s"
                             android:textColor="@color/gold"
                             android:textSize="11sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvPackageGold" />
+                            app:layout_constraintTop_toBottomOf="@+id/tvPackageFrom" />
 
                         <TextView
-                            android:id="@+id/tvServiceDateGold"
+                            android:id="@+id/tvServiceDateFrom"
                             style="@style/MontserratSemiBold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -108,10 +107,10 @@
                             android:textSize="11sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvSpeedGold" />
+                            app:layout_constraintTop_toBottomOf="@+id/tvSpeedFrom" />
 
                         <TextView
-                            android:id="@+id/tvLocationGold"
+                            android:id="@+id/tvLocationFrom"
                             style="@style/MontserratSemiBold"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
@@ -121,7 +120,7 @@
                             android:textSize="11sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvServiceDateGold" />
+                            app:layout_constraintTop_toBottomOf="@+id/tvServiceDateFrom" />
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/linearLayoutButtonGold"
@@ -140,7 +139,7 @@
                                     android:layout_width="137dp"
                                     android:layout_height="match_parent"
                                     android:foreground="?attr/selectableItemBackground"
-                                    app:cardCornerRadius="15dp"
+                                    app:cardCornerRadius="16dp"
                                     app:cardElevation="0dp"
                                     android:backgroundTint="@color/gold">
 
@@ -181,7 +180,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="15dp"
+                    app:cardCornerRadius="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -195,7 +194,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/content">
 
                         <TextView
-                            android:id="@+id/tvPackageSilver"
+                            android:id="@+id/tvPackageTo"
                             style="@style/MontserratSemiBold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -209,21 +208,20 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/tvSpeedSilver"
+                            android:id="@+id/tvSpeedTo"
                             style="@style/MontserratSemiBold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="-8dp"
                             android:text="Speed up to 30mb/s"
                             android:textColor="@color/silver"
                             android:textSize="11sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvPackageSilver" />
+                            app:layout_constraintTop_toBottomOf="@+id/tvPackageTo" />
 
                         <TextView
-                            android:id="@+id/tvServiceDateSilver"
+                            android:id="@+id/tvServiceDateTo"
                             style="@style/MontserratSemiBold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -233,10 +231,10 @@
                             android:textSize="11sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvSpeedSilver" />
+                            app:layout_constraintTop_toBottomOf="@+id/tvSpeedTo" />
 
                         <TextView
-                            android:id="@+id/tvLocationSilver"
+                            android:id="@+id/tvLocationTo"
                             style="@style/MontserratSemiBold"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
@@ -246,7 +244,7 @@
                             android:textSize="11sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvServiceDateSilver" />
+                            app:layout_constraintTop_toBottomOf="@+id/tvServiceDateTo" />
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/linearLayoutButtonSilver"
@@ -265,7 +263,7 @@
                                     android:layout_width="137dp"
                                     android:layout_height="match_parent"
                                     android:foreground="?attr/selectableItemBackground"
-                                    app:cardCornerRadius="15dp"
+                                    app:cardCornerRadius="16dp"
                                     app:cardElevation="0dp"
                                     android:backgroundTint="@color/silver">
 
@@ -306,7 +304,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="15dp"
+                    app:cardCornerRadius="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -339,7 +337,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="-8dp"
                             android:text="Speed up to 15mb/s"
                             android:textColor="@color/bronze"
                             android:textSize="11sp"
@@ -390,7 +387,7 @@
                                     android:layout_width="137dp"
                                     android:layout_height="match_parent"
                                     android:foreground="?attr/selectableItemBackground"
-                                    app:cardCornerRadius="15dp"
+                                    app:cardCornerRadius="16dp"
                                     app:cardElevation="0dp"
                                     android:backgroundTint="@color/bronze">
 

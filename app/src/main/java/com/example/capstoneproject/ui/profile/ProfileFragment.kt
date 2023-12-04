@@ -4,8 +4,6 @@ import android.content.Intent
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,8 +12,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieAnimationView
@@ -28,11 +24,7 @@ import com.example.capstoneproject.preferences.ViewModelFactory
 import com.example.capstoneproject.preferences.dataStore
 import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
 import com.example.capstoneproject.ui.login.LoginActivity
-import com.example.capstoneproject.ui.login.LoginViewModel
-import com.example.capstoneproject.ui.payment.PaymentActivity
 import com.example.capstoneproject.ui.profile.edit_profile.EditProfileActivity
-import com.example.capstoneproject.ui.usage.UsageActivity
-import com.example.capstoneproject.ui.wifi.WifiActivity
 import androidx.biometric.BiometricManager
 
 class ProfileFragment : Fragment() {
@@ -330,10 +322,5 @@ class ProfileFragment : Fragment() {
             Log.d("PROFILE", listHistoryPayment.toString())
             binding.rvHistoryPayment.adapter = adapter
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

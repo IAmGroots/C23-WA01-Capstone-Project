@@ -37,6 +37,15 @@ object DataSourceUser {
             "test",
             "12345678",
             "none"
+        ),
+        DataUser(
+            "John",
+            "08125519352",
+            1701,
+            "john@gmail.com",
+            "Doe",
+            "12345678",
+            "silver"
         )
     )
 }

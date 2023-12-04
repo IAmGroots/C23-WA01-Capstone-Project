@@ -1,20 +1,19 @@
-package com.example.capstoneproject.ui.payment
+package com.example.capstoneproject.ui.history
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.capstoneproject.MainActivity
-import com.example.capstoneproject.databinding.ActivityPaymentBinding
+import com.example.capstoneproject.databinding.ActivityHistoryBinding
 import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
 import com.example.capstoneproject.ui.order.OrderActivity
 
-class PaymentActivity : AppCompatActivity() {
+class HistoryActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityPaymentBinding
+    private lateinit var binding: ActivityHistoryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPaymentBinding.inflate(layoutInflater)
+        binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupToolbar()

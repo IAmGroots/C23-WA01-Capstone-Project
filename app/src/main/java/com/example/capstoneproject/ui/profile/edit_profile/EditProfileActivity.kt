@@ -7,14 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.capstoneproject.MainActivity
-import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityEditProfileBinding
 import com.example.capstoneproject.model.DataSourceUser
-import com.example.capstoneproject.ui.payment.PaymentActivity
-import com.example.capstoneproject.ui.profile.ProfileFragment
-import com.example.capstoneproject.ui.wifi.WifiActivity
 
 class EditProfileActivity : AppCompatActivity() {
 

@@ -37,9 +37,4 @@ class ArticlesFragment : Fragment() {
             binding.rvArticles.adapter = adapter
         }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
