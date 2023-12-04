@@ -412,7 +412,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvHistoryPayment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="160dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
@@ -526,21 +526,62 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardSocialMedia" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cardOthers"
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:background="@drawable/item_bg"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvOthers">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/containerHistoryTransaction"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/containerMode"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginBottom="8dp">
+
+                    <ImageView
+                        android:id="@+id/icHistory"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_history"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/secondaryColor" />
+
+                    <TextView
+                        android:id="@+id/tvHistoryTransaction"
+                        style="@style/MontserratMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="History Transaction"
+                        android:textColor="@color/secondaryColor"
+                        app:layout_constraintBottom_toBottomOf="@+id/icHistory"
+                        app:layout_constraintStart_toEndOf="@+id/icHistory"
+                        app:layout_constraintTop_toTopOf="@+id/icHistory"
+                        app:layout_constraintVertical_bias="0.6" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/containerBiometricFingerprint"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     app:layout_constraintBottom_toTopOf="@+id/containerMode"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -580,7 +621,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/containerMode"
@@ -666,8 +706,8 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

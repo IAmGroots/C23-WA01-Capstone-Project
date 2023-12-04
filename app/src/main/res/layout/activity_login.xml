@@ -28,6 +28,7 @@
 
         <com.example.capstoneproject.ui.customView.emailEditText
             android:id="@+id/etEmail"
+            android:focusable="false"
             style="@style/EditText"
             android:layout_width="0dp"
             android:layout_height="48dp"
@@ -35,7 +36,6 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:hint="Email"
-            android:focusable="false"
             android:imeOptions="actionNext"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"

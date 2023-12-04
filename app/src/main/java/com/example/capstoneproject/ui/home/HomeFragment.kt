@@ -38,6 +38,8 @@ class HomeFragment : Fragment() {
     private val viewModel : HomeViewModel by viewModels()
     private lateinit var viewPager: ViewPager2
     private lateinit var timer: Timer
+    private val DURATION: Long = 1000
+    private var allowRefresh = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +55,30 @@ class HomeFragment : Fragment() {
         setupAction()
         setupArticles()
 
+        binding.scrollView.viewTreeObserver.addOnScrollChangedListener {
+            binding.swipeRefresh.isEnabled = binding.scrollView.scrollY == 0
+        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            loadUserDataFromSharedPreferences()
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.swipeRefresh.isRefreshing = false
+            }, DURATION)
+        }
+
         return root
+    }
+
+    private fun refresh() {
+        allowRefresh = binding.scrollView.scrollY == 0
+        if (allowRefresh) {
+            binding.swipeRefresh.setOnRefreshListener {
+                loadUserDataFromSharedPreferences()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.swipeRefresh.isRefreshing = false
+                }, DURATION)
+            }
+        }
     }
 
     // for setup toolbar
@@ -219,10 +244,5 @@ class HomeFragment : Fragment() {
                 binding.cardPackage.visibility = View.GONE
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

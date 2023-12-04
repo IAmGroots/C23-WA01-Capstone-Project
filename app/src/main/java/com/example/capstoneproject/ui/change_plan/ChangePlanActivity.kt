@@ -5,20 +5,14 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityChangePlanBinding
-import com.example.capstoneproject.model.DataSourceUser
 import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
 import com.example.capstoneproject.preferences.dataStore
-import com.example.capstoneproject.ui.payment.PaymentActivity
-import com.example.capstoneproject.ui.profile.ProfileViewModel
+import com.example.capstoneproject.ui.order.OrderActivity
 
 class ChangePlanActivity : AppCompatActivity() {
 
@@ -42,20 +36,29 @@ class ChangePlanActivity : AppCompatActivity() {
 
         binding.btnChangePlanGold.setOnClickListener {
             plan = "gold"
-            saveChanges()
-            startActivity(Intent(this, MainActivity::class.java))
+            val detail = Intent(this, OrderActivity::class.java)
+            detail.putExtra(OrderActivity.EXTRA_PACKAGE, plan)
+            startActivity(detail)
+//            saveChanges()
+//            startActivity(Intent(this, MainActivity::class.java))
         }
 
         binding.btnChangePlanSilver.setOnClickListener {
             plan = "silver"
-            saveChanges()
-            startActivity(Intent(this, MainActivity::class.java))
+            val detail = Intent(this, OrderActivity::class.java)
+            detail.putExtra(OrderActivity.EXTRA_PACKAGE, plan)
+            startActivity(detail)
+//            saveChanges()
+//            startActivity(Intent(this, MainActivity::class.java))
         }
 
         binding.btnChangePlanBronze.setOnClickListener {
             plan = "bronze"
-            saveChanges()
-            startActivity(Intent(this, MainActivity::class.java))
+            val detail = Intent(this, OrderActivity::class.java)
+            detail.putExtra(OrderActivity.EXTRA_PACKAGE, plan)
+            startActivity(detail)
+//            saveChanges()
+//            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 
@@ -91,37 +94,6 @@ class ChangePlanActivity : AppCompatActivity() {
                 binding.tvPlanBronze.text = "Buy"
             }
         }
-    }
-
-    private fun saveChanges() {
-        val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-
-        val idString = sharedPreferences.getString("id", "")
-        val loggedInUserId = idString?.toIntOrNull() ?: 0
-
-        editor.putString("plan", plan)
-
-
-        editor.apply()
-
-        if (loggedInUserId != null) {
-            updateDataSourceUser(loggedInUserId, plan)
-            Toast.makeText(this, "Berhasil membeli package", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun updateDataSourceUser(
-        userId: Int,
-        plan: String
-    ): Boolean {
-        for (user in DataSourceUser.user) {
-            if (user.id == userId) {
-                user.plan = plan
-                return true
-            }
-        }
-        return false
     }
 
     private fun setupToolbar() {
