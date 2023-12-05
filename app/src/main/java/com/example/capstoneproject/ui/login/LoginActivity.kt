@@ -10,19 +10,23 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.MainActivity
+import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityLoginBinding
 import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
 import com.example.capstoneproject.preferences.dataStore
 import com.example.capstoneproject.model.DataUser
+import com.example.capstoneproject.ui.otp.OTPEmailActivity
 import com.example.capstoneproject.ui.register.RegisterActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -66,8 +70,6 @@ class LoginActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
 
         getBiometric()
-
-        setData()
 
 //        firebaseDatabase = FirebaseDatabase.getInstance()
 //        databaseReference = firebaseDatabase.reference.child("users")
@@ -201,6 +203,13 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+
+        binding.textforgotpassword.setOnClickListener {
+            val email = binding.etEmail.text.toString()
+            var intent= Intent(this, resetPasswordActivity::class.java)
+            intent.putExtra("email", email)
+            startActivity(intent)
         }
     }
 
