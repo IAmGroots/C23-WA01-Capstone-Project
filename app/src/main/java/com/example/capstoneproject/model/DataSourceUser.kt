@@ -15,7 +15,7 @@ object DataSourceUser {
             "dinda",
             "08115582588",
             2,
-            "din@gmail.com",
+            "dindhana12@@gmail.com",
             "afifah",
             "dinda12345",
             "silver"

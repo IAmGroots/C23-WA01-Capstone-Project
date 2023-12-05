@@ -4,29 +4,23 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
-import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.databinding.ActivityRegisterBinding
 import com.example.capstoneproject.ui.login.LoginActivity
-import com.example.capstoneproject.ui.login.LoginViewModel
+import com.example.capstoneproject.ui.otp.OTPEmailActivity
 //import com.google.firebase.database.DataSnapshot
 //import com.google.firebase.database.DatabaseError
 //import com.google.firebase.database.DatabaseReference
 //import com.google.firebase.database.FirebaseDatabase
 //import com.google.firebase.database.ValueEventListener
-import com.example.capstoneproject.ui.otp.OTPActivity
-import com.example.capstoneproject.ui.otp.OTPViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
-
-    /*private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var databaseReference: DatabaseReference*/
     private val viewModel: RegisterViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,81 +28,38 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        /*firebaseDatabase = FirebaseDatabase.getInstance()
-        databaseReference = firebaseDatabase.reference.child("users")*/
+        val db = Firebase.firestore
+
         setFocusable()
 
-        binding.loginhere.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
+        binding.btnRegister.setOnClickListener {
+            val firstname = binding.etFirstName.text.toString()
+            val lastname = binding.etLastName.text.toString()
+            val email = binding.etEmail.text.toString()
+            val mobile = binding.etMobile.text.toString()
+            val password = binding.etPassword.text.toString()
+            val confirmPassword = binding.etConfirmPassword.text.toString()
+            if (firstname.isNotEmpty() && lastname.isNotEmpty() && email.isNotEmpty() && mobile.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
+                if (password == confirmPassword) {
+                    var intent= Intent(this@RegisterActivity, OTPEmailActivity::class.java)
+                    intent.putExtra("firstname", firstname)
+                    intent.putExtra("lastname", lastname)
+                    intent.putExtra("email", email)
+                    intent.putExtra("mobile", mobile)
+                    intent.putExtra("password", password)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "The password confirm is not match! ", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Fill all the data!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnBack.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-        }
-
-        binding.btnRegister.setOnClickListener {
-            val firstname = binding.etFirstName.text.toString()
-            val lastname = binding.etLastName.text.toString()
-            val mobile = binding.etMobile.text.toString()
-            val email = binding.etEmail.text.toString()
-            val password = binding.etPassword.text.toString()
-            val confirmPassword = binding.etConfirmPassword.text.toString()
-
-            Log.e("firstname", firstname)
-            Log.e("lastname", lastname)
-            Log.e("mobile", mobile)
-            Log.e("email", email)
-            Log.e("password", password)
-            Log.e("confirmPassword", confirmPassword)
-
-            if (firstname.isNotEmpty() && lastname.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && mobile.isNotEmpty()) {
-                if (password == confirmPassword) {
-                    viewModel.userEmail.observe(this, Observer { check ->
-                        val firstname = binding.etFirstName.text.toString()
-                        val lastname = binding.etLastName.text.toString()
-                        val mobile = binding.etMobile.text.toString()
-                        val email = binding.etEmail.text.toString()
-                        val password = binding.etPassword.text.toString()
-                        if (check != null) {
-                            Toast.makeText(
-                                this@RegisterActivity,
-                                "This email already used! Try to SignIn",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            viewModel.userMobile.observe(this, Observer { checkMobile ->
-                                if (checkMobile != null) {
-                                    Toast.makeText(
-                                        this@RegisterActivity,
-                                        "This mobile number already used!",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                } else {
-                                    val intent = Intent(this, OTPActivity::class.java)
-                                    intent.putExtra("firstname", firstname)
-                                    intent.putExtra("lastname", lastname)
-                                    intent.putExtra("mobile", mobile)
-                                    intent.putExtra("email", email)
-                                    intent.putExtra("password", password)
-                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                                    startActivity(intent)
-                                }
-                            })
-                        }
-                    })
-                    viewModel.checkEmail(email)
-                    viewModel.checkMobile(mobile)
-                } else {
-                    Toast.makeText(this, "The password confirm is not match! ", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            } else {
-                Toast.makeText(this, "Fill all the data!", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 

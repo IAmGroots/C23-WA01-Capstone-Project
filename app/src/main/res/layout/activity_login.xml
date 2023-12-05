@@ -91,13 +91,14 @@
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="128dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gridLayout">
+            app:layout_constraintTop_toBottomOf="@+id/gridLayout"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/signupText"
@@ -114,7 +115,7 @@
 
             <TextView
                 android:id="@+id/regishere"
-                android:layout_width="57dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:text="sign up"
                 android:textAlignment="center"
