@@ -25,8 +25,7 @@ import com.example.capstoneproject.adapter.ArticlesAdapter
 import com.example.capstoneproject.adapter.HotspotAdapter
 import com.example.capstoneproject.databinding.ActivityWifiBinding
 import com.example.capstoneproject.model.Hotspot
-import com.example.capstoneproject.ui.login.LoginActivity
-import com.example.capstoneproject.ui.otp.OTPActivity
+
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory

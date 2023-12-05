@@ -13,6 +13,13 @@
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
     </style>
+    <style name="EditTextPassword" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:textColor">@color/lightGray2</item>
+        <item name="android:background">@drawable/edit_text_bg_password</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
     <style name="EditTextNoPadding" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:fontFamily">@font/montserrat_medium</item>
         <item name="android:textColor">@color/lightGray2</item>

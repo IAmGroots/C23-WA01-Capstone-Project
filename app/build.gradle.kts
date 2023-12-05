@@ -103,4 +103,7 @@ dependencies {
 
     // tab layout
     implementation("androidx.viewpager2:viewpager2:1.0.0")
+
+    //otp
+    implementation("com.github.1902shubh:SendMail:1.0.0")
 }

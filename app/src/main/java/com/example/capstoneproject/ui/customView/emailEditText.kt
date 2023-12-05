@@ -6,7 +6,6 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Patterns
 import androidx.appcompat.widget.AppCompatEditText
-import java.util.regex.Pattern
 
 class emailEditText : AppCompatEditText {
 
@@ -36,11 +35,6 @@ class emailEditText : AppCompatEditText {
                 }
             }
         })
-    }
-
-    private fun isEmailValid(email: String): Boolean {
-        val pattern = Pattern.compile("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}")
-        return pattern.matcher(email).matches()
     }
 
     private fun validateEmail(email: String) {

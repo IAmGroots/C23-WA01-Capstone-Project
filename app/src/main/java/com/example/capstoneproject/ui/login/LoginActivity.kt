@@ -24,12 +24,19 @@ import com.example.capstoneproject.preferences.ViewModelFactory
 import com.example.capstoneproject.preferences.dataStore
 import com.example.capstoneproject.model.DataUser
 import com.example.capstoneproject.ui.register.RegisterActivity
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import java.util.concurrent.Executor
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+    private var db = Firebase.firestore
 //    private lateinit var firebaseDatabase: FirebaseDatabase
 //    private lateinit var databaseReference: DatabaseReference
 
@@ -55,7 +62,12 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+
         getBiometric()
+
+        setData()
 
 //        firebaseDatabase = FirebaseDatabase.getInstance()
 //        databaseReference = firebaseDatabase.reference.child("users")
@@ -87,8 +99,9 @@ class LoginActivity : AppCompatActivity() {
                     if (password.length >= 8) {
                         Log.e("email", email)
                         Log.e("password", password)
-                        /*login(email, password)*/
-                        viewModel.login(email, password)
+                        /*viewModel.login(email, password)*/
+
+                        signIn(email, password)
                     } else {
                         Toast.makeText(this, "Please check your password!", Toast.LENGTH_SHORT)
                             .show()
@@ -101,7 +114,11 @@ class LoginActivity : AppCompatActivity() {
             isLoggingIn = false
             if (userLogin != null) {
                 Toast.makeText(this@LoginActivity, "SignIn is success", Toast.LENGTH_SHORT).show()
-                saveUserDataToSharedPreferences(userLogin)
+
+                /*saveUserDataToSharedPreferences(userLogin)*/
+
+                setData()
+
                 MainActivity.isLogin = true
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -187,6 +204,21 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun signIn(email :String, password: String ) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener (this) { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this, "SignIn Success", Toast.LENGTH_SHORT).show()
+                    MainActivity.isLogin = true
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "SignIn Failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun setFocusable() {
         binding.etEmail.setOnTouchListener { _, event ->
@@ -226,7 +258,42 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserDataToSharedPreferences(user: DataUser) {
+    private fun setData() {
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+        val set = db.collection("user").document(userID)
+        set.get().addOnSuccessListener {
+            if (it != null) {
+                val id = userID
+                val firstname = it.data?.get("firstname")?.toString()
+                val lastname = it.data?.get("lastname")?.toString()
+                val email = it.data?.get("email")?.toString()
+                val mobile = it.data?.get("mobile")?.toString()
+                val plan = it.data?.get("plan")?.toString()
+
+                Log.e("login", id)
+                Log.e("login", firstname.toString())
+                Log.e("login", lastname.toString())
+                Log.e("login", email.toString())
+                Log.e("login", mobile.toString())
+                Log.e("login", plan.toString())
+                val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putString("id", id)
+                editor.putString("firstName", firstname)
+                editor.putString("lastName", lastname)
+                editor.putString("email", email)
+                editor.putString("phone", mobile)
+                editor.putString("plan", plan)
+                editor.apply()
+            }
+        }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed retrieve firestore data!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+    }
+
+    /*private fun saveUserDataToSharedPreferences(user: DataUser) {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("uid", user.id)
@@ -236,7 +303,7 @@ class LoginActivity : AppCompatActivity() {
         editor.putString("phone", user.mobile)
         editor.putString("plan", user.plan)
         editor.apply()
-    }
+    }*/
 
     private fun startCountdown() {
         isCountdownActive = true

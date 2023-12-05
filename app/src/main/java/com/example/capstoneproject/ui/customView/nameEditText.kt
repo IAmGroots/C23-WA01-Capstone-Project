@@ -25,10 +25,10 @@ class nameEditText : AppCompatEditText {
             override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-                if (text.toString().length <= 1 && text.toString().length > 150) {
-                    setError("Invalid Name, Minimum 2 characters", null)
+                if (text.toString().length <= 1) {
+                    setError("Invalid Name, Minimum 2 characters")
                 } else if(text.toString().length >= 150) {
-                    setError("Invalid Name, Maximum 150 characters", null)
+                    setError("Invalid Name, Maximum 150 characters")
                 } else {
                     error = null
                 }
