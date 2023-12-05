@@ -107,6 +107,7 @@ class OTPEmailActivity : AppCompatActivity() {
                         ).show()
                         /*saveEmail()*/
                         userID = auth.currentUser!!.uid
+                        val plan = "none"
                         val DocumentReference = firestore.collection("user").document(userID)
                         val userData = hashMapOf(
                             "firstname" to firstname,
@@ -114,7 +115,7 @@ class OTPEmailActivity : AppCompatActivity() {
                             "email" to email,
                             "mobile" to mobile,
                             "password" to password,
-                            "plan" to "none"
+                            "plan" to plan
                         )
                         DocumentReference.set(userData).addOnSuccessListener {
                             Log.e("SuccessRegist", "DocumentSnapshot added with ID: $userID")
