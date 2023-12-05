@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.widget.Toast
-import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityResetPasswordBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -35,6 +34,9 @@ class resetPasswordActivity : AppCompatActivity() {
                 auth.sendPasswordResetEmail(etEmail).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(this, "Check your email", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
                     } else {
                         Toast.makeText(this, "Send email failed", Toast.LENGTH_SHORT).show()
                     }
