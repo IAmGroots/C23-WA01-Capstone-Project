@@ -28,8 +28,6 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val db = Firebase.firestore
-
         setFocusable()
 
         binding.btnRegister.setOnClickListener {
