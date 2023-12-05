@@ -88,21 +88,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etLastName" />
 
-        <com.example.capstoneproject.ui.customView.mobileEditText
-            android:id="@+id/etMobile"
-            android:focusable="false"
-            style="@style/EditText"
+        <LinearLayout
+            android:id="@+id/mobilelinear"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:hint="Mobile"
-            android:imeOptions="actionNext"
-            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/etEmail">
+
+            <EditText
+                android:id="@+id/etMobileFormat"
+                style="@style/EditText"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
+                android:enabled="false"
+                android:focusable="false"
+                android:hint="+62"
+                android:imeOptions="actionNext"
+                android:textSize="14sp"/>
+
+            <com.example.capstoneproject.ui.customView.mobileEditText
+                android:id="@+id/etMobile"
+                android:focusable="false"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Mobile"
+                android:imeOptions="actionNext"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
@@ -116,7 +136,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etMobile"
+            app:layout_constraintTop_toBottomOf="@+id/mobilelinear"
             app:passwordToggleEnabled="true">
 
             <com.example.capstoneproject.ui.customView.passwordEditText

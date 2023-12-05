@@ -6,7 +6,7 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 
-class mobileEditText : AppCompatEditText {
+class otpEditText : AppCompatEditText {
 
     constructor(context: Context) : super(context) {
         init()
@@ -24,20 +24,15 @@ class mobileEditText : AppCompatEditText {
         addTextChangedListener(object  : TextWatcher {
             override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(text: Editable?) {
-                if (!isPhoneNumberValid(text.toString()) || text.toString().length < 10) {
-                    setError("Invalid phone number")
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                if (text.toString().length <= 5) {
+                    setError("Invalid code, the code is consists of 7 numbers", null)
                 } else {
                     error = null
                 }
             }
-        })
-    }
 
-    private fun isPhoneNumberValid(phoneNumber: String): Boolean {
-        val pattern = Regex("^(8)\\d{9,}$")
-        return pattern.matches(phoneNumber)
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 }
