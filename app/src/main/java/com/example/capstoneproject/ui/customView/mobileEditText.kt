@@ -27,7 +27,7 @@ class mobileEditText : AppCompatEditText {
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(text: Editable?) {
-                if (!isPhoneNumberValid(text.toString()) || text.toString().length < 11) {
+                if (!isPhoneNumberValid(text.toString()) || text.toString().length < 10) {
                     setError("Invalid phone number")
                 } else {
                     error = null
@@ -37,7 +37,7 @@ class mobileEditText : AppCompatEditText {
     }
 
     private fun isPhoneNumberValid(phoneNumber: String): Boolean {
-        val pattern = Regex("^(08|628)\\d{9,}$")
+        val pattern = Regex("^(8)\\d{9,}$")
         return pattern.matches(phoneNumber)
     }
 }
