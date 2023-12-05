@@ -229,7 +229,7 @@ class LoginActivity : AppCompatActivity() {
     private fun saveUserDataToSharedPreferences(user: DataUser) {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        user.id?.let { editor.putInt("userId", it) }
+        editor.putString("uid", user.id)
         editor.putString("firstName", user.firstname)
         editor.putString("lastName", user.lastname)
         editor.putString("email", user.email)

@@ -26,6 +26,7 @@ import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.profile.edit_profile.EditProfileActivity
 import androidx.biometric.BiometricManager
+import com.example.capstoneproject.ui.history.HistoryActivity
 
 class ProfileFragment : Fragment() {
 
@@ -59,6 +60,10 @@ class ProfileFragment : Fragment() {
 
         binding.btnShop.setOnClickListener {
             startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
+        }
+
+        binding.containerHistoryTransaction.setOnClickListener {
+            startActivity(Intent(requireActivity(), HistoryActivity::class.java))
         }
 
         binding.containerLogout.setOnClickListener {

@@ -25,9 +25,13 @@ import com.example.capstoneproject.adapter.BannerAdapter
 import com.example.capstoneproject.adapter.HomeArticlesAdapter
 import com.example.capstoneproject.databinding.FragmentHomeBinding
 import com.example.capstoneproject.model.Banner
+import com.example.capstoneproject.model.DataSourceUser
 import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
 import com.example.capstoneproject.ui.usage.UsageActivity
 import com.example.capstoneproject.ui.wifi.WifiActivity
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.firestore
 import java.util.Timer
 import java.util.TimerTask
 
@@ -40,6 +44,8 @@ class HomeFragment : Fragment() {
     private lateinit var timer: Timer
     private val DURATION: Long = 1000
     private var allowRefresh = true
+    private val db = Firebase.firestore
+    private val id_user = "1701"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +55,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        checkLastTransaction(id_user)
         loadUserDataFromSharedPreferences()
         setupToolbar()
         setupBanner()
@@ -60,6 +67,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
+            checkLastTransaction(id_user)
             loadUserDataFromSharedPreferences()
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.swipeRefresh.isRefreshing = false
@@ -67,18 +75,6 @@ class HomeFragment : Fragment() {
         }
 
         return root
-    }
-
-    private fun refresh() {
-        allowRefresh = binding.scrollView.scrollY == 0
-        if (allowRefresh) {
-            binding.swipeRefresh.setOnRefreshListener {
-                loadUserDataFromSharedPreferences()
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.swipeRefresh.isRefreshing = false
-                }, DURATION)
-            }
-        }
     }
 
     // for setup toolbar
@@ -184,9 +180,81 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadUserDataFromSharedPreferences() {
+        Log.d("HomeFragment", "Something wrong")
         val sharedPreferences = requireActivity().getSharedPreferences("UserData", Context.MODE_PRIVATE)
         val plan = sharedPreferences.getString("plan", "")
+        Log.d("HomeFragment", "PLAN => $plan")
+        setUICurrentPlan(plan.toString())
+    }
 
+    fun checkLastTransaction(idUser: String) {
+        db.collection("transaction")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .whereEqualTo("idUser", idUser)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot) {
+                    viewModel.checkStatusTransaction(document.get("idOrder").toString())
+                    viewModel.lastTrasaction.observe(viewLifecycleOwner){ status ->
+                        val service = getService(document.get("idService").toString())
+                        when (status) {
+                            "Success" -> saveChanges(service)
+                            else -> ""
+                        }
+                        Log.d("HomeFragment", "Something wrong 1")
+                    }
+                    Log.d("HomeFragment", "Something wrong 2")
+                    break
+                }
+            }
+    }
+
+    fun getService(idService: String): String {
+        var plan = ""
+        db.collection("services")
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot) {
+                    if (document.get("id").toString() == idService) {
+                        plan = document.get("name").toString()
+                    }
+                }
+            }
+        return plan
+    }
+
+    private fun saveChanges(plan: String) {
+        val sharedPreferences = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        val idString = sharedPreferences.getString("id", "")
+        val loggedInUserId = idString
+
+        editor.putString("plan", plan)
+
+
+        editor.apply()
+
+        if (loggedInUserId != null) {
+            updateDataSourceUser(loggedInUserId, plan)
+            Toast.makeText(requireContext(), "Berhasil membeli package", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun updateDataSourceUser(
+        userId: String,
+        plan: String
+    ): Boolean {
+        for (user in DataSourceUser.user) {
+            if (user.id == userId) {
+                user.plan = plan
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun setUICurrentPlan(plan: String) {
         when (plan) {
             "gold" -> {
                 binding.cardPackageNone.visibility = View.GONE

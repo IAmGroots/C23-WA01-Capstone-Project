@@ -1,6 +1,7 @@
 package com.example.capstoneproject.ui.wifi
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -10,8 +11,10 @@ import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -23,6 +26,7 @@ import com.example.capstoneproject.adapter.HotspotAdapter
 import com.example.capstoneproject.databinding.ActivityWifiBinding
 import com.example.capstoneproject.model.Hotspot
 import com.example.capstoneproject.ui.login.LoginActivity
+import com.example.capstoneproject.ui.otp.OTPActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -57,19 +61,20 @@ class WifiActivity : AppCompatActivity() {
         binding = ActivityWifiBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.listHotspot.observe(this) { data ->
-            listHotspot = data.toMutableList()
-        }
-
         mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         setupToolbar()
 
+        viewModel.listHotspot.observe(this) { data ->
+            listHotspot = data.toMutableList()
+        }
+
         binding.btnCurrentLocation.setOnClickListener {
             getCurrentLocation()
         }
     }
+
 
     private fun setupToolbar() {
         val toolbar = binding.toolbar
@@ -153,6 +158,26 @@ class WifiActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 MY_LOCATION_REQUEST_CODE
             )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == MY_LOCATION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("MAPS", "WIFI ACTIVITY")
+                recreate()
+            } else {
+                Log.d("MAPS", "MAIN ACTIVITY")
+                Toast.makeText(this, "Please give access to device location", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+            }
         }
     }
 

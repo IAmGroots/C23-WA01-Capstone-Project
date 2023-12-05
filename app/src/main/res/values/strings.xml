@@ -14,4 +14,7 @@
     <string name="light_mode">Light Mode</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="tab1">On Going</string>
+    <string name="tab2">Successful</string>
+    <string name="tab3">Unsuccessful</string>
 </resources>

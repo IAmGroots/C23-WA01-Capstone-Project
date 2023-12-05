@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.capstoneproject.model.DataSourceUser
 import com.example.capstoneproject.model.DataUser
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 class OTPViewModel : ViewModel() {
 
@@ -42,7 +44,7 @@ class OTPViewModel : ViewModel() {
             val newUser = DataUser(
                 firstname = firstname,
                 mobile = mobile,
-                id = _userDummy.value?.size?.plus(1) ?: 1,
+                id = System.currentTimeMillis().toString(),
                 email = email,
                 lastname = lastname,
                 password = password,

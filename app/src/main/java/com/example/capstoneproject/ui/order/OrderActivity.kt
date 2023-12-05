@@ -90,7 +90,7 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationFrom.setTextColor(goldColor)
                 binding.cardPackageFrom.setBackgroundResource(R.drawable.plan_gold)
                 binding.tvPackageFrom.text = "Gold"
-                binding.tvSpeedFrom.text = "50 mb/s"
+                binding.tvSpeedFrom.text = "Speed up to 50mb/s"
             }
             "silver" -> {
                 val silverColor = ContextCompat.getColor(this, R.color.silver)
@@ -100,7 +100,7 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationFrom.setTextColor(silverColor)
                 binding.cardPackageFrom.setBackgroundResource(R.drawable.plan_silver)
                 binding.tvPackageFrom.text = "Silver"
-                binding.tvSpeedFrom.text = "30 mb/s"
+                binding.tvSpeedFrom.text = "Speed up to 30mb/s"
             }
             "bronze" -> {
                 val bronzeColor = ContextCompat.getColor(this, R.color.bronze)
@@ -110,7 +110,7 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationFrom.setTextColor(bronzeColor)
                 binding.cardPackageFrom.setBackgroundResource(R.drawable.plan_bronze)
                 binding.tvPackageFrom.text = "Bronze"
-                binding.tvSpeedFrom.text = "15 mb/s"
+                binding.tvSpeedFrom.text = "Speed up to 15mb/s"
             }
             else -> {
                 Log.d("INFO", "Something went wrong")
@@ -130,7 +130,7 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationTo.setTextColor(goldColor)
                 binding.cardPackageTo.setBackgroundResource(R.drawable.plan_gold)
                 binding.tvPackageTo.text = "Gold"
-                binding.tvSpeedTo.text = "50 mb/s"
+                binding.tvSpeedTo.text = "Speed up to 50mb/s"
                 binding.tvPrice.text = "Rp 949.000"
             }
             "silver" -> {
@@ -143,7 +143,7 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationTo.setTextColor(silverColor)
                 binding.cardPackageTo.setBackgroundResource(R.drawable.plan_silver)
                 binding.tvPackageTo.text = "Silver"
-                binding.tvSpeedTo.text = "30 mb/s"
+                binding.tvSpeedTo.text = "Speed up to 30mb/s"
                 binding.tvPrice.text = "Rp 549.000"
             }
             "bronze" -> {
@@ -156,7 +156,7 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationTo.setTextColor(bronzeColor)
                 binding.cardPackageTo.setBackgroundResource(R.drawable.plan_bronze)
                 binding.tvPackageTo.text = "Bronze"
-                binding.tvSpeedTo.text = "15 mb/s"
+                binding.tvSpeedTo.text = "Speed up to 15mb/s"
                 binding.tvPrice.text = "Rp 249.000"
             }
             else -> {
@@ -253,9 +253,9 @@ class OrderActivity : AppCompatActivity() {
         }
 
     private var customerDetails = CustomerDetails(
-        firstName = "User Fullname",
-        customerIdentifier = "hadiseptian979@mail.com",
-        email = "hadiseptian979@mail.com",
+        firstName = "Jogn Doe",
+        customerIdentifier = "john@mail.com",
+        email = "john@mail.com",
         phone = "085310102020"
     )
 
@@ -287,10 +287,9 @@ class OrderActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
 
         val idString = sharedPreferences.getString("id", "")
-        val loggedInUserId = idString?.toIntOrNull() ?: 0
+        val loggedInUserId = idString
 
         editor.putString("plan", plan)
-
 
         editor.apply()
 
@@ -301,7 +300,7 @@ class OrderActivity : AppCompatActivity() {
     }
 
     private fun updateDataSourceUser(
-        userId: Int,
+        userId: String,
         plan: String
     ): Boolean {
         for (user in DataSourceUser.user) {
