@@ -44,7 +44,7 @@ class LoginViewModel(private val preferences: SettingPreferences) : ViewModel() 
             Log.e("LoginViewModel", "User logged in: ${it.firstname}, ${it.lastname}, ${it.email}")
         }
     }
-    
+
     fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
 
 }
