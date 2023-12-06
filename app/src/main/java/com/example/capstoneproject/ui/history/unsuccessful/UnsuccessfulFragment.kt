@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.capstoneproject.R
 import com.example.capstoneproject.adapter.HistoryTransactionAdapter
 import com.example.capstoneproject.databinding.FragmentUnsuccessfulBinding
 import com.example.capstoneproject.model.History
 import com.example.capstoneproject.model.Order
 import com.example.capstoneproject.ui.history.HistoryViewModel
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
 class UnsuccessfulFragment : Fragment() {
@@ -24,7 +24,7 @@ class UnsuccessfulFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: HistoryViewModel
     private val db = Firebase.firestore
-    private val id_user = "1701"
+    private val userID = FirebaseAuth.getInstance().currentUser!!.uid
     private var listOrder: MutableList<Order> = mutableListOf()
 
     override fun onCreateView(
@@ -36,14 +36,14 @@ class UnsuccessfulFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
 
-        getHistoryTransaction(id_user)
+        getHistoryTransaction(userID)
 
         viewModel.isLoading.observe(requireActivity()) {
             showLoading(it)
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            getHistoryTransaction(id_user)
+            getHistoryTransaction(userID)
             Toast.makeText(requireContext(), "Berhasil Refresh", Toast.LENGTH_SHORT).show()
             binding.swipeRefresh.isRefreshing = false
         }

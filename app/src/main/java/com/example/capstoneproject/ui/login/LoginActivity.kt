@@ -41,8 +41,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private var db = Firebase.firestore
-//    private lateinit var firebaseDatabase: FirebaseDatabase
-//    private lateinit var databaseReference: DatabaseReference
 
     private var attemptsRemaining = 3 // Jumlah percobaan tersisa
     private var isCountdownActive = false // Apakah countdown aktif
@@ -70,10 +68,6 @@ class LoginActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
 
         getBiometric()
-
-//        firebaseDatabase = FirebaseDatabase.getInstance()
-//        databaseReference = firebaseDatabase.reference.child("users")
-
 
         viewModel.getEmail().observe(this) { email ->
             if (email == "empty") {
@@ -105,8 +99,7 @@ class LoginActivity : AppCompatActivity() {
 
                         signIn(email, password)
                     } else {
-                        Toast.makeText(this, "Please check your password!", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(this, "Please check your password!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -116,8 +109,6 @@ class LoginActivity : AppCompatActivity() {
             isLoggingIn = false
             if (userLogin != null) {
                 Toast.makeText(this@LoginActivity, "SignIn is success", Toast.LENGTH_SHORT).show()
-
-                /*saveUserDataToSharedPreferences(userLogin)*/
 
                 setData()
 
@@ -156,11 +147,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         viewModel.getBiometric().observe(this) { isEnableBiometric ->
-            if (isEnableBiometric) {
-                binding.btnBiometric.visibility = View.VISIBLE
-            } else {
-                binding.btnBiometric.visibility = View.GONE
-            }
+            binding.btnBiometric.visibility = if (isEnableBiometric) View.VISIBLE else View.GONE
         }
 
 
@@ -223,7 +210,8 @@ class LoginActivity : AppCompatActivity() {
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
                 } else {
-                    Toast.makeText(this, "SignIn Failed", Toast.LENGTH_SHORT).show()
+                    val errorMessage = task.exception?.message
+                    Toast.makeText(this, "SignIn Failed: $errorMessage", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -297,22 +285,9 @@ class LoginActivity : AppCompatActivity() {
             }
         }
             .addOnFailureListener {
-                Toast.makeText(this, "Failed retrieve firestore data!", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "Failed retrieve firestore data!", Toast.LENGTH_SHORT).show()
             }
     }
-
-    /*private fun saveUserDataToSharedPreferences(user: DataUser) {
-        val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("uid", user.id)
-        editor.putString("firstName", user.firstname)
-        editor.putString("lastName", user.lastname)
-        editor.putString("email", user.email)
-        editor.putString("phone", user.mobile)
-        editor.putString("plan", user.plan)
-        editor.apply()
-    }*/
 
     private fun startCountdown() {
         isCountdownActive = true
@@ -323,11 +298,7 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 isCountdownActive = false
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Anda dapat mencoba login lagi",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this@LoginActivity, "Anda dapat mencoba login lagi", Toast.LENGTH_SHORT).show()
                 attemptsRemaining = 3
             }
         }.start()
@@ -340,8 +311,7 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    Toast.makeText(this@LoginActivity, "Authenticated Success", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this@LoginActivity, "Authenticated Success", Toast.LENGTH_SHORT).show()
                     MainActivity.isLogin = true
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -350,14 +320,12 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    Toast.makeText(this@LoginActivity, "Authenticated Failed", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this@LoginActivity, "Authenticated Failed", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
-                    Toast.makeText(this@LoginActivity, errString.toString(), Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this@LoginActivity, errString.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -373,7 +341,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (isCountdownActive) {
-            countdownTimer.cancel() // Hentikan countdown jika aktiv
+            countdownTimer.cancel() // Hentikan countdown jika aktif
         }
     }
 }

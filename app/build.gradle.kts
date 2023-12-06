@@ -104,6 +104,9 @@ dependencies {
     // tab layout
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
-    //otp
+    // otp
     implementation("com.github.1902shubh:SendMail:1.0.0")
+
+    // chart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
