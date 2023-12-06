@@ -86,4 +86,10 @@ class ProfileViewModel(private val preferences: SettingPreferences) : ViewModel(
             }
         }
     }
+
+    fun logout() {
+        viewModelScope.launch {
+            preferences.logout()
+        }
+    }
 }
