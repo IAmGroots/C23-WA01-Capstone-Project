@@ -204,6 +204,7 @@ class LoginActivity : AppCompatActivity() {
                     val intent = Intent(this, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
+                    finish()
                 } else {
                     // Jika login gagal, kurangi percobaan dan mulai countdown jika sudah 3 kali salah
                     attemptsRemaining--
@@ -292,7 +293,6 @@ class LoginActivity : AppCompatActivity() {
         Log.e("set", set.path)
         set.get().addOnSuccessListener { document ->
             if (document != null && document.exists()) {
-                viewModel.saveId(userID)
 
                 val firstname = document.getString("firstname")
                 val lastname = document.getString("lastname")
@@ -319,6 +319,7 @@ class LoginActivity : AppCompatActivity() {
                 editor.apply()
 
                 Log.e("Success", "Save Data")
+                viewModel.saveLogin(true)
             } else {
                 Toast.makeText(this, "User data doesn't exist", Toast.LENGTH_SHORT).show()
             }

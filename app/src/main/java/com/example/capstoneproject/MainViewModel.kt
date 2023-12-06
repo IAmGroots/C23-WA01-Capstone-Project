@@ -9,5 +9,6 @@ class MainViewModel(private val preferences: SettingPreferences) : ViewModel() {
 
     fun getTheme(): LiveData<Boolean> = preferences.getThemeSetting().asLiveData()
 
-    fun getId(): LiveData<String> = preferences.getId().asLiveData()
+    fun getLogin(): LiveData<Boolean> = preferences.getLogin().asLiveData()
+
 }
