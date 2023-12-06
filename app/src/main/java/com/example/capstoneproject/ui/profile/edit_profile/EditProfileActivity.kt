@@ -64,8 +64,7 @@ class EditProfileActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
 
         val idString = sharedPreferences.getString("id", "")
-        val loggedInUserId = idString?.toIntOrNull() ?: 0
-
+        val loggedInUserId = idString.toString()
         val firstName = binding.etFirstName.text.toString()
         val lastName = binding.etLastName.text.toString()
         val email = binding.etEmail.text.toString()
@@ -83,7 +82,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun updateDataSourceUser(
-        userId: Int,
+        userId: String,
         firstName: String,
         lastName: String,
         email: String,

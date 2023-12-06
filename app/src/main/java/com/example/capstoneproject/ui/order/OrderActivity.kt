@@ -2,7 +2,6 @@ package com.example.capstoneproject.ui.order
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,9 +14,9 @@ import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityOrderBinding
 import com.example.capstoneproject.model.DataSourceUser
-import com.example.capstoneproject.ui.login.LoginActivity
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import com.midtrans.sdk.uikit.api.model.CustomColorTheme
 import com.midtrans.sdk.uikit.api.model.CustomerDetails
@@ -36,7 +35,7 @@ class OrderActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private lateinit var orderId: String
     private lateinit var plan: String
-    private val id_user = "1701"
+    private val userID = FirebaseAuth.getInstance().currentUser!!.uid
     private var id_plan by Delegates.notNull<Int>()
     private var price by Delegates.notNull<Double>()
 
@@ -52,17 +51,22 @@ class OrderActivity : AppCompatActivity() {
 
         plan = intent.getStringExtra(EXTRA_PACKAGE).toString()
         if (plan != null) {
-            setPackageFrom()
+            getPlanFromDb(userID)
             setPackageTo(plan)
         }
 
         binding.btnPayment.setOnClickListener {
-            viewModel.checkLastTransaction(id_user)
+            viewModel.checkLastTransaction(userID)
             viewModel.isTransactionAllowed.observe(this) { isTrasactionAllowed ->
                 if (isTrasactionAllowed) {
-                    Log.d("DISINI", "DISINI")
                     itemDetails.clear()
-                    itemDetails.add(ItemDetails(id_plan.toString(), price, 1, plan))
+                    itemDetails.add(
+                        ItemDetails(
+                            id_plan.toString(),
+                            price,
+                            1,
+                            "$plan Package")
+                    )
                     orderId = System.currentTimeMillis().toString()
                     UiKitApi.getDefaultInstance().startPaymentUiFlow(
                         activity = this,
@@ -78,11 +82,26 @@ class OrderActivity : AppCompatActivity() {
         }
     }
 
-    private fun setPackageFrom() {
-        val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val plan = sharedPreferences.getString("plan", "")
+    private fun getPlanFromDb(idUser: String) {
+        db.collection("user")
+            .whereEqualTo("uid", idUser)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { data ->
+                Log.d("HomeFragment", data.size().toString())
+                if (!data.isEmpty) {
+                    val userDocument = data.documents[0]
+                    val plan = userDocument.get("plan").toString()
+                    setPackageFrom(plan)
+                } else {
+                    Log.d("OrderActivity", "Something went wrong")
+                }
+            }
+    }
+
+    private fun setPackageFrom(plan: String) {
         when (plan) {
-            "gold" -> {
+            "Gold" -> {
                 val goldColor = ContextCompat.getColor(this, R.color.gold)
                 binding.tvPackageFrom.setTextColor(goldColor)
                 binding.tvSpeedFrom.setTextColor(goldColor)
@@ -90,9 +109,9 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationFrom.setTextColor(goldColor)
                 binding.cardPackageFrom.setBackgroundResource(R.drawable.plan_gold)
                 binding.tvPackageFrom.text = "Gold"
-                binding.tvSpeedFrom.text = "50 mb/s"
+                binding.tvSpeedFrom.text = "Speed up to 50mb/s"
             }
-            "silver" -> {
+            "Silver" -> {
                 val silverColor = ContextCompat.getColor(this, R.color.silver)
                 binding.tvPackageFrom.setTextColor(silverColor)
                 binding.tvSpeedFrom.setTextColor(silverColor)
@@ -100,9 +119,9 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationFrom.setTextColor(silverColor)
                 binding.cardPackageFrom.setBackgroundResource(R.drawable.plan_silver)
                 binding.tvPackageFrom.text = "Silver"
-                binding.tvSpeedFrom.text = "30 mb/s"
+                binding.tvSpeedFrom.text = "Speed up to 30mb/s"
             }
-            "bronze" -> {
+            "Bronze" -> {
                 val bronzeColor = ContextCompat.getColor(this, R.color.bronze)
                 binding.tvPackageFrom.setTextColor(bronzeColor)
                 binding.tvSpeedFrom.setTextColor(bronzeColor)
@@ -110,7 +129,7 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationFrom.setTextColor(bronzeColor)
                 binding.cardPackageFrom.setBackgroundResource(R.drawable.plan_bronze)
                 binding.tvPackageFrom.text = "Bronze"
-                binding.tvSpeedFrom.text = "15 mb/s"
+                binding.tvSpeedFrom.text = "Speed up to 15mb/s"
             }
             else -> {
                 Log.d("INFO", "Something went wrong")
@@ -120,7 +139,7 @@ class OrderActivity : AppCompatActivity() {
 
     private fun setPackageTo(plan: String) {
         when (plan) {
-            "gold" -> {
+            "Gold" -> {
                 id_plan = 1
                 price = 949000.0
                 val goldColor = ContextCompat.getColor(this, R.color.gold)
@@ -130,10 +149,10 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationTo.setTextColor(goldColor)
                 binding.cardPackageTo.setBackgroundResource(R.drawable.plan_gold)
                 binding.tvPackageTo.text = "Gold"
-                binding.tvSpeedTo.text = "50 mb/s"
+                binding.tvSpeedTo.text = "Speed up to 50mb/s"
                 binding.tvPrice.text = "Rp 949.000"
             }
-            "silver" -> {
+            "Silver" -> {
                 id_plan = 2
                 price = 549000.0
                 val silverColor = ContextCompat.getColor(this, R.color.silver)
@@ -143,10 +162,10 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationTo.setTextColor(silverColor)
                 binding.cardPackageTo.setBackgroundResource(R.drawable.plan_silver)
                 binding.tvPackageTo.text = "Silver"
-                binding.tvSpeedTo.text = "30 mb/s"
+                binding.tvSpeedTo.text = "Speed up to 30mb/s"
                 binding.tvPrice.text = "Rp 549.000"
             }
-            "bronze" -> {
+            "Bronze" -> {
                 id_plan = 3
                 price = 249000.0
                 val bronzeColor = ContextCompat.getColor(this, R.color.bronze)
@@ -156,7 +175,7 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvLocationTo.setTextColor(bronzeColor)
                 binding.cardPackageTo.setBackgroundResource(R.drawable.plan_bronze)
                 binding.tvPackageTo.text = "Bronze"
-                binding.tvSpeedTo.text = "15 mb/s"
+                binding.tvSpeedTo.text = "Speed up to 15mb/s"
                 binding.tvPrice.text = "Rp 249.000"
             }
             else -> {
@@ -174,7 +193,7 @@ class OrderActivity : AppCompatActivity() {
                     if (transactionResult != null) {
                         val transaction = hashMapOf(
                             "idOrder" to orderId,
-                            "idUser" to id_user,
+                            "idUser" to userID,
                             "idService" to id_plan,
                             "status" to when(transactionResult.status) {
                                 com.midtrans.sdk.corekit.models.snap.TransactionResult.STATUS_SUCCESS -> "Success"
@@ -190,8 +209,8 @@ class OrderActivity : AppCompatActivity() {
                                 db.collection("transaction")
                                     .add(transaction)
                                     .addOnSuccessListener {
-                                        db.collection("users")
-                                            .whereEqualTo("uid", id_user)
+                                        db.collection("user")
+                                            .whereEqualTo("uid", userID)
                                             .get()
                                             .addOnSuccessListener { querySnapshot ->
                                                 for (document in querySnapshot) {
@@ -201,10 +220,9 @@ class OrderActivity : AppCompatActivity() {
                                                         3 -> "bronze"
                                                         else -> "none"
                                                     }
-                                                    db.collection("users").document(document.id).update("plan", typePackage)
+                                                    db.collection("user").document(document.id).update("plan", typePackage)
                                                         .addOnSuccessListener {
                                                             Log.d("Services", id_plan.toString())
-                                                            saveChanges(typePackage)
                                                             Toast.makeText(this, "Successfully Update to Firestore", Toast.LENGTH_LONG).show()
                                                         }
                                                         .addOnFailureListener {
@@ -253,9 +271,9 @@ class OrderActivity : AppCompatActivity() {
         }
 
     private var customerDetails = CustomerDetails(
-        firstName = "User Fullname",
-        customerIdentifier = "hadiseptian979@mail.com",
-        email = "hadiseptian979@mail.com",
+        firstName = "John Doe",
+        customerIdentifier = "john@mail.com",
+        email = "john@mail.com",
         phone = "085310102020"
     )
 
@@ -280,37 +298,6 @@ class OrderActivity : AppCompatActivity() {
     private fun uiKitCustomSetting() {
         val uIKitCustomSetting = UiKitApi.getDefaultInstance().uiKitSetting
         uIKitCustomSetting.saveCardChecked = true
-    }
-
-    private fun saveChanges(plan: String) {
-        val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-
-        val idString = sharedPreferences.getString("id", "")
-        val loggedInUserId = idString?.toIntOrNull() ?: 0
-
-        editor.putString("plan", plan)
-
-
-        editor.apply()
-
-        if (loggedInUserId != null) {
-            updateDataSourceUser(loggedInUserId, plan)
-            Toast.makeText(this, "Berhasil membeli package", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun updateDataSourceUser(
-        userId: Int,
-        plan: String
-    ): Boolean {
-        for (user in DataSourceUser.user) {
-            if (user.id == userId) {
-                user.plan = plan
-                return true
-            }
-        }
-        return false
     }
 
     private fun setupToolbar() {

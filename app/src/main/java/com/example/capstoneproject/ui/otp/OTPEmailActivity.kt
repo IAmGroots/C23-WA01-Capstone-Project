@@ -45,11 +45,6 @@ class OTPEmailActivity : AppCompatActivity() {
         auth=FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        /*if (auth.currentUser != null) {
-            startActivity(Intent(applicationContext, MainActivity::class.java))
-            finish()
-        }*/
-
         firstname = intent.getStringExtra("firstname").toString()
         lastname = intent.getStringExtra("lastname").toString()
         email = intent.getStringExtra("email").toString()
@@ -110,6 +105,7 @@ class OTPEmailActivity : AppCompatActivity() {
                         val plan = "none"
                         val DocumentReference = firestore.collection("user").document(userID)
                         val userData = hashMapOf(
+                            "uid" to userID,
                             "firstname" to firstname,
                             "lastname" to lastname,
                             "email" to email,

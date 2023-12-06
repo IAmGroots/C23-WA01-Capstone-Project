@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -25,9 +26,14 @@ import com.example.capstoneproject.adapter.BannerAdapter
 import com.example.capstoneproject.adapter.HomeArticlesAdapter
 import com.example.capstoneproject.databinding.FragmentHomeBinding
 import com.example.capstoneproject.model.Banner
+import com.example.capstoneproject.model.DataSourceUser
 import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
 import com.example.capstoneproject.ui.usage.UsageActivity
 import com.example.capstoneproject.ui.wifi.WifiActivity
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.firestore
 import java.util.Timer
 import java.util.TimerTask
 
@@ -39,7 +45,8 @@ class HomeFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
     private lateinit var timer: Timer
     private val DURATION: Long = 1000
-    private var allowRefresh = true
+    private val db = Firebase.firestore
+    private val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,18 +56,19 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        loadUserDataFromSharedPreferences()
         setupToolbar()
         setupBanner()
         setupAction()
         setupArticles()
+
+        getCurrentService(userID, viewLifecycleOwner)
 
         binding.scrollView.viewTreeObserver.addOnScrollChangedListener {
             binding.swipeRefresh.isEnabled = binding.scrollView.scrollY == 0
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            loadUserDataFromSharedPreferences()
+            getCurrentService(userID, viewLifecycleOwner)
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.swipeRefresh.isRefreshing = false
             }, DURATION)
@@ -69,14 +77,136 @@ class HomeFragment : Fragment() {
         return root
     }
 
-    private fun refresh() {
-        allowRefresh = binding.scrollView.scrollY == 0
-        if (allowRefresh) {
-            binding.swipeRefresh.setOnRefreshListener {
-                loadUserDataFromSharedPreferences()
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.swipeRefresh.isRefreshing = false
-                }, DURATION)
+    private fun getCurrentService(userID: String, lifecycleOwner: LifecycleOwner) {
+        db.collection("transaction")
+            .whereEqualTo("idUser", userID)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val lastTransaction = querySnapshot.sortedByDescending { it.get("timestamp").toString() }[0]
+//                Log.d("HomeFragment", lastTransaction.id)
+                val idOrder = lastTransaction.get("idOrder").toString()
+                val service = viewModel.getService(lastTransaction.get("idService").toString())
+                Log.d("DataUsageActivity", "Service Here Fragment =>> $service")
+
+                viewModel.checkStatusTransaction(idOrder)
+                viewModel.lastTrasaction.observe(lifecycleOwner) { status ->
+                    when (status) {
+                        "Success" -> {
+                            updatePlanAfterTransaction(userID, service, idOrder, status)
+                        }
+                        "Expired" -> {
+                            updateLastTransaction(idOrder, status)
+                        }
+                    }
+                }
+                getPlanFromDb(userID)
+            }
+    }
+
+    private fun updatePlanAfterTransaction(idUser: String, service: String, idOrder: String, status: String) {
+        db.collection("user")
+            .whereEqualTo("uid", idUser)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { data ->
+                if (!data.isEmpty) {
+                    val userDocument = data.documents[0]
+                    db.collection("user").document(userDocument.id).update("plan", service)
+                    updateLastTransaction(idOrder, status)
+                } else {
+                    Log.d("HomeFragment", "Something went wrong")
+                }
+            }
+    }
+
+    private fun updateLastTransaction(idOrder: String, status: String) {
+        db.collection("transaction")
+            .whereEqualTo("idOrder", idOrder)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { data ->
+                if (!data.isEmpty) {
+                    val transactionDocument = data.documents[0]
+                    db.collection("transaction").document(transactionDocument.id).update("status", status)
+                } else {
+                    Log.d("HomeFragment", "Something went wrong")
+                }
+            }
+    }
+
+    private fun getPlanFromDb(idUser: String) {
+        db.collection("user")
+            .whereEqualTo("uid", idUser)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { data ->
+                Log.d("HomeFragment", data.size().toString())
+                if (!data.isEmpty) {
+                    val userDocument = data.documents[0]
+                    val plan = userDocument.get("plan").toString()
+                    setUICurrentPlan(plan)
+                } else {
+                    Log.d("HomeFragment", "Something went wrong")
+                }
+            }
+    }
+
+    private fun setUICurrentPlan(plan: String) {
+        when (plan) {
+            "Gold" -> {
+                binding.cardPackageNone.visibility = View.GONE
+
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
+
+                binding.tvCurrentPackage.text = "Gold"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+
+                binding.tvCurrentSpeed.text = "Speed up to 50 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gold)
+            }
+            "Silver" -> {
+                binding.cardPackageNone.visibility = View.GONE
+
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
+
+                binding.tvCurrentPackage.text = "Silver"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+
+                binding.tvCurrentSpeed.text = "Speed up to 30 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.silver)
+            }
+            "Bronze" -> {
+                binding.cardPackageNone.visibility = View.GONE
+
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
+
+                binding.tvCurrentPackage.text = "Bronze"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+
+                binding.tvCurrentSpeed.text = "Speed up to 15 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.bronze)
+
+            }
+            else -> {
+                binding.cardPackage.visibility = View.GONE
             }
         }
     }
@@ -88,7 +218,7 @@ class HomeFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.navigation_notifications -> {
-                    Toast.makeText(requireContext(), "Icon Notification Clicked", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Icon Notification Click By $userID", Toast.LENGTH_SHORT).show()
                     true
                 }
                 else -> true
@@ -180,69 +310,6 @@ class HomeFragment : Fragment() {
             binding.rvArticles.layoutManager = LinearLayoutManager(requireContext())
             val adapter = HomeArticlesAdapter(listArticles)
             binding.rvArticles.adapter = adapter
-        }
-    }
-
-    private fun loadUserDataFromSharedPreferences() {
-        val sharedPreferences = requireActivity().getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val plan = sharedPreferences.getString("plan", "")
-
-        when (plan) {
-            "gold" -> {
-                binding.cardPackageNone.visibility = View.GONE
-
-                binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
-
-                binding.tvCurrentPackage.text = "Gold"
-                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
-
-                binding.tvCurrentSpeed.text = "Speed up to 50 mb/s"
-                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
-
-                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
-
-                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
-
-                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gold)
-            }
-            "silver" -> {
-                binding.cardPackageNone.visibility = View.GONE
-
-                binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
-
-                binding.tvCurrentPackage.text = "Silver"
-                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
-
-                binding.tvCurrentSpeed.text = "Speed up to 30 mb/s"
-                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
-
-                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
-
-                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
-
-                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.silver)
-            }
-            "bronze" -> {
-                binding.cardPackageNone.visibility = View.GONE
-
-                binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
-
-                binding.tvCurrentPackage.text = "Bronze"
-                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
-
-                binding.tvCurrentSpeed.text = "Speed up to 15 mb/s"
-                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
-
-                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
-
-                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
-
-                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.bronze)
-
-            }
-            else -> {
-                binding.cardPackage.visibility = View.GONE
-            }
         }
     }
 }
