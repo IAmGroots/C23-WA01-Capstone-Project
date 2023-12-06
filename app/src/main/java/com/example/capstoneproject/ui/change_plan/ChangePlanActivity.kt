@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityChangePlanBinding
-import com.example.capstoneproject.model.DataUser
 import com.example.capstoneproject.ui.order.OrderActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth

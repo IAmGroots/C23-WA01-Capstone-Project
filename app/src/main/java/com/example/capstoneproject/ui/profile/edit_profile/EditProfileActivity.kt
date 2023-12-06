@@ -9,7 +9,6 @@ import android.view.MotionEvent
 import android.widget.Toast
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.databinding.ActivityEditProfileBinding
-import com.example.capstoneproject.model.DataSourceUser
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -77,28 +76,28 @@ class EditProfileActivity : AppCompatActivity() {
 
         editor.apply()
 
-        updateDataSourceUser(loggedInUserId, firstName, lastName, email, phone)
+//        updateDataSourceUser(loggedInUserId, firstName, lastName, email, phone)
         Toast.makeText(this, "Data berhasil diubah", Toast.LENGTH_SHORT).show()
     }
 
-    private fun updateDataSourceUser(
-        userId: String,
-        firstName: String,
-        lastName: String,
-        email: String,
-        phone: String
-    ): Boolean {
-        for (user in DataSourceUser.user) {
-            if (user.id == userId) {
-                user.firstname = firstName
-                user.lastname = lastName
-                user.email = email
-                user.mobile = phone
-                return true // Return true when the user data is successfully updated
-            }
-        }
-        return false // Return false if user data update failed
-    }
+//    private fun updateDataSourceUser(
+//        userId: String,
+//        firstName: String,
+//        lastName: String,
+//        email: String,
+//        phone: String
+//    ): Boolean {
+//        for (user in DataSourceUser.user) {
+//            if (user.id == userId) {
+//                user.firstname = firstName
+//                user.lastname = lastName
+//                user.email = email
+//                user.mobile = phone
+//                return true // Return true when the user data is successfully updated
+//            }
+//        }
+//        return false // Return false if user data update failed
+//    }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setFocusable() {

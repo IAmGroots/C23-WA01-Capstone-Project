@@ -1,6 +1,5 @@
 package com.example.capstoneproject.ui.order
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,7 +12,6 @@ import com.example.capstoneproject.BuildConfig
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityOrderBinding
-import com.example.capstoneproject.model.DataSourceUser
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
