@@ -29,6 +29,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         val preferences = SettingPreferences.getInstance(application.dataStore)
         viewModel = ViewModelProvider(
             this,
@@ -43,18 +47,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.getId().observe(this) { id ->
-            if (id.isNullOrEmpty()) {
-                // Jika ID kosong, lakukan proses login
+
+        viewModel.getLogin().observe(this) { isLogin ->
+            if (!isLogin) {
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
+
             }
         }
-
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
         val navHostFragment =
@@ -63,8 +64,4 @@ class MainActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
     }
-
-//    companion object {
-//        var isLogin = false
-//    }
 }

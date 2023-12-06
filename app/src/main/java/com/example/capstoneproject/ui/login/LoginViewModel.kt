@@ -11,43 +11,11 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(private val preferences: SettingPreferences) : ViewModel() {
 
-//    val _userDummy = MutableLiveData<List<DataUser>>()
-//
-//    private val _loggedInUser = MutableLiveData<DataUser?>()
-//    val loggedInUser: LiveData<DataUser?> = _loggedInUser
-//
-//    fun getEmail(): LiveData<String> = preferences.getEmail().asLiveData()
-//
-//    init {
-//        getLogin()
-//    }
-//
-//    private fun getLogin() {
-//        _userDummy.value = DataSourceUser.user
-//    }
-//
-//    fun login(email: String, password: String) {
-//        val userLogin = _userDummy.value?.find {
-//            it.email == email && it.password == password
-//        }
-//        _loggedInUser.value = userLogin
-//
-//        if (loggedInUser.value != null) {
-//            viewModelScope.launch {
-//                preferences.saveEmail(loggedInUser.value!!.email.toString())
-//            }
-//        }
-//
-//        userLogin?.let {
-//            Log.e("LoginViewModel", "User logged in: ${it.firstname}, ${it.lastname}, ${it.email}")
-//        }
-//    }
-//
-    fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
-    fun saveId(userID: String) {
-        viewModelScope.launch {
-            preferences.saveId(userID)
 
+    fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
+    fun saveLogin(isLogin: Boolean) {
+        viewModelScope.launch {
+            preferences.saveLogin(isLogin)
         }
     }
 

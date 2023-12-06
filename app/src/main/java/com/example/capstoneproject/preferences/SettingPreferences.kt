@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -16,22 +17,22 @@ class SettingPreferences constructor(private val dataStore: DataStore<Preference
 
     private val THEME_KEY = booleanPreferencesKey("theme_setting")
     private val BIOMETRIC_KEY = booleanPreferencesKey("biometric_setting")
-    private val ID_KEY = stringPreferencesKey("id_string")
+    private val LOGIN_KEY = booleanPreferencesKey("login_string")
 
-    fun getId(): Flow<String> {
+    fun getLogin(): Flow<Boolean> {
         return dataStore.data.map { preferences ->
-            preferences[ID_KEY] ?: ""
+            preferences[LOGIN_KEY] ?: false
         }
     }
-    suspend fun saveId(id : String) {
+    suspend fun saveLogin(isLogin : Boolean) {
         dataStore.edit { preferences ->
-            preferences[ID_KEY] = id
+            preferences[LOGIN_KEY] = isLogin
         }
     }
 
     suspend fun logout() {
         dataStore.edit { preferences ->
-            preferences[ID_KEY] = ""
+            preferences[LOGIN_KEY] = false
         }
     }
 
