@@ -215,9 +215,9 @@ class OrderActivity : AppCompatActivity() {
                                             .addOnSuccessListener { querySnapshot ->
                                                 for (document in querySnapshot) {
                                                     val typePackage = when(id_plan) {
-                                                        1 -> "gold"
-                                                        2 -> "silver"
-                                                        3 -> "bronze"
+                                                        1 -> "Gold"
+                                                        2 -> "Silver"
+                                                        3 -> "Bronze"
                                                         else -> "none"
                                                     }
                                                     db.collection("user").document(document.id).update("plan", typePackage)
