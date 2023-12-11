@@ -6,6 +6,7 @@
     <color name="blue">#01A1DD</color>
     <color name="red">#FF7272</color>
     <color name="yellow">#F47A35</color>
+    <color name="disabled">#9DD9FE</color>
     <color name="secwhite">#e8e8e8</color>
     <color name="secblack">#616060</color>
     <color name="lightGray">#ECECEC</color>

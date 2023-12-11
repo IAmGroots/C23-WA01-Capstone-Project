@@ -83,9 +83,10 @@ class OnGoingFragment : Fragment() {
                 }
                 Log.d("MainViewModel", "setRecyclerView Activity")
             }
-            .addOnFailureListener {
-                Log.d("HISTORY", "Something went wrong")
-            }
+        if (listOrder.isEmpty()) {
+            binding.rvHistory.visibility = View.GONE
+            binding.tvEmpty.visibility = View.VISIBLE
+        }
     }
 
     private fun setRecylerview(listHistory: List<History>) {

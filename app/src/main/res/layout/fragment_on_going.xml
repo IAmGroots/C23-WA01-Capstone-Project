@@ -47,6 +47,7 @@
                 android:gravity="center"
                 android:textColor="@color/secondaryColor"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

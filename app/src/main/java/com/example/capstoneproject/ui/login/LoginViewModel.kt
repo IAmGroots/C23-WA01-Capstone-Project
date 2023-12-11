@@ -11,11 +11,16 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(private val preferences: SettingPreferences) : ViewModel() {
 
-
     fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
     fun saveLogin(isLogin: Boolean) {
         viewModelScope.launch {
             preferences.saveLogin(isLogin)
+        }
+    }
+
+    fun saveUID(uid: String) {
+        viewModelScope.launch {
+            preferences.saveUID(uid)
         }
     }
 

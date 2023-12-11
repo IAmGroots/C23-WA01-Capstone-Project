@@ -59,7 +59,6 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
     implementation("androidx.room:room-common:2.6.0")
-    implementation("com.google.firebase:firebase-firestore:24.9.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -74,8 +73,10 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     //firebase
+    implementation("com.google.firebase:firebase-firestore:24.9.1")
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
+    implementation("com.firebaseui:firebase-ui-database:8.0.0")
 
     // fingerprint biometric
     implementation("androidx.biometric:biometric-ktx:1.2.0-alpha05")

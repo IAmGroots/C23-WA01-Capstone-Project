@@ -50,8 +50,7 @@ class ProfileFragment : Fragment() {
         val root: View = binding.root
 
         val preferences = SettingPreferences.getInstance(requireActivity().application.dataStore)
-        viewModel =
-            ViewModelProvider(this, ViewModelFactory(preferences))[ProfileViewModel::class.java]
+        viewModel = ViewModelProvider(this, ViewModelFactory(preferences))[ProfileViewModel::class.java]
 
         loadUserData()
         setTheme()
@@ -59,6 +58,10 @@ class ProfileFragment : Fragment() {
         setActionButton()
         setupListHistoryPayment()
         setupSocialMediaLinks()
+
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
 
         getCurrentService(userID, viewLifecycleOwner)
 
@@ -75,6 +78,7 @@ class ProfileFragment : Fragment() {
 
         binding.containerLogout.setOnClickListener {
             viewModel.logout()
+            FirebaseAuth.getInstance().signOut()
             val intent = Intent(requireContext(), LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
@@ -83,9 +87,12 @@ class ProfileFragment : Fragment() {
         return root
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
     private fun loadUserData(){
-        val sharedPreferences =
-            requireActivity().getSharedPreferences("UserData", Context.MODE_PRIVATE)
+        val sharedPreferences = requireActivity().getSharedPreferences("UserData", Context.MODE_PRIVATE)
         val firstName = sharedPreferences.getString("firstName", "")
         val lastName = sharedPreferences.getString("lastName", "")
         val email = sharedPreferences.getString("email", "")
@@ -136,6 +143,11 @@ class ProfileFragment : Fragment() {
             binding.switchBiometric.isChecked = isEnableBiometric
         }
         binding.switchBiometric.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                Toast.makeText(requireContext(), "Biometric Fingerprint Enabled", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Biometric Fingerprint Disabled", Toast.LENGTH_SHORT).show()
+            }
             viewModel.saveBiometric(isChecked)
         }
     }
@@ -149,6 +161,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getCurrentService(userID: String, lifecycleOwner: LifecycleOwner) {
+        viewModel.setLoading(true)
         db.collection("transaction").whereEqualTo("idUser", userID).get()
             .addOnSuccessListener { querySnapshot ->
                 val lastTransaction =
@@ -173,12 +186,9 @@ class ProfileFragment : Fragment() {
                         }
                     }
                     getPlanFromDb(userID)
-                } ?: run {
-                    // Handle kasus ketika querySnapshot kosong
-                    // Misalnya, tampilkan pesan bahwa tidak ada transaksi ditemukan
-                    Log.d("HomeFragment", "No transaction found")
                 }
             }
+        viewModel.setLoading(false)
     }
 
     private fun updatePlanAfterTransaction(idUser: String, service: String) {

@@ -21,15 +21,12 @@ class EditProfileActivity : AppCompatActivity() {
         setFocusable()
 
         binding.btnCancel.setOnClickListener {
-            // ??? Intent balik ProfileFragment
-
-            startActivity(Intent(this, MainActivity::class.java))
+            super.onBackPressed()
         }
 
         binding.btnSaveChanges.setOnClickListener {
             saveChanges()
             startActivity(Intent(this, MainActivity::class.java))
-
         }
 
         setupToolbar()
@@ -76,28 +73,11 @@ class EditProfileActivity : AppCompatActivity() {
 
         editor.apply()
 
-//        updateDataSourceUser(loggedInUserId, firstName, lastName, email, phone)
-        Toast.makeText(this, "Data berhasil diubah", Toast.LENGTH_SHORT).show()
-    }
 
-//    private fun updateDataSourceUser(
-//        userId: String,
-//        firstName: String,
-//        lastName: String,
-//        email: String,
-//        phone: String
-//    ): Boolean {
-//        for (user in DataSourceUser.user) {
-//            if (user.id == userId) {
-//                user.firstname = firstName
-//                user.lastname = lastName
-//                user.email = email
-//                user.mobile = phone
-//                return true // Return true when the user data is successfully updated
-//            }
-//        }
-//        return false // Return false if user data update failed
-//    }
+
+//        updateDataSourceUser(loggedInUserId, firstName, lastName, email, phone)
+        Toast.makeText(this, "Profile successfully updated", Toast.LENGTH_SHORT).show()
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setFocusable() {

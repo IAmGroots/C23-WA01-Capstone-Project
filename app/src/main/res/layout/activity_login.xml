@@ -173,9 +173,10 @@
                 android:foreground="?attr/selectableItemBackground">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/bgBtnLogin"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/cardview_border"
+                    android:background="@drawable/cardview_border_no_padding"
                     android:gravity="center">
 
                     <TextView
@@ -202,6 +203,7 @@
                 android:foreground="?attr/selectableItemBackground">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/bgBtnBiometric"
                     android:layout_width="48dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/cardview_border_no_padding"

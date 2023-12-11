@@ -8,7 +8,8 @@ import com.example.capstoneproject.preferences.SettingPreferences
 class MainViewModel(private val preferences: SettingPreferences) : ViewModel() {
 
     fun getTheme(): LiveData<Boolean> = preferences.getThemeSetting().asLiveData()
-
+    fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
+    fun getUID(): LiveData<String> = preferences.getUID().asLiveData()
     fun getLogin(): LiveData<Boolean> = preferences.getLogin().asLiveData()
 
 }

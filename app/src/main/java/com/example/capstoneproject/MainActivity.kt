@@ -39,21 +39,19 @@ class MainActivity : AppCompatActivity() {
             ViewModelFactory(preferences)
         )[MainViewModel::class.java]
 
+        viewModel.getLogin().observe(this) {
+            Log.d("FIX BUG", "Pref isLogin : $it")
+        }
+
+        viewModel.getUID().observe(this) {
+            Log.d("FIX BUG", "Pref UID : $it")
+        }
+
         viewModel.getTheme().observe(this) { isDarkModeEnabled ->
             if (isDarkModeEnabled) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }
-
-
-        viewModel.getLogin().observe(this) { isLogin ->
-            if (!isLogin) {
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-
             }
         }
 
