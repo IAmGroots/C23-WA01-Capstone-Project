@@ -73,11 +73,11 @@ class HistoryViewModel : ViewModel() {
                     }
                 }
                 _listHistory.value = resultList
-                _isLoading.value = false
                 Log.d("MainViewModel", "Set Data ViewModel")
                 Log.d("MainViewModel", "Diluar Response ViewModel")
             }
         }
+        _isLoading.value = false
     }
 
     fun getAllHistoryTransactionSuccessful(listOrder: List<Order>) {
@@ -103,11 +103,11 @@ class HistoryViewModel : ViewModel() {
                     }
                 }
                 _listHistory.value = resultList
-                _isLoading.value = false
                 Log.d("MainViewModel", "Set Data ViewModel")
                 Log.d("MainViewModel", "Diluar Response ViewModel")
             }
         }
+        _isLoading.value = false
     }
 
     fun getAllHistoryTransactionUnsuccessful(listOrder: List<Order>) {
@@ -133,10 +133,10 @@ class HistoryViewModel : ViewModel() {
                     }
                 }
                 _listHistory.value = resultList
-                _isLoading.value = false
                 Log.d("MainViewModel", "Set Data ViewModel")
                 Log.d("MainViewModel", "Diluar Response ViewModel")
             }
         }
+        _isLoading.value = false
     }
 }

@@ -20,10 +20,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.capstoneproject.R
 import com.example.capstoneproject.adapter.BannerAdapter
+import com.example.capstoneproject.adapter.FirebaseMessageAdapter
 import com.example.capstoneproject.adapter.HomeArticlesAdapter
 import com.example.capstoneproject.databinding.FragmentHomeBinding
 import com.example.capstoneproject.model.Banner
 import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
+import com.example.capstoneproject.ui.chat.ChatActivity
 import com.example.capstoneproject.ui.usage.UsageActivity
 import com.example.capstoneproject.ui.wifi.WifiActivity
 import com.google.firebase.Firebase
@@ -41,8 +43,7 @@ class HomeFragment : Fragment() {
     private lateinit var timer: Timer
     private val DURATION: Long = 1000
     private val db = Firebase.firestore
-    val currentUser = FirebaseAuth.getInstance().currentUser
-    val userID = currentUser?.uid ?: ""
+    private val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +58,10 @@ class HomeFragment : Fragment() {
         setupAction()
         setupArticles()
 
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+
         getCurrentService(userID, viewLifecycleOwner)
 
         binding.scrollView.viewTreeObserver.addOnScrollChangedListener {
@@ -70,10 +75,33 @@ class HomeFragment : Fragment() {
             }, DURATION)
         }
 
+        binding.btnChat.setOnClickListener {
+            db.collection("user")
+                .whereEqualTo("uid", userID)
+                .limit(1)
+                .get()
+                .addOnSuccessListener { data ->
+                    if (!data.isEmpty) {
+                        val user = data.documents[0]
+                        val fullname = user.get("firstname").toString() + " " + user.get("lastname").toString()
+                        val intent = Intent(requireContext(), ChatActivity::class.java)
+                        intent.putExtra(ChatActivity.EXTRA_FULLNAME, fullname)
+                        startActivity(intent)
+                    } else {
+                        Log.d("ChatActivity", "Something went wrong")
+                    }
+                }
+        }
+
         return root
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
     private fun getCurrentService(userID: String, lifecycleOwner: LifecycleOwner) {
+        viewModel.setLoading(true)
         db.collection("transaction")
             .whereEqualTo("idUser", userID)
             .get()
@@ -82,7 +110,6 @@ class HomeFragment : Fragment() {
                     querySnapshot.sortedByDescending { it.get("timestamp").toString() }
                         .firstOrNull()
                 lastTransaction?.let {
-                    // Lakukan operasi yang diperlukan di sini
                     val idOrder = it.get("idOrder").toString()
                     val service = viewModel.getService(it.get("idService").toString())
                     Log.d("DataUsageActivity", "Service Here Fragment =>> $service")
@@ -100,12 +127,9 @@ class HomeFragment : Fragment() {
                         }
                     }
                     getPlanFromDb(userID)
-                } ?: run {
-                    // Handle kasus ketika querySnapshot kosong
-                    // Misalnya, tampilkan pesan bahwa tidak ada transaksi ditemukan
-                    Log.d("HomeFragment", "No transaction found")
                 }
             }
+        viewModel.setLoading(false)
     }
 
     private fun updatePlanAfterTransaction(

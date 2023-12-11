@@ -24,6 +24,13 @@ class HomeViewModel : ViewModel() {
     private val _isLastTransaction = MutableLiveData<String>()
     val lastTrasaction: LiveData<String> = _isLastTransaction
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    fun setLoading(condition: Boolean) {
+        _isLoading.value = condition
+    }
+
     init {
         getMoreArticles(4)
         getAllService()

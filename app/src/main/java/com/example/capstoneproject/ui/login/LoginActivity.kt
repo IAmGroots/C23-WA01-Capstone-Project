@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
@@ -17,8 +16,8 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.example.capstoneproject.MainActivity
+import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityLoginBinding
 import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
@@ -28,7 +27,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
 
 class LoginActivity : AppCompatActivity() {
@@ -50,30 +48,20 @@ class LoginActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         val preferences = SettingPreferences.getInstance(application.dataStore)
         viewModel = ViewModelProvider(
             this,
             ViewModelFactory(preferences)
         )[LoginViewModel::class.java]
 
-
-        super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
         getBiometric()
-
-//        viewModel.getEmail().observe(this) { email ->
-//            if (email == "empty") {
-//                binding.etEmail.text = Editable.Factory.getInstance().newEditable("")
-//            } else {
-//                binding.etEmail.text = Editable.Factory.getInstance().newEditable(email)
-//            }
-//        }
-
         setFocusable()
 
         binding.btnLogin.setOnClickListener {
@@ -100,43 +88,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-//        viewModel.loggedInUser.observe(this) { userLogin ->
-//            isLoggingIn = false
-//            if (userLogin != null) {
-//                Toast.makeText(this@LoginActivity, "SignIn is success", Toast.LENGTH_SHORT).show()
-//                Log.e("test","tist")
-//                setData()
-//
-//                MainActivity.isLogin = true
-//                val intent = Intent(this, MainActivity::class.java)
-//                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//                startActivity(intent)
-//            } else {
-//                // Jika login gagal, kurangi percobaan dan mulai countdown jika sudah 3 kali salah
-//                attemptsRemaining--
-//                if (attemptsRemaining == 0 && !isCountdownActive) {
-//                    Toast.makeText(
-//                        this@LoginActivity,
-//                        "SignIn is failed. Remaining attempts: $attemptsRemaining",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    startCountdown()
-//                } else if (isCountdownActive) {
-//                    Toast.makeText(
-//                        this@LoginActivity,
-//                        "Coba lagi dalam ${countdownTimeLeft / 1000} detik",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                } else {
-//                    Toast.makeText(
-//                        this@LoginActivity,
-//                        "SignIn is failed. Remaining attempts: $attemptsRemaining",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            }
-//        }
-
         binding.regishere.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
@@ -150,35 +101,22 @@ class LoginActivity : AppCompatActivity() {
             val biometricManager = BiometricManager.from(this)
             when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
                 BiometricManager.BIOMETRIC_SUCCESS -> {
-                    Toast.makeText(
-                        this,
-                        "App can authenticate is using bimetric",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this, "App can authenticate is using bimetric", Toast.LENGTH_SHORT).show()
                     createBiometricListener()
                     createPromptInfo()
                     biometricPrompt.authenticate(promptInfo)
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                    Toast.makeText(
-                        this,
-                        "No biometric feature available on this device",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this, "No biometric feature available on this device", Toast.LENGTH_SHORT).show()
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-                    Toast.makeText(
-                        this,
-                        "Biometric feature are currently unavailable",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this, "Biometric feature are currently unavailable", Toast.LENGTH_SHORT).show()
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                    Toast.makeText(this, "Device not enable biometric feature", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this, "Device not enable biometric feature", Toast.LENGTH_SHORT).show()
                 }
 
                 else -> {
@@ -201,45 +139,32 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Toast.makeText(this, "SignIn Success", Toast.LENGTH_SHORT).show()
                     setData()
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    finish()
                 } else {
                     // Jika login gagal, kurangi percobaan dan mulai countdown jika sudah 3 kali salah
                     attemptsRemaining--
                     Log.e("Sec", attemptsRemaining.toString())
                     if (attemptsRemaining == 0 && isCountdownActive) {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "The data you entered is incorrect, please check again.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@LoginActivity, "The data you entered is incorrect, please check again.", Toast.LENGTH_SHORT).show()
 
                         val delayInMillis: Long = 2000
                         Handler(Looper.getMainLooper()).postDelayed({
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "Try again in ${countdownTimeLeft / 1000} seconds",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(this@LoginActivity, "Try again in ${countdownTimeLeft / 1000} seconds", Toast.LENGTH_SHORT).show()
                         }, delayInMillis)
                     } else {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "The data you entered is incorrect, please check again.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@LoginActivity, "The data you entered is incorrect, please check again.", Toast.LENGTH_SHORT).show()
 
-                        val delayInMillis: Long = 2000
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "Remaining attempts: $attemptsRemaining",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }, delayInMillis)
-                        startCountdown()
+                        if (attemptsRemaining <= 0) {
+                            val delayInMillis: Long = 2000
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                Toast.makeText(this@LoginActivity, "Remaining attempts: 0", Toast.LENGTH_SHORT).show()
+                            }, delayInMillis)
+                            startCountdown()
+                        } else {
+                            val delayInMillis: Long = 2000
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                Toast.makeText(this@LoginActivity, "Remaining attempts: $attemptsRemaining", Toast.LENGTH_SHORT).show()
+                            }, delayInMillis)
+                        }
                     }
                 }
             }
@@ -289,59 +214,80 @@ class LoginActivity : AppCompatActivity() {
     private fun setData() {
         val userID = FirebaseAuth.getInstance().currentUser?.uid
         val set = db.collection("user").document(userID!!)
-        Log.e("id", userID)
-        Log.e("set", set.path)
-        set.get().addOnSuccessListener { document ->
-            if (document != null && document.exists()) {
+        Log.e("FIX BUG", userID)
+        db.collection("user")
+            .whereEqualTo("uid", userID)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    val user = querySnapshot.documents[0]
 
-                val firstname = document.getString("firstname")
-                val lastname = document.getString("lastname")
-                val email = document.getString("email")
-                val mobile = document.getString("mobile")
-                val plan = document.getString("plan")
+                    val firstname = user.getString("firstname")
+                    val lastname = user.getString("lastname")
+                    val email = user.getString("email")
+                    val mobile = user.getString("mobile")
+                    val plan = user.getString("plan")
 
-                Log.e("id", userID)
-                Log.e("firstname", firstname.toString())
-                Log.e("lastname", lastname.toString())
-                Log.e("email", email.toString())
-                Log.e("mobile", mobile.toString())
-                Log.e("plan", plan.toString())
+                    val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putString("id", userID)
+                    editor.putString("firstName", firstname)
+                    editor.putString("lastName", lastname)
+                    editor.putString("email", email)
+                    editor.putString("phone", mobile)
+                    editor.putString("plan", plan)
+                    editor.apply()
 
-                // Simpan data ke SharedPreferences jika data pengguna tidak null
-                val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-                val editor = sharedPreferences.edit()
-                editor.putString("id", userID)
-                editor.putString("firstName", firstname)
-                editor.putString("lastName", lastname)
-                editor.putString("email", email)
-                editor.putString("phone", mobile)
-                editor.putString("plan", plan)
-                editor.apply()
+                    Log.e("Success", "Save Data")
+                    viewModel.saveLogin(true)
+                    viewModel.saveUID(userID)
 
-                Log.e("Success", "Save Data")
-                viewModel.saveLogin(true)
-            } else {
-                Toast.makeText(this, "User data doesn't exist", Toast.LENGTH_SHORT).show()
+                    Log.d("FIX BUG", "Login Activity : Function SetData")
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                }
             }
-        }.addOnFailureListener { exception ->
-            Toast.makeText(
-                this,
-                "Failed retrieve firestore data: ${exception.message}",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Failed retrieve firestore data: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
-
     private fun startCountdown() {
+        binding.bgBtnLogin.apply {
+            binding.btnLogin.isEnabled = false
+            setBackgroundResource(R.drawable.cardview_border_disabled)
+        }
+        binding.bgBtnBiometric.apply {
+            binding.bgBtnBiometric.isEnabled = false
+            setBackgroundResource(R.drawable.cardview_border_disabled)
+        }
+        Log.d("FIX BUG", "Btn Disabled")
         isCountdownActive = true
         countdownTimer = object : CountDownTimer(300000, 1000) { // 300000 ms = 5 menit
             override fun onTick(millisUntilFinished: Long) {
                 countdownTimeLeft = millisUntilFinished // Simpan waktu yang tersisa
+                val secondsRemaining = millisUntilFinished / 1000
+                if (secondsRemaining % 5 == 0L) {
+                    val toastMessage = "Sisa waktu: ${secondsRemaining}s"
+                    Toast.makeText(this@LoginActivity, toastMessage, Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onFinish() {
                 isCountdownActive = false
+                binding.btnLogin.setBackgroundResource(R.drawable.cardview_border_no_padding)
+
+                binding.bgBtnLogin.apply {
+                    binding.btnLogin.isEnabled = true
+                    setBackgroundResource(R.drawable.cardview_border_no_padding)
+                }
+                binding.bgBtnBiometric.apply {
+                    binding.btnBiometric.isEnabled = true
+                    setBackgroundResource(R.drawable.cardview_border_no_padding)
+                }
+                Log.d("FIX BUG", "Btn Enabled")
                 Toast.makeText(
                     this@LoginActivity,
                     "Anda dapat mencoba login lagi",
@@ -359,9 +305,7 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    Toast.makeText(this@LoginActivity, "Authenticated Success", Toast.LENGTH_SHORT)
-                        .show()
-//                    MainActivity.isLogin = true
+                    Toast.makeText(this@LoginActivity, "Authenticated Success", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)

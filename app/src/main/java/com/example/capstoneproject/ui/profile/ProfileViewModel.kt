@@ -25,6 +25,13 @@ class ProfileViewModel(private val preferences: SettingPreferences) : ViewModel(
     private val _listHistoryPayment = MutableLiveData<List<HistoryPayment>>()
     val listHistoryPayment: LiveData<List<HistoryPayment>> = _listHistoryPayment
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    fun setLoading(condition: Boolean) {
+        _isLoading.value = condition
+    }
+
     init {
         getAllHistoryPayment()
         getAllService()

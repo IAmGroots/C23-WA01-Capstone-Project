@@ -18,6 +18,18 @@ class SettingPreferences constructor(private val dataStore: DataStore<Preference
     private val THEME_KEY = booleanPreferencesKey("theme_setting")
     private val BIOMETRIC_KEY = booleanPreferencesKey("biometric_setting")
     private val LOGIN_KEY = booleanPreferencesKey("login_string")
+    private val UID = stringPreferencesKey("uid")
+
+    fun getUID(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[UID] ?: ""
+        }
+    }
+    suspend fun saveUID(uid : String) {
+        dataStore.edit { preferences ->
+            preferences[UID] = uid
+        }
+    }
 
     fun getLogin(): Flow<Boolean> {
         return dataStore.data.map { preferences ->
@@ -33,6 +45,8 @@ class SettingPreferences constructor(private val dataStore: DataStore<Preference
     suspend fun logout() {
         dataStore.edit { preferences ->
             preferences[LOGIN_KEY] = false
+            preferences[UID] = ""
+            preferences[BIOMETRIC_KEY] = false
         }
     }
 
