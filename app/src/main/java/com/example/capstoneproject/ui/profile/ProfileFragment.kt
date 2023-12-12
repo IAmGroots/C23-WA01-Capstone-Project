@@ -30,6 +30,8 @@ import com.example.capstoneproject.ui.profile.edit_profile.EditProfileActivity
 import androidx.biometric.BiometricManager
 import androidx.lifecycle.LifecycleOwner
 import com.example.capstoneproject.ui.history.HistoryActivity
+import com.example.capstoneproject.ui.profile.biometric.BiometricActivity
+import com.example.capstoneproject.ui.profile.theme.DarkModeActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
@@ -53,7 +55,6 @@ class ProfileFragment : Fragment() {
         viewModel = ViewModelProvider(this, ViewModelFactory(preferences))[ProfileViewModel::class.java]
 
         loadUserData()
-        setTheme()
         setBiometric()
         setActionButton()
         setupListHistoryPayment()
@@ -74,6 +75,16 @@ class ProfileFragment : Fragment() {
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.swipeRefresh.isRefreshing = false
             }, DURATION)
+        }
+
+        binding.containerBiometricFingerprint.setOnClickListener {
+            val intent = Intent(requireContext(), BiometricActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.containerMode.setOnClickListener {
+            val intent = Intent(requireContext(), DarkModeActivity::class.java)
+            startActivity(intent)
         }
 
         binding.containerLogout.setOnClickListener {
@@ -120,43 +131,12 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun setTheme() {
-        viewModel.getTheme().observe(viewLifecycleOwner) { isDarkModeActive ->
-            binding.switchMode.isChecked = isDarkModeActive
-        }
-
-        binding.switchMode.setOnCheckedChangeListener { _, isChecked ->
-            setAppTheme(isChecked)
-            viewModel.saveTheme(isChecked)
-        }
-    }
-
     private fun setBiometric() {
         val biometricManager = BiometricManager.from(requireContext())
         when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
                 binding.containerBiometricFingerprint.visibility = View.GONE
             }
-        }
-
-        viewModel.getBiometric().observe(viewLifecycleOwner) { isEnableBiometric ->
-            binding.switchBiometric.isChecked = isEnableBiometric
-        }
-        binding.switchBiometric.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                Toast.makeText(requireContext(), "Biometric Fingerprint Enabled", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(requireContext(), "Biometric Fingerprint Disabled", Toast.LENGTH_SHORT).show()
-            }
-            viewModel.saveBiometric(isChecked)
-        }
-    }
-
-    private fun setAppTheme(isDarkMode: Boolean) {
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 

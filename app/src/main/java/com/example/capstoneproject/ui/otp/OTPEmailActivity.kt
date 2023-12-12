@@ -29,13 +29,13 @@ class OTPEmailActivity : AppCompatActivity() {
     private var isCountdownActiveResend = false
     private lateinit var countdownTimer: CountDownTimer
     private var countdownTimeLeft: Long = 0
-    var firstname: String = ""
-    var lastname: String = ""
-    var mobile: String = ""
-    var email: String = ""
-    var password: String = ""
-    var userID: String = ""
-    var random : Int=0
+    private var firstname: String = ""
+    private var lastname: String = ""
+    private var email: String = ""
+    private var mobile: String = ""
+    private var password: String = ""
+    private var userID: String = ""
+    private var random : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,10 +48,9 @@ class OTPEmailActivity : AppCompatActivity() {
         firstname = intent.getStringExtra("firstname").toString()
         lastname = intent.getStringExtra("lastname").toString()
         email = intent.getStringExtra("email").toString()
-        mobile = intent.getStringExtra("mobile").toString()
         password = intent.getStringExtra("password").toString()
 
-        binding.showEmail.setText(email.toString())
+//        binding.showEmail.setText(email.toString())
         binding.signupText.visibility = View.INVISIBLE
         binding.reSendHere.visibility = View.INVISIBLE
 
@@ -102,17 +101,22 @@ class OTPEmailActivity : AppCompatActivity() {
                         ).show()
                         /*saveEmail()*/
                         userID = auth.currentUser!!.uid
-                        val plan = "none"
+                        val plan = "None"
                         val DocumentReference = firestore.collection("user").document(userID)
                         val userData = hashMapOf(
                             "uid" to userID,
                             "firstname" to firstname,
                             "lastname" to lastname,
                             "email" to email,
-                            "mobile" to mobile,
                             "password" to password,
                             "plan" to plan
                         )
+
+                        if (mobile.isNotEmpty()) {
+                            userData["mobile"] = mobile
+                        } else {
+                            userData["mobile"] = "" // Jika mobile kosong, simpan sebagai string kosong ("")
+                        }
                         DocumentReference.set(userData).addOnSuccessListener {
                             Log.e("SuccessRegist", "DocumentSnapshot added with ID: $userID")
                             Toast.makeText(this, "Regist Success! ", Toast.LENGTH_SHORT).show()
@@ -154,8 +158,8 @@ class OTPEmailActivity : AppCompatActivity() {
     }
 
     fun random(){
-        random=Random.nextInt(100000..999999)
-        var mail=SendMail("droidbytes11@gmail.com","ojjzedbyawubvwlv",email,"Signup app's OTP",
+        random = Random.nextInt(100000..999999)
+        var mail = SendMail("droidbytes11@gmail.com","ojjzedbyawubvwlv",email,"Signup app's OTP",
             "Here is your OTP is -> $random \n" +
                     "Please ignore if you didn't ask the code")
         mail.execute()
@@ -183,7 +187,6 @@ class OTPEmailActivity : AppCompatActivity() {
             "firstname" to firstname,
             "lastname" to lastname,
             "email" to email,
-            "mobile" to mobile,
             "password" to password
         )
         val db = Firebase.firestore

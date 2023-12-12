@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/icon_back"
-            app:navigationIconTint="@color/primaryColor"
             app:title="Change Package"
             app:titleCentered="true"
             app:titleTextColor="@color/white"

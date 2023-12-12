@@ -29,7 +29,7 @@ class ChangePlanActivity : AppCompatActivity() {
         setupToolbar()
 
         binding.btnChangePlanGold.setOnClickListener {
-            plan = "gold"
+            plan = "Gold"
             val detail = Intent(this, OrderActivity::class.java)
             detail.putExtra(OrderActivity.EXTRA_PACKAGE, plan)
             startActivity(detail)

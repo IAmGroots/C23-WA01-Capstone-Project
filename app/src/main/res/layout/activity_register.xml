@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="96dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/montserrat_bold"
             android:text="Register"
@@ -88,44 +88,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etLastName" />
 
-        <LinearLayout
-            android:id="@+id/mobilelinear"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etEmail">
-
-            <EditText
-                android:id="@+id/etMobileFormat"
-                style="@style/EditText"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="8dp"
-                android:enabled="false"
-                android:focusable="false"
-                android:paddingHorizontal="24dp"
-                android:textStyle="bold"
-                android:hint="+62"
-                android:imeOptions="actionNext"
-                android:textSize="14sp" />
-
-            <com.example.capstoneproject.ui.customView.mobileEditText
-                android:id="@+id/etMobile"
-                android:focusable="false"
-                style="@style/EditText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Mobile"
-                android:imeOptions="actionNext"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
             style="@style/EditTextNoPadding"
@@ -138,19 +100,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mobilelinear"
+            app:layout_constraintTop_toBottomOf="@+id/etEmail"
             app:passwordToggleEnabled="true">
 
             <com.example.capstoneproject.ui.customView.passwordEditText
                 android:id="@+id/etPassword"
                 style="@style/EditTextPassword"
-                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:imeOptions="actionNext"
+                android:focusable="false"
                 android:hint="Password"
-                android:textSize="14sp"
-                android:inputType="textPassword" />
+                android:imeOptions="actionNext"
+                android:inputType="textPassword"
+                android:textSize="14sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -271,7 +233,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="67dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

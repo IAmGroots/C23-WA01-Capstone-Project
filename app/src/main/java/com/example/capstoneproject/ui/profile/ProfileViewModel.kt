@@ -40,22 +40,15 @@ class ProfileViewModel(private val preferences: SettingPreferences) : ViewModel(
     private fun getAllHistoryPayment() {
         _listHistoryPayment.value = DataSourceHistoryPayment.dataHistoryPayment
     }
-
-    fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
-
-    fun getTheme(): LiveData<Boolean> = preferences.getThemeSetting().asLiveData()
-
-    fun saveBiometric(isBiometricActive : Boolean) {
-        viewModelScope.launch {
-            preferences.saveBiometricSetting(isBiometricActive)
-        }
-    }
-
-    fun saveTheme(isDarkModeActive : Boolean) {
-        viewModelScope.launch {
-            preferences.saveThemeSetting(isDarkModeActive)
-        }
-    }
+//
+//    fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
+//
+//
+//    fun saveBiometric(isBiometricActive : Boolean) {
+//        viewModelScope.launch {
+//            preferences.saveBiometricSetting(isBiometricActive)
+//        }
+//    }
 
     fun getAllService() {
         db.collection("services")
@@ -78,7 +71,7 @@ class ProfileViewModel(private val preferences: SettingPreferences) : ViewModel(
     }
 
     fun getService(idService: String): String {
-        return listService.find { it.id == idService }?.name ?: "none"
+        return listService.find { it.id == idService }?.name ?: "None"
     }
 
     fun checkStatusTransaction(idOrder: String) {

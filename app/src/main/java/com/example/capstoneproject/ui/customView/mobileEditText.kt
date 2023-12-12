@@ -24,15 +24,15 @@ class mobileEditText : AppCompatEditText {
         addTextChangedListener(object  : TextWatcher {
             override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(text: Editable?) {
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!isPhoneNumberValid(text.toString()) || text.toString().length < 10) {
-                    setError("Invalid phone number")
+                    error = "Invalid mobile number format"
                 } else {
                     error = null
                 }
             }
+
+            override fun afterTextChanged(text: Editable?) {}
         })
     }
 

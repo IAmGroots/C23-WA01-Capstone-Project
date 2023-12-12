@@ -1,8 +1,10 @@
 package com.example.capstoneproject.ui.chat
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.capstoneproject.R
@@ -35,6 +37,7 @@ class ChatActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupToolbar()
+        setFocusable()
 
         dbRealtime = Firebase.database
         val messagesRef = dbRealtime.reference.child(MESSAGES_CHILD).child(userID)
@@ -89,5 +92,23 @@ class ChatActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_FULLNAME = "extra_fullname"
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setFocusable() {
+        binding.messageEditText.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    binding.messageEditText.isFocusable = true
+                    binding.messageEditText.isFocusableInTouchMode = true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    binding.messageEditText.requestFocus()
+                }
+            }
+            false
+        }
+
     }
 }

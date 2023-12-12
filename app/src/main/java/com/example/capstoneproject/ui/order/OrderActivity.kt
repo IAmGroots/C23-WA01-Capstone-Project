@@ -4,9 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.BuildConfig
 import com.example.capstoneproject.MainActivity
@@ -130,7 +134,11 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvSpeedFrom.text = "Speed up to 15mb/s"
             }
             else -> {
-                Log.d("INFO", "Something went wrong")
+                binding.cardPackageFrom.visibility = View.GONE
+                binding.containerPackageTo.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    topMargin = 0
+                }
+                binding.tvChangeTo.visibility = View.GONE
             }
         }
     }
@@ -177,7 +185,7 @@ class OrderActivity : AppCompatActivity() {
                 binding.tvPrice.text = "Rp 249.000"
             }
             else -> {
-                Log.d("INFO", "Something went wrong")
+                Log.e("Err","404")
             }
         }
     }
@@ -216,7 +224,7 @@ class OrderActivity : AppCompatActivity() {
                                                         1 -> "Gold"
                                                         2 -> "Silver"
                                                         3 -> "Bronze"
-                                                        else -> "none"
+                                                        else -> "None"
                                                     }
                                                     db.collection("user").document(document.id).update("plan", typePackage)
                                                         .addOnSuccessListener {

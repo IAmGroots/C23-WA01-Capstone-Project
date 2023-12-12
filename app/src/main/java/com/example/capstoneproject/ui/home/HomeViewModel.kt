@@ -61,7 +61,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getService(idService: String): String {
-        return listService.find { it.id == idService }?.name ?: "none"
+        return listService.find { it.id == idService }?.name ?: "None"
     }
 
     fun checkStatusTransaction(idOrder: String) {
