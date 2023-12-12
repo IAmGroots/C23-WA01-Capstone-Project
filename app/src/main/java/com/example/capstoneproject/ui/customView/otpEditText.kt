@@ -26,7 +26,7 @@ class otpEditText : AppCompatEditText {
 
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
                 if (text.toString().length <= 5) {
-                    setError("Invalid code, the code is consists of 6 numbers", null)
+                    setError("OTP code must be 6 numbers!", null)
                 } else {
                     error = null
                 }

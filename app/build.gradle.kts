@@ -73,9 +73,10 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     //firebase
-    implementation("com.google.firebase:firebase-firestore:24.9.1")
+    implementation("com.google.firebase:firebase-firestore:24.10.0")
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
+    implementation("com.google.firebase:firebase-auth:22.3.0")
     implementation("com.firebaseui:firebase-ui-database:8.0.0")
 
     // fingerprint biometric
