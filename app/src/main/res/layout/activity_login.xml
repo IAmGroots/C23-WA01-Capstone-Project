@@ -42,8 +42,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewlogin" />
 
-
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordtext"
             style="@style/EditTextNoPadding"
@@ -121,7 +119,6 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:text="sign up"
-                android:textAlignment="center"
                 android:textColor="@color/contentColor"
                 android:textSize="14sp"
                 android:textStyle="italic"
@@ -141,7 +138,7 @@
             android:fontFamily="@font/montserrat_bold"
             android:text="Login"
             android:textColor="@color/secondaryColor"
-            android:textSize="40dp"
+            android:textSize="40sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -180,6 +177,7 @@
                     android:gravity="center">
 
                     <TextView
+                        android:id="@+id/tvBtnLogin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_semi_bold"
@@ -210,6 +208,7 @@
                     android:gravity="center">
 
                     <ImageView
+                        android:id="@+id/icBtnBiometric"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/icon_fingerprint"

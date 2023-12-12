@@ -16,7 +16,9 @@ import com.example.capstoneproject.ui.otp.OTPEmailActivity
 //import com.google.firebase.database.FirebaseDatabase
 //import com.google.firebase.database.ValueEventListener
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -34,23 +36,99 @@ class RegisterActivity : AppCompatActivity() {
             val firstname = binding.etFirstName.text.toString()
             val lastname = binding.etLastName.text.toString()
             val email = binding.etEmail.text.toString()
-            val mobile = binding.etMobile.text.toString()
             val password = binding.etPassword.text.toString()
             val confirmPassword = binding.etConfirmPassword.text.toString()
-            if (firstname.isNotEmpty() && lastname.isNotEmpty() && email.isNotEmpty() && mobile.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
-                if (password == confirmPassword) {
-                    var intent= Intent(this@RegisterActivity, OTPEmailActivity::class.java)
-                    intent.putExtra("firstname", firstname)
-                    intent.putExtra("lastname", lastname)
-                    intent.putExtra("email", email)
-                    intent.putExtra("mobile", mobile)
-                    intent.putExtra("password", password)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "The password confirm is not match! ", Toast.LENGTH_SHORT).show()
+
+            when {
+                firstname.isEmpty() -> {
+                    binding.etFirstName.error = "Please enter your first name"
                 }
-            } else {
-                Toast.makeText(this, "Fill all the data!", Toast.LENGTH_SHORT).show()
+
+                lastname.isEmpty() -> {
+                    binding.etLastName.error = "Please enter your last name"
+                }
+
+                email.isEmpty() -> {
+                    binding.etEmail.error = "Please enter your email"
+                }
+
+                password.isEmpty() -> {
+                    binding.etPassword.error = "Please enter your password"
+                }
+
+                confirmPassword.isEmpty() -> {
+                    binding.etConfirmPassword.error = "Please enter your password"
+                }
+
+                else -> {
+                    if (firstname.length in 2..150) {
+                        if (lastname.length in 2..150) {
+                            if (isEmailValid(email)) {
+                                if (password.length >= 8) {
+                                    if (password == confirmPassword) {
+
+                                        val firestore = FirebaseFirestore.getInstance()
+                                        val usersRef = firestore.collection("user")
+                                        val query = usersRef.whereEqualTo("email", email)
+
+                                        query.get().addOnCompleteListener { task ->
+                                            if (task.isSuccessful) {
+                                                val documents = task.result
+                                                if (documents != null && !documents.isEmpty) {
+                                                    // Email sudah digunakan
+                                                    Toast.makeText(
+                                                        this@RegisterActivity,
+                                                        "Email is already in use!",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                } else {
+                                                    // Email belum digunakan, lanjutkan ke verifikasi OTP
+                                                    val intent = Intent(
+                                                        this@RegisterActivity,
+                                                        OTPEmailActivity::class.java
+                                                    )
+                                                    intent.putExtra("firstname", firstname)
+                                                    intent.putExtra("lastname", lastname)
+                                                    intent.putExtra("email", email)
+                                                    intent.putExtra("password", password)
+                                                    startActivity(intent)
+                                                }
+                                            } else {
+                                                // Gagal melakukan pengecekan
+                                                Toast.makeText(
+                                                    this@RegisterActivity,
+                                                    "Failed to check email existence!",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(
+                                            this,
+                                            "Confirmed passwords do not match",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                } else {
+                                    Toast.makeText(
+                                        this,
+                                        "Password must be at least 8 characters",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            } else {
+                                binding.etEmail.error =
+                                    "Invalid e-mail address format"
+                            }
+                        } else {
+                            binding.etLastName.error =
+                                "Last name must be a minimum of 2 characters and a maximum of 150 characters"
+                        }
+                    } else {
+                        binding.etFirstName.error =
+                            "First name must be a minimum of 2 characters and a maximum of 150 characters"
+                    }
+                }
             }
         }
 
@@ -63,6 +141,19 @@ class RegisterActivity : AppCompatActivity() {
         binding.loginhere.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
+    }
+
+    private fun isEmailValid(email: String): Boolean {
+        val emailRegex = ("[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                "\\@" +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                "(" +
+                "\\." +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                ")+")
+        val pattern = Pattern.compile(emailRegex)
+        val matcher = pattern.matcher(email)
+        return matcher.matches()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -104,20 +195,6 @@ class RegisterActivity : AppCompatActivity() {
 
                 MotionEvent.ACTION_UP -> {
                     binding.etEmail.requestFocus()
-                }
-            }
-            false
-        }
-
-        binding.etMobile.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    binding.etMobile.isFocusable = true
-                    binding.etMobile.isFocusableInTouchMode = true
-                }
-
-                MotionEvent.ACTION_UP -> {
-                    binding.etMobile.requestFocus()
                 }
             }
             false

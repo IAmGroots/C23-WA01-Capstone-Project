@@ -1,15 +1,10 @@
 package com.example.capstoneproject.ui.usage
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
-import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityUsageBinding
@@ -48,27 +43,24 @@ class UsageActivity : AppCompatActivity() {
         val entries = ArrayList<Entry>()
         val lineChart = binding.chart
 
-//        val usage = listOf(10, 5, 8, 20, 14, 23, 25, 21, 17)
+
         val usage = listOf(10, 8, 16, 20, 14, 23, 25, 21, 17, 30, 25, 40)
-//        val usage = listOf(10, 5, 8, 20, 14, 23, 25, 21, 17, 30, 8, 40, 12, 15, 20)
 
         for ((index, data) in usage.withIndex()) {
-            val x = index
-            val y = data
-            Log.d("INDEX", x.toString() + ": x | y :" + y.toString())
-            entries.add(Entry(x.toFloat(), y.toFloat()))
+            Log.d("INDEX", "$index: x | y :$data")
+            entries.add(Entry(index.toFloat(), data.toFloat()))
         }
 
-        val vl = LineDataSet(entries, "Data Usage")
+        val vl = LineDataSet(entries, "")
 
         vl.setDrawValues(false)
         vl.setDrawFilled(true)
         vl.lineWidth = 3f
-//        vl.fillColor = R.color.red
-//        vl.fillAlpha = R.color.red
+        vl.color = ContextCompat.getColor(this, R.color.secondaryColor)
         vl.setDrawCircles(true)
         vl.circleHoleRadius = 10f
 
+        lineChart.legend.isEnabled = false
         lineChart.xAxis.labelRotationAngle = -45f
 
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -81,6 +73,8 @@ class UsageActivity : AppCompatActivity() {
         lineChart.description.text = ""
         lineChart.setNoDataText("No forex yet!")
         lineChart.animateX(2000, Easing.EaseInExpo)
+        lineChart.xAxis.textColor = ContextCompat.getColor(this, R.color.secondaryColor)
+        lineChart.axisLeft.textColor = ContextCompat.getColor(this, R.color.secondaryColor)
         val markerView = customMarkerChart(this, R.layout.marker_view)
         lineChart.marker = markerView
     }
