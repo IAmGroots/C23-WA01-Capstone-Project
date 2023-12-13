@@ -6,24 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.widget.Toast
-import androidx.activity.viewModels
 import com.example.capstoneproject.databinding.ActivityRegisterBinding
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.otp.OTPEmailActivity
-//import com.google.firebase.database.DataSnapshot
-//import com.google.firebase.database.DatabaseError
-//import com.google.firebase.database.DatabaseReference
-//import com.google.firebase.database.FirebaseDatabase
-//import com.google.firebase.database.ValueEventListener
-import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
-    private val viewModel: RegisterViewModel by viewModels()
+    /*private val viewModel: RegisterViewModel by viewModels()*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,12 +49,12 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 confirmPassword.isEmpty() -> {
-                    binding.etConfirmPassword.error = "Please enter your password"
+                    binding.etConfirmPassword.error = "Please enter your password confirm"
                 }
 
                 else -> {
-                    if (firstname.length in 2..150) {
-                        if (lastname.length in 2..150) {
+                    if (firstname.length < 2 || firstname.length > 150) {
+                        if (lastname.length < 2 || lastname.length > 150) {
                             if (isEmailValid(email)) {
                                 if (password.length >= 8) {
                                     if (password == confirmPassword) {
@@ -122,11 +114,11 @@ class RegisterActivity : AppCompatActivity() {
                             }
                         } else {
                             binding.etLastName.error =
-                                "Last name must be a minimum of 2 characters and a maximum of 150 characters"
+                                "Name must be a minimum of 2 characters and a maximum of 150 characters"
                         }
                     } else {
                         binding.etFirstName.error =
-                            "First name must be a minimum of 2 characters and a maximum of 150 characters"
+                            "Name must be a minimum of 2 characters and a maximum of 150 characters"
                     }
                 }
             }
@@ -229,4 +221,3 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 }
-
