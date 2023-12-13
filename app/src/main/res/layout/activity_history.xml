@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primaryColor"
     tools:context=".ui.history.HistoryActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -17,12 +18,12 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
+            android:fontFamily="@font/montserrat_semi_bold"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:backgroundTint="@color/contentColor"
             app:navigationIcon="@drawable/icon_back"
-            app:navigationIconTint="@color/primaryColor"
             app:title="History Transaction"
             app:titleCentered="true"
             app:titleTextColor="@color/white" />
@@ -32,6 +33,7 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/lightPrimaryColor"
         app:tabTextColor="@color/secondaryColor"
         app:tabSelectedTextColor="@color/contentColor"
         app:tabIndicatorColor="@color/contentColor"

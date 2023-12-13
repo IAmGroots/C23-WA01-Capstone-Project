@@ -66,9 +66,6 @@ class LoginActivity : AppCompatActivity() {
         getBiometric()
         setFocusable()
 
-        viewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
 
         binding.btnLogin.setOnClickListener {
             viewModel.setLoading(true)
@@ -86,6 +83,9 @@ class LoginActivity : AppCompatActivity() {
                 else -> {
                     if (isEmailValid(email)) {
                         if (password.length >= 8) {
+                            viewModel.isLoading.observe(this) {
+                                showLoading(it)
+                            }
                             signIn(email, password)
                         } else {
                             Toast.makeText(
@@ -163,24 +163,24 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.progressBar.visibility = View.VISIBLE
-            binding.bgBtnLogin.apply {
-                binding.btnLogin.isEnabled = false
-                setBackgroundResource(R.drawable.cardview_border_disabled)
-            }
-            binding.bgBtnBiometric.apply {
-                binding.bgBtnBiometric.isEnabled = false
-                setBackgroundResource(R.drawable.cardview_border_disabled)
-            }
+//            binding.bgBtnLogin.apply {
+//                binding.btnLogin.isEnabled = false
+//                setBackgroundResource(R.drawable.cardview_border_disabled)
+//            }
+//            binding.bgBtnBiometric.apply {
+//                binding.bgBtnBiometric.isEnabled = false
+//                setBackgroundResource(R.drawable.cardview_border_disabled)
+//            }
         } else {
             binding.progressBar.visibility = View.GONE
-            binding.bgBtnLogin.apply {
-                binding.btnLogin.isEnabled = true
-                setBackgroundResource(R.drawable.cardview_border_no_padding)
-            }
-            binding.bgBtnBiometric.apply {
-                binding.bgBtnBiometric.isEnabled = true
-                setBackgroundResource(R.drawable.cardview_border_no_padding)
-            }
+//            binding.bgBtnLogin.apply {
+//                binding.btnLogin.isEnabled = true
+//                setBackgroundResource(R.drawable.cardview_border_no_padding)
+//            }
+//            binding.bgBtnBiometric.apply {
+//                binding.bgBtnBiometric.isEnabled = true
+//                setBackgroundResource(R.drawable.cardview_border_no_padding)
+//            }
         }
 //        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }

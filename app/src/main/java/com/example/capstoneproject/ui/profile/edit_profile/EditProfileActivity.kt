@@ -57,25 +57,22 @@ class EditProfileActivity : AppCompatActivity() {
                     binding.etLastName.error = "Please enter your last name"
                 }
 
-                phone.isEmpty() -> {
-                    binding.etMobile.error = "Please enter your mobile number"
-                }
 
                 else -> {
                     if (firstName.length in 2..150) {
                         if (lastName.length in 2..150) {
-                            if (isPhoneNumberValid(phone)) {
-//                                val sharedPreferences =
-//                                    getSharedPreferences("UserData", Context.MODE_PRIVATE)
-//                                val oldPhone = sharedPreferences.getString("phone", "")
-                                if (oldPhone == phone) {
-                                    updateProfile(firstName, lastName, phone)
-                                } else {
-                                    redirectToOTP(firstName, lastName, phone)
-                                }
+                            val sharedPreferences =
+                                getSharedPreferences("UserData", Context.MODE_PRIVATE)
+                            val oldPhone = sharedPreferences.getString("phone", "")
+                            if (oldPhone == phone) {
+                                updateProfile(firstName, lastName, phone)
                             } else {
-                                binding.etMobile.error =
-                                    "Invalid mobile number format"
+                                if (isPhoneNumberValid(phone)) {
+                                    redirectToOTP(firstName, lastName, phone)
+                                } else {
+                                    binding.etMobile.error =
+                                        "Invalid mobile number format"
+                                }
                             }
                         } else {
                             binding.etLastName.error =
@@ -129,23 +126,23 @@ class EditProfileActivity : AppCompatActivity() {
         query.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val documents = task.result
-//                if (documents != null && !documents.isEmpty) {
-//                    // Email sudah digunakan
-//                    Toast.makeText(
-//                        this@EditProfileActivity,
-//                        "Mobile number is already in use!",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                } else {
-                // Email belum digunakan, lanjutkan ke verifikasi OTP
-                val intent = Intent(
-                    this@EditProfileActivity, OTPMobileActivity::class.java
-                )
-                intent.putExtra("firstname", firstName)
-                intent.putExtra("lastname", lastName)
-                intent.putExtra("mobile", phone)
-                startActivity(intent)
-//                }
+                if (documents != null && !documents.isEmpty) {
+                    // Email sudah digunakan
+                    Toast.makeText(
+                        this@EditProfileActivity,
+                        "Mobile number is already in use!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    // Email belum digunakan, lanjutkan ke verifikasi OTP
+                    val intent = Intent(
+                        this@EditProfileActivity, OTPMobileActivity::class.java
+                    )
+                    intent.putExtra("firstname", firstName)
+                    intent.putExtra("lastname", lastName)
+                    intent.putExtra("mobile", phone)
+                    startActivity(intent)
+                }
             } else {
                 // Gagal melakukan pengecekan
                 Toast.makeText(
@@ -167,9 +164,12 @@ class EditProfileActivity : AppCompatActivity() {
                 if (!data.isEmpty) {
                     val user = data.documents[0]
                     oldPhone = user.get("mobile").toString()
-                    binding.etFirstName.text = Editable.Factory.getInstance().newEditable(user.get("firstname").toString())
-                    binding.etLastName.text = Editable.Factory.getInstance().newEditable(user.get("lastname").toString())
-                    binding.etMobile.text = Editable.Factory.getInstance().newEditable(user.get("mobile").toString())
+                    binding.etFirstName.text =
+                        Editable.Factory.getInstance().newEditable(user.get("firstname").toString())
+                    binding.etLastName.text =
+                        Editable.Factory.getInstance().newEditable(user.get("lastname").toString())
+                    binding.etMobile.text =
+                        Editable.Factory.getInstance().newEditable(user.get("mobile").toString())
                 }
                 viewModel.setLoading(false)
             }
