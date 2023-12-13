@@ -9,7 +9,6 @@ import com.example.capstoneproject.R
 import org.junit.Rule
 import org.junit.Test
 
-
 class DetailArticleActivityTest {
 
     @get:Rule

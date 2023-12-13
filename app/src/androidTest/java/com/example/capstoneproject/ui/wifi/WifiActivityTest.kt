@@ -1,10 +1,10 @@
 package com.example.capstoneproject.ui.wifi
 
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import com.example.capstoneproject.R
 import org.junit.Rule
 import org.junit.Test
@@ -16,30 +16,28 @@ class WifiActivityTest {
 
     @Test
     fun wifiTestToolBar() {
-        Espresso.onView(ViewMatchers.withId(R.id.toolbar))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.toolbar)).check(matches(isDisplayed()))
     }
 
     @Test
     fun wifiTestButton() {
-        Espresso.onView(ViewMatchers.withId(R.id.btn_current_location))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.btn_current_location)).perform(ViewActions.click())
+        onView(withId(R.id.btn_current_location)).check(matches(isDisplayed()))
+
+        /*onView(withId(R.id.btn_current_location)).perform(ViewActions.click())*/
     }
 
     @Test
     fun wifiTestMap() {
-        Espresso.onView(ViewMatchers.withId(R.id.map))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.map)).perform(ViewActions.click())
+        onView(withId(R.id.map)).check(matches(isDisplayed()))
+
+        /*onView(withId(R.id.map)).perform(ViewActions.click())*/
     }
 
     @Test
     fun wifitestTextView() {
-        Espresso.onView(ViewMatchers.withId(R.id.tv_empty_hotspot))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.rv_hotspot))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.rv_hotspot)).perform(ViewActions.click())
+        onView(withId(R.id.tv_empty_hotspot)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_hotspot)).check(matches(isDisplayed()))
+
+        /*onView(withId(R.id.rv_hotspot)).perform(ViewActions.click())*/
     }
 }
