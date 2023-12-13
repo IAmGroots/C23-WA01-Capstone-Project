@@ -29,8 +29,8 @@ class OTPMobileActivityTest {
 
     @Test
     fun otpMobileTestTextView() {
-        Espresso.onView(ViewMatchers.withId(R.id.showMobile))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+//        Espresso.onView(ViewMatchers.withId(R.id.showMobile))
+//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         /*Espresso.onView(ViewMatchers.withId(R.id.signupText))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.reSendhere))

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.history.unsuccessful.UnsuccessfulFragment"
-    android:background="@color/lightPrimaryColor">
+    android:background="@color/primaryColor">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"

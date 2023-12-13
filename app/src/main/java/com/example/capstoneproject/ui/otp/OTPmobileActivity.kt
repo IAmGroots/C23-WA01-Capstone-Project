@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.databinding.ActivityOtpmobileBinding
+import com.example.capstoneproject.ui.profile.edit_profile.EditProfileActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseException
@@ -191,7 +192,10 @@ class OTPMobileActivity : AppCompatActivity() {
 
             override fun onVerificationFailed(e: FirebaseException) {
                 Log.d("Verification", e.toString())
-                Toast.makeText(this@OTPMobileActivity, "Verification Failed", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@OTPMobileActivity, EditProfileActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                Toast.makeText(this@OTPMobileActivity, "OTP code not available now, please try again later", Toast.LENGTH_SHORT).show()
             }
 
             override fun onCodeSent(input: String, token: PhoneAuthProvider.ForceResendingToken) {
