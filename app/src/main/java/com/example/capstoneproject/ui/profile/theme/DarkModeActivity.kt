@@ -29,8 +29,32 @@ class DarkModeActivity : AppCompatActivity() {
         )[DarkModeViewModel::class.java]
 
         setupToolbar()
-        setupRadioButtons()
-        setupViewModel()
+
+        viewModel.getTheme().observe(this) { isDarkModeActive ->
+            AppCompatDelegate.setDefaultNightMode(if(isDarkModeActive) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+            binding.rbOnDarkMode.isChecked = isDarkModeActive
+            binding.rbOffDarkMode.isChecked = !isDarkModeActive
+        }
+
+        binding.rbOnDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.saveTheme(true)
+                binding.rbOnDarkMode.isChecked = true
+                binding.rbOffDarkMode.isChecked = false
+            }
+        }
+
+        binding.rbOffDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                setAppTheme(false)
+                viewModel.saveTheme(false)
+                binding.rbOnDarkMode.isChecked = false
+                binding.rbOffDarkMode.isChecked = true
+            }
+        }
+
+//        setupRadioButtons()
+//        setupViewModel()
     }
 
     private fun setupToolbar() {
@@ -72,11 +96,11 @@ class DarkModeActivity : AppCompatActivity() {
     }
 
     private fun setAppTheme(isDarkMode: Boolean) {
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
+//        if (isDarkMode) {
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//        } else {
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//        }
         viewModel.saveTheme(isDarkMode)
     }
 }

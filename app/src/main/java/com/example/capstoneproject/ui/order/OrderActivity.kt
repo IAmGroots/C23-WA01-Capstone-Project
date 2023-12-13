@@ -40,6 +40,7 @@ class OrderActivity : AppCompatActivity() {
     private val userID = FirebaseAuth.getInstance().currentUser!!.uid
     private var id_plan by Delegates.notNull<Int>()
     private var price by Delegates.notNull<Double>()
+    private lateinit var customerDetails: CustomerDetails
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +51,8 @@ class OrderActivity : AppCompatActivity() {
 
         setupToolbar()
         buildUiKit()
+
+        getCustomerDetail()
 
         plan = intent.getStringExtra(EXTRA_PACKAGE).toString()
         if (plan != null) {
@@ -82,6 +85,31 @@ class OrderActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun getCustomerDetail() {
+        db.collection("user")
+            .whereEqualTo("uid", userID)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { data ->
+                if (!data.isEmpty) {
+                    val userDocument = data.documents[0]
+                    val firstname = userDocument.get("firstname").toString()
+                    val lastname = userDocument.get("lastname").toString()
+                    val email = userDocument.get("email").toString()
+                    val mobile = userDocument.get("mobile").toString()
+                    customerDetails = CustomerDetails(
+                        customerIdentifier = userID,
+                        firstName = firstname,
+                        lastName = lastname,
+                        email = email,
+                        phone = mobile
+                    )
+                } else {
+                    Log.d("FullnameProfile", "Something went wrong")
+                }
+            }
     }
 
     private fun getPlanFromDb(idUser: String) {
@@ -275,13 +303,6 @@ class OrderActivity : AppCompatActivity() {
                 }
             }
         }
-
-    private var customerDetails = CustomerDetails(
-        firstName = "John Doe",
-        customerIdentifier = "john@mail.com",
-        email = "john@mail.com",
-        phone = "085310102020"
-    )
 
     private fun transactionDetails(totalPrice: Double) : SnapTransactionDetail {
         return SnapTransactionDetail(

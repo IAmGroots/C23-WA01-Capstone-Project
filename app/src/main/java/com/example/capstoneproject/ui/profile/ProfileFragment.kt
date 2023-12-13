@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
@@ -58,12 +59,11 @@ class ProfileFragment : Fragment() {
         setActionButton()
         setupListHistoryPayment()
         setupSocialMediaLinks()
+        getCurrentService(userID, viewLifecycleOwner)
 
         viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
-
-        getCurrentService(userID, viewLifecycleOwner)
 
         binding.scrollViewProfile.viewTreeObserver.addOnScrollChangedListener {
             binding.swipeRefresh.isEnabled = binding.scrollViewProfile.scrollY == 0
@@ -73,15 +73,32 @@ class ProfileFragment : Fragment() {
             getCurrentService(userID, viewLifecycleOwner)
         }
 
-        binding.containerBiometricFingerprint.setOnClickListener {
-            val intent = Intent(requireContext(), BiometricActivity::class.java)
-            startActivity(intent)
+        viewModel.getTheme().observe(viewLifecycleOwner) { isDarkModeActive ->
+            AppCompatDelegate.setDefaultNightMode(if(isDarkModeActive) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+            binding.switchDarkMode.isChecked = isDarkModeActive
         }
 
-        binding.containerMode.setOnClickListener {
-            val intent = Intent(requireContext(), DarkModeActivity::class.java)
-            startActivity(intent)
+        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.saveTheme(isChecked)
         }
+
+        viewModel.getBiometric().observe(viewLifecycleOwner) { isBiometricActive ->
+            binding.switchBiometric.isChecked = isBiometricActive
+        }
+
+        binding.switchBiometric.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.saveBiometric(isChecked)
+        }
+
+//        binding.containerBiometricFingerprint.setOnClickListener {
+//            val intent = Intent(requireContext(), BiometricActivity::class.java)
+//            startActivity(intent)
+//        }
+
+//        binding.containerMode.setOnClickListener {
+//            val intent = Intent(requireContext(), DarkModeActivity::class.java)
+//            startActivity(intent)
+//        }
 
         binding.containerLogout.setOnClickListener {
             viewModel.logout()

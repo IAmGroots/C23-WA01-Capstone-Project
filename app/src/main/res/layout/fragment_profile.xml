@@ -76,10 +76,9 @@
                     <TextView
                         android:id="@+id/tvFullName"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/montserrat_bold"
-                        android:text="John Doe"
                         android:textColor="@color/secondaryColor"
                         android:textSize="22sp"
                         app:layout_constraintEnd_toEndOf="@+id/imgProfile"
@@ -92,7 +91,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_medium"
-                        android:text="johndoe@gmail.com"
                         android:textSize="18sp"
                         android:textColor="@color/secondaryColor"
                         app:layout_constraintEnd_toEndOf="@+id/imgProfile"
@@ -606,8 +604,15 @@
                             android:textColor="@color/secondaryColor"
                             app:layout_constraintBottom_toBottomOf="@+id/icFingerprint"
                             app:layout_constraintStart_toEndOf="@+id/icFingerprint"
-                            app:layout_constraintTop_toTopOf="@+id/icFingerprint"
-                            app:layout_constraintVertical_bias="0.6" />
+                            app:layout_constraintTop_toTopOf="@+id/icFingerprint" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchBiometric"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -644,8 +649,15 @@
                             android:textColor="@color/secondaryColor"
                             app:layout_constraintBottom_toBottomOf="@+id/icMode"
                             app:layout_constraintStart_toEndOf="@+id/icMode"
-                            app:layout_constraintTop_toTopOf="@+id/icMode"
-                            app:layout_constraintVertical_bias="0.6" />
+                            app:layout_constraintTop_toTopOf="@+id/icMode" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchDarkMode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
