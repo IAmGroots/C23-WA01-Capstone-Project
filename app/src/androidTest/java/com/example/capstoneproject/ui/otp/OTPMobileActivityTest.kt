@@ -26,15 +26,4 @@ class OTPMobileActivityTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.btnverifydotp)).perform(ViewActions.click())
     }
-
-    @Test
-    fun otpMobileTestTextView() {
-        Espresso.onView(ViewMatchers.withId(R.id.showMobile))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        /*Espresso.onView(ViewMatchers.withId(R.id.signupText))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.reSendhere))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))*/
-        /*Espresso.onView(ViewMatchers.withId(R.id.reSendhere)).perform(ViewActions.click())*/
-    }
 }

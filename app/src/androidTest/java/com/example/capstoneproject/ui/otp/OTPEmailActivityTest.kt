@@ -26,15 +26,4 @@ class OTPEmailActivityTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.btnverifydotp)).perform(ViewActions.click())
     }
-
-    @Test
-    fun otpEmailTestTextView() {
-        Espresso.onView(ViewMatchers.withId(R.id.showEmail))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        /*Espresso.onView(ViewMatchers.withId(R.id.signupText))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.reSendHere))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))*/
-        /*Espresso.onView(ViewMatchers.withId(R.id.reSendHere)).perform(ViewActions.click())*/
-    }
 }
