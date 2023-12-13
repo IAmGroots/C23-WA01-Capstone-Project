@@ -70,33 +70,18 @@ class HomeFragment : Fragment() {
 
         binding.swipeRefresh.setOnRefreshListener {
             getCurrentService(userID, viewLifecycleOwner)
-            Handler(Looper.getMainLooper()).postDelayed({
-                binding.swipeRefresh.isRefreshing = false
-            }, DURATION)
         }
 
         binding.btnChat.setOnClickListener {
-            db.collection("user")
-                .whereEqualTo("uid", userID)
-                .limit(1)
-                .get()
-                .addOnSuccessListener { data ->
-                    if (!data.isEmpty) {
-                        val user = data.documents[0]
-                        val fullname = user.get("firstname").toString() + " " + user.get("lastname").toString()
-                        val intent = Intent(requireContext(), ChatActivity::class.java)
-                        intent.putExtra(ChatActivity.EXTRA_FULLNAME, fullname)
-                        startActivity(intent)
-                    } else {
-                        Log.d("ChatActivity", "Something went wrong")
-                    }
-                }
+            startActivity(Intent(requireContext(), ChatActivity::class.java))
         }
 
         return root
     }
 
     private fun showLoading(isLoading: Boolean) {
+        binding.cardPackage.visibility = if (isLoading) View.GONE else View.VISIBLE
+        binding.cardPackageNone.visibility = if (isLoading) View.GONE else View.VISIBLE
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
@@ -109,9 +94,9 @@ class HomeFragment : Fragment() {
                 val lastTransaction =
                     querySnapshot.sortedByDescending { it.get("timestamp").toString() }
                         .firstOrNull()
-                lastTransaction?.let {
-                    val idOrder = it.get("idOrder").toString()
-                    val service = viewModel.getService(it.get("idService").toString())
+                if (lastTransaction != null) {
+                    val idOrder = lastTransaction.get("idOrder").toString()
+                    val service = viewModel.getService(lastTransaction.get("idService").toString())
                     Log.d("DataUsageActivity", "Service Here Fragment =>> $service")
 
                     viewModel.checkStatusTransaction(idOrder)
@@ -127,9 +112,16 @@ class HomeFragment : Fragment() {
                         }
                     }
                     getPlanFromDb(userID)
+                    binding.btnChangePlan.isEnabled = true
+                    binding.swipeRefresh.isRefreshing = false
+                    viewModel.setLoading(false)
+                } else {
+                    setUICurrentPlan("None")
+                    binding.btnChangePlan.isEnabled = false
+                    binding.swipeRefresh.isRefreshing = false
+                    viewModel.setLoading(false)
                 }
             }
-        viewModel.setLoading(false)
     }
 
     private fun updatePlanAfterTransaction(

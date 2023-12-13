@@ -66,7 +66,12 @@ class LoginActivity : AppCompatActivity() {
         getBiometric()
         setFocusable()
 
+        viewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
         binding.btnLogin.setOnClickListener {
+            viewModel.setLoading(true)
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             when {
@@ -90,8 +95,7 @@ class LoginActivity : AppCompatActivity() {
                             ).show()
                         }
                     } else {
-                        binding.etEmail.error =
-                            "Invalid e-mail address format"
+                        binding.etEmail.error = "Invalid e-mail address format"
                     }
                 }
             }
@@ -102,8 +106,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
-        viewModel.getBiometric().observe(this)
-        { isEnableBiometric ->
+        viewModel.getBiometric().observe(this) { isEnableBiometric ->
             binding.btnBiometric.visibility = if (isEnableBiometric) View.VISIBLE else View.GONE
         }
 
@@ -157,6 +160,31 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+            binding.bgBtnLogin.apply {
+                binding.btnLogin.isEnabled = false
+                setBackgroundResource(R.drawable.cardview_border_disabled)
+            }
+            binding.bgBtnBiometric.apply {
+                binding.bgBtnBiometric.isEnabled = false
+                setBackgroundResource(R.drawable.cardview_border_disabled)
+            }
+        } else {
+            binding.progressBar.visibility = View.GONE
+            binding.bgBtnLogin.apply {
+                binding.btnLogin.isEnabled = true
+                setBackgroundResource(R.drawable.cardview_border_no_padding)
+            }
+            binding.bgBtnBiometric.apply {
+                binding.bgBtnBiometric.isEnabled = true
+                setBackgroundResource(R.drawable.cardview_border_no_padding)
+            }
+        }
+//        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
     private fun isEmailValid(email: String): Boolean {
         val emailRegex = ("[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                 "\\@" +
@@ -176,6 +204,7 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                     setData()
+                    viewModel.setLoading(false)
                 } else {
                     // Jika login gagal, kurangi percobaan dan mulai countdown jika sudah 3 kali salah
                     attemptsRemaining--
@@ -195,12 +224,14 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }, delayInMillis)
+                        viewModel.setLoading(false)
                     } else {
                         Toast.makeText(
                             this@LoginActivity,
                             "The data you entered is incorrect, please check again.",
                             Toast.LENGTH_SHORT
                         ).show()
+                        viewModel.setLoading(false)
 
                         if (attemptsRemaining <= 0) {
                             val delayInMillis: Long = 2000

@@ -4,6 +4,7 @@
     <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/icon_notifications"
+        android:visible="false"
         android:title="@string/title_notifications"
         app:showAsAction="always"
         app:tint="@color/white"/>

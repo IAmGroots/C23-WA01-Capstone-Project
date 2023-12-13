@@ -41,7 +41,6 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: ProfileViewModel
-    private val DURATION: Long = 1000
     private val db = Firebase.firestore
     private val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
@@ -72,9 +71,6 @@ class ProfileFragment : Fragment() {
 
         binding.swipeRefresh.setOnRefreshListener {
             getCurrentService(userID, viewLifecycleOwner)
-            Handler(Looper.getMainLooper()).postDelayed({
-                binding.swipeRefresh.isRefreshing = false
-            }, DURATION)
         }
 
         binding.containerBiometricFingerprint.setOnClickListener {
@@ -99,18 +95,29 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showLoading(isLoading: Boolean) {
+        binding.cardPackage.visibility = if (isLoading) View.GONE else View.VISIBLE
+        binding.cardPackageNone.visibility = if (isLoading) View.GONE else View.VISIBLE
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun loadUserData(){
-        val sharedPreferences = requireActivity().getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val firstName = sharedPreferences.getString("firstName", "")
-        val lastName = sharedPreferences.getString("lastName", "")
-        val email = sharedPreferences.getString("email", "")
-
-        // Menampilkan informasi pengguna di TextView pada profil
-        binding.tvFullName.text = "$firstName $lastName"
-        binding.tvEmail.text = email
+        db.collection("user")
+            .whereEqualTo("uid", userID)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { data ->
+                if (!data.isEmpty) {
+                    val userDocument = data.documents[0]
+                    val firstname = userDocument.get("firstname").toString()
+                    val lastname = userDocument.get("lastname").toString()
+                    val fullname = "$firstname $lastname"
+                    val email = userDocument.get("email").toString()
+                    binding.tvFullName.text = fullname
+                    binding.tvEmail.text = email
+                } else {
+                    Log.d("FullnameProfile", "Something went wrong")
+                }
+            }
     }
 
     private fun setActionButton() {
@@ -142,22 +149,23 @@ class ProfileFragment : Fragment() {
 
     private fun getCurrentService(userID: String, lifecycleOwner: LifecycleOwner) {
         viewModel.setLoading(true)
-        db.collection("transaction").whereEqualTo("idUser", userID).get()
+        db.collection("transaction")
+            .whereEqualTo("idUser", userID)
+            .get()
             .addOnSuccessListener { querySnapshot ->
                 val lastTransaction =
                     querySnapshot.sortedByDescending { it.get("timestamp").toString() }
                         .firstOrNull()
-                lastTransaction?.let {
-                    // Lakukan operasi yang diperlukan di sini
-                    val idOrder = it.get("idOrder").toString()
-                    val service = viewModel.getService(it.get("idService").toString())
+                if (lastTransaction != null) {
+                    val idOrder = lastTransaction.get("idOrder").toString()
+                    val service = viewModel.getService(lastTransaction.get("idService").toString())
                     Log.d("DataUsageActivity", "Service Here Fragment =>> $service")
 
                     viewModel.checkStatusTransaction(idOrder)
                     viewModel.lastTrasaction.observe(lifecycleOwner) { status ->
                         when (status) {
                             "Success" -> {
-                                updatePlanAfterTransaction(idOrder, status)
+                                updatePlanAfterTransaction(userID, service, idOrder, status)
                             }
 
                             "Expired" -> {
@@ -166,45 +174,68 @@ class ProfileFragment : Fragment() {
                         }
                     }
                     getPlanFromDb(userID)
+                    binding.btnChangePlan.isEnabled = true
+                    binding.swipeRefresh.isRefreshing = false
+                    viewModel.setLoading(false)
+                } else {
+                    setUICurrentPlan("None")
+                    binding.btnChangePlan.isEnabled = false
+                    binding.swipeRefresh.isRefreshing = false
+                    viewModel.setLoading(false)
                 }
             }
-        viewModel.setLoading(false)
     }
 
-    private fun updatePlanAfterTransaction(idUser: String, service: String) {
-        db.collection("user").whereEqualTo("uid", idUser).limit(1).get()
+    private fun updatePlanAfterTransaction(
+        idUser: String,
+        service: String,
+        idOrder: String,
+        status: String
+    ) {
+        db.collection("user")
+            .whereEqualTo("uid", idUser)
+            .limit(1)
+            .get()
             .addOnSuccessListener { data ->
                 if (!data.isEmpty) {
                     val userDocument = data.documents[0]
                     db.collection("user").document(userDocument.id).update("plan", service)
+                    updateLastTransaction(idOrder, status)
                 } else {
-                    Log.d("ProfileFragment", "Something went wrong")
+                    Log.d("HomeFragment", "Something went wrong")
                 }
             }
     }
 
     private fun updateLastTransaction(idOrder: String, status: String) {
-        db.collection("transaction").whereEqualTo("idOrder", idOrder).limit(1).get()
+        db.collection("transaction")
+            .whereEqualTo("idOrder", idOrder)
+            .limit(1)
+            .get()
             .addOnSuccessListener { data ->
                 if (!data.isEmpty) {
                     val transactionDocument = data.documents[0]
-                    db.collection("user").document(transactionDocument.id).update("status", status)
+                    db.collection("transaction").document(transactionDocument.id)
+                        .update("status", status)
                 } else {
-                    Log.d("ProfileFragment", "Something went wrong")
+                    Log.d("HomeFragment", "Something went wrong")
                 }
             }
     }
 
     private fun getPlanFromDb(idUser: String) {
-        db.collection("user").whereEqualTo("uid", idUser).limit(1).get()
+        db.collection("user")
+            .whereEqualTo("uid", idUser)
+            .limit(1)
+            .get()
             .addOnSuccessListener { data ->
-                Log.d("ProfileFragment", data.size().toString())
+                Log.d("HomeFragment", data.size().toString())
                 if (!data.isEmpty) {
                     val userDocument = data.documents[0]
                     val plan = userDocument.get("plan").toString()
                     setUICurrentPlan(plan)
                 } else {
-                    Log.d("ProfileFragment", "Something went wrong")
+                    Log.d("HomeFragment", "Something went wrong")
                 }
             }
     }

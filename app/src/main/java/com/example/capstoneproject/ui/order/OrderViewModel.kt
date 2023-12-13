@@ -15,20 +15,21 @@ class OrderViewModel : ViewModel() {
     private val _isTransactionAllowed = MutableLiveData<Boolean>()
     val isTransactionAllowed: LiveData<Boolean> = _isTransactionAllowed
 
-    fun checkLastTransaction(uid: String) {
+    fun checkLastTransaction(userID: String) {
         db.collection("transaction")
-            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .whereEqualTo("idUser", userID)
             .get()
             .addOnSuccessListener { querySnapshot ->
-                for (document in querySnapshot) {
-                    val idUser = document.get("idUser").toString()
-                    val status = document.get("status").toString()
-                    if (idUser == uid) {
-                        _isTransactionAllowed.value = status != "Pending"
-                    }
-                    break
+                val lastTransaction =
+                    querySnapshot.sortedByDescending { it.get("timestamp").toString() }
+                        .firstOrNull()
+                if (lastTransaction != null) {
+                    val status = lastTransaction.get("status").toString()
+                    _isTransactionAllowed.value = status != "Pending"
+                } else {
+                    _isTransactionAllowed.value = true
                 }
             }
     }
-
 }
+

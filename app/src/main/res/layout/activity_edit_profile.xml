@@ -74,6 +74,7 @@
                     android:imeOptions="actionNext"
                     android:focusable="false"
                     android:textSize="14sp"
+                    android:textColor="@color/secondaryColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
@@ -90,6 +91,7 @@
                     android:hint="Last Name"
                     android:imeOptions="actionNext"
                     android:textSize="14sp"
+                    android:textColor="@color/secondaryColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etFirstName" />
@@ -112,13 +114,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="8dp"
-                        android:enabled="false"
                         android:focusable="false"
                         android:hint="+62"
                         android:imeOptions="actionNext"
                         android:paddingEnd="24dp"
                         android:textSize="14sp"
                         android:textStyle="bold"
+                        android:textColor="@color/secondaryColor"
                         tools:ignore="RtlSymmetry" />
 
                     <com.example.capstoneproject.ui.customView.mobileEditText
@@ -130,7 +132,8 @@
                         android:hint="Mobile"
                         android:inputType="number"
                         android:imeOptions="actionNext"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textColor="@color/secondaryColor"/>
 
                 </LinearLayout>
 
@@ -212,4 +215,18 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:translationZ="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
