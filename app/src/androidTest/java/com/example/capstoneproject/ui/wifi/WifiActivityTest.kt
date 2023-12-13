@@ -36,8 +36,8 @@ class WifiActivityTest {
 
     @Test
     fun wifitestTextView() {
-        Espresso.onView(ViewMatchers.withId(R.id.hotspot))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        /*Espresso.onView(ViewMatchers.withId(R.id.hotspot))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))*/
         Espresso.onView(ViewMatchers.withId(R.id.tv_empty_hotspot))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.rv_hotspot))

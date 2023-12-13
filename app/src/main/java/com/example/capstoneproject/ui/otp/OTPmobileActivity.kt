@@ -190,6 +190,7 @@ class OTPMobileActivity : AppCompatActivity() {
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
+                Log.d("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "ERROR:", e)
                 Toast.makeText(this@OTPMobileActivity, "Verification Failed", Toast.LENGTH_SHORT).show()
             }
 

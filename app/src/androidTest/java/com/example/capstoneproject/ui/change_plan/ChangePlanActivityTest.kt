@@ -1,10 +1,11 @@
 package com.example.capstoneproject.ui.change_plan
 
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import com.example.capstoneproject.R
 import org.junit.Rule
 import org.junit.Test
@@ -16,58 +17,39 @@ class ChangePlanActivityTest {
 
     @Test
     fun changePlanTestToolBar() {
-        Espresso.onView(ViewMatchers.withId(R.id.toolbar))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.toolbar)).check(matches(isDisplayed()))
     }
 
     @Test
     fun changePlanTestCardView() {
-        Espresso.onView(ViewMatchers.withId(R.id.card_plan_gold))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.btnChangePlanGold))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.card_plan_gold)).perform(ViewActions.click())
+        onView(withId(R.id.card_plan_gold)).check(matches(isDisplayed()))
+        onView(withId(R.id.btnChangePlanGold)).check(matches(isDisplayed()))
+        onView(withId(R.id.card_plan_gold)).perform(ViewActions.click())
 
-        Espresso.onView(ViewMatchers.withId(R.id.card_plan_silver))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.btnChangePlanSilver))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.card_plan_silver)).perform(ViewActions.click())
+        onView(withId(R.id.card_plan_silver)).check(matches(isDisplayed()))
+        onView(withId(R.id.btnChangePlanSilver)).check(matches(isDisplayed()))
+        onView(withId(R.id.card_plan_silver)).perform(ViewActions.click())
 
-        Espresso.onView(ViewMatchers.withId(R.id.card_plan_bronze))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.btnChangePlanBronze))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.card_plan_bronze)).perform(ViewActions.click())
+        onView(withId(R.id.card_plan_bronze)).check(matches(isDisplayed()))
+        onView(withId(R.id.btnChangePlanBronze)).check(matches(isDisplayed()))
+        onView(withId(R.id.card_plan_bronze)).perform(ViewActions.click())
     }
 
     @Test
     fun changePlantestTextView() {
-        Espresso.onView(ViewMatchers.withId(R.id.tvPackageFrom))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.tvSpeedFrom))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.tvServiceDateFrom))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.tvLocationFrom))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.tvPackageFrom)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvSpeedFrom)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvServiceDateFrom)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvLocationFrom)).check(matches(isDisplayed()))
 
-        Espresso.onView(ViewMatchers.withId(R.id.tvPackageTo))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.tvSpeedTo))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.tvServiceDateTo))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.tvLocationTo))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.tvPackageTo)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvSpeedTo)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvServiceDateTo)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvLocationTo)).check(matches(isDisplayed()))
 
-        Espresso.onView(ViewMatchers.withId(R.id.tvPackageBronze))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.tvSpeedBronze))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.tvServiceDateBronze))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.tvLocationBronze))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.tvPackageBronze)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvSpeedBronze)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvServiceDateBronze)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvLocationBronze)).check(matches(isDisplayed()))
     }
 }
