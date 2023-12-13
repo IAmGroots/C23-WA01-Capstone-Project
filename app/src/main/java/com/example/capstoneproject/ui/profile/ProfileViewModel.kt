@@ -28,13 +28,29 @@ class ProfileViewModel(private val preferences: SettingPreferences) : ViewModel(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    init {
+        getAllHistoryPayment()
+        getAllService()
+    }
+
     fun setLoading(condition: Boolean) {
         _isLoading.value = condition
     }
 
-    init {
-        getAllHistoryPayment()
-        getAllService()
+    fun getTheme(): LiveData<Boolean> = preferences.getThemeSetting().asLiveData()
+
+    fun saveTheme(isDarkModeActive : Boolean) {
+        viewModelScope.launch {
+            preferences.saveThemeSetting(isDarkModeActive)
+        }
+    }
+
+    fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
+
+    fun saveBiometric(isBiometricActive : Boolean) {
+        viewModelScope.launch {
+            preferences.saveBiometricSetting(isBiometricActive)
+        }
     }
 
     private fun getAllHistoryPayment() {
