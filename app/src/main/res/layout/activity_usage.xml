@@ -194,10 +194,10 @@
                             android:id="@+id/tvNoPlan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="72dp"
                             android:fontFamily="@font/montserrat_semi_bold"
                             android:text="You don't have any plans for now"
                             android:textColor="@color/lightGray2"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />

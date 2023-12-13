@@ -26,7 +26,6 @@ class ChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var dbRealtime: FirebaseDatabase
-    private val db = Firebase.firestore
     private lateinit var adapter: FirebaseMessageAdapter
     private val MESSAGES_CHILD = "messages"
     private val userID = FirebaseAuth.getInstance().currentUser!!.uid
@@ -50,27 +49,25 @@ class ChatActivity : AppCompatActivity() {
             .setQuery(messagesRef, Message::class.java)
             .build()
 
-        var fullname = intent.getStringExtra(EXTRA_FULLNAME)
-        adapter = FirebaseMessageAdapter(options, fullname)
+        adapter = FirebaseMessageAdapter(options, userID)
         binding.messageRecyclerView.adapter = adapter
 
         binding.sendButton.setOnClickListener {
-            val friendlyMessage = Message(
-                binding.messageEditText.text.toString(),
-                fullname,
-                "https://assets-global.website-files.com/5b6a5372c97f7911bd2e0867/5db6209732df59a78a669e25_image-p-500.png",
-                Date().time
+            val currentMessage = Message(
+                text = binding.messageEditText.text.toString(),
+                id = userID,
+                photoUrl = "https://assets-global.website-files.com/5b6a5372c97f7911bd2e0867/5db6209732df59a78a669e25_image-p-500.png",
+                timestamp = Date().time
             )
-            messagesRef.push().setValue(friendlyMessage) { error, _ ->
+            messagesRef.push().setValue(currentMessage) { error, _ ->
                 if (error != null) {
-                    Toast.makeText(this, "Gagal terkirim", Toast.LENGTH_SHORT).show()
+                    Log.d("Status Chat", "Gagal terkirim")
                 } else {
-                    Toast.makeText(this, "Berhasil terkirim", Toast.LENGTH_SHORT).show()
+                    Log.d("Status Chat", "Berhasil terkirim")
                 }
             }
             binding.messageEditText.setText("")
         }
-
     }
 
     public override fun onResume() {
@@ -88,10 +85,6 @@ class ChatActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             super.onBackPressed()
         }
-    }
-
-    companion object {
-        const val EXTRA_FULLNAME = "extra_fullname"
     }
 
     @SuppressLint("ClickableViewAccessibility")

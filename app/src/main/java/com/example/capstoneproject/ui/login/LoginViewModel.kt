@@ -1,6 +1,5 @@
 package com.example.capstoneproject.ui.login
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +9,13 @@ import com.example.capstoneproject.preferences.SettingPreferences
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val preferences: SettingPreferences) : ViewModel() {
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    fun setLoading(condition: Boolean) {
+        _isLoading.value = condition
+    }
 
     fun getBiometric(): LiveData<Boolean> = preferences.getBiometricSetting().asLiveData()
     fun saveLogin(isLogin: Boolean) {

@@ -1,10 +1,10 @@
-package com.example.capstoneproject.ui.profile.edit_profile
+package com.example.capstoneproject.ui.change_plan
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class EditProfileViewModel: ViewModel() {
+class ChangePlanViewModel: ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading

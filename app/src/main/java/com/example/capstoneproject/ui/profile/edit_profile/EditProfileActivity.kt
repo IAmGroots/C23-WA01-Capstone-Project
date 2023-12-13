@@ -5,14 +5,14 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.databinding.ActivityEditProfileBinding
-import com.example.capstoneproject.ui.chat.ChatActivity
-import com.example.capstoneproject.ui.otp.OTPEmailActivity
 import com.example.capstoneproject.ui.otp.OTPMobileActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -22,14 +22,23 @@ import com.google.firebase.firestore.firestore
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditProfileBinding
+    private lateinit var viewModel: EditProfileViewModel
     private var db = Firebase.firestore
     private val userID = FirebaseAuth.getInstance().currentUser!!.uid
+    private lateinit var oldPhone: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = ViewModelProvider(this)[EditProfileViewModel::class.java]
+
+        viewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
         setFocusable()
+        getDataFromDB(userID)
 
         binding.btnCancel.setOnClickListener {
             super.onBackPressed()
@@ -56,9 +65,9 @@ class EditProfileActivity : AppCompatActivity() {
                     if (firstName.length in 2..150) {
                         if (lastName.length in 2..150) {
                             if (isPhoneNumberValid(phone)) {
-                                val sharedPreferences =
-                                    getSharedPreferences("UserData", Context.MODE_PRIVATE)
-                                val oldPhone = sharedPreferences.getString("phone", "")
+//                                val sharedPreferences =
+//                                    getSharedPreferences("UserData", Context.MODE_PRIVATE)
+//                                val oldPhone = sharedPreferences.getString("phone", "")
                                 if (oldPhone == phone) {
                                     updateProfile(firstName, lastName, phone)
                                 } else {
@@ -80,7 +89,11 @@ class EditProfileActivity : AppCompatActivity() {
                 }
             }
         }
-        loadUserDataFromSharedPreferences()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.scrollViewProfile.visibility = if (isLoading) View.GONE else View.VISIBLE
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun isPhoneNumberValid(phoneNumber: String): Boolean {
@@ -97,18 +110,11 @@ class EditProfileActivity : AppCompatActivity() {
                         "FIREBASE", "ID DOCUMENT : ${user.id} | ID USER : ${user.get("uid")}"
                     )
 
-                    val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-                    val editor = sharedPreferences.edit()
-
-                    editor.putString("firstName", firstName)
-                    editor.putString("lastName", lastName)
-                    editor.putString("phone", phone)
-
-                    editor.apply()
-
-                    updateDataSourceUser(user.id, firstName, lastName, phone)
+                    updateDataToDB(user.id, firstName, lastName, phone)
                     Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
                 } else {
                     Toast.makeText(this, "Profile failed to update", Toast.LENGTH_SHORT).show()
                 }
@@ -151,25 +157,25 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun loadUserDataFromSharedPreferences() {
-        val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val firstName = sharedPreferences.getString("firstName", "")
-        val lastName = sharedPreferences.getString("lastName", "")
-        val phone = sharedPreferences.getString("phone", "")
-
-        // Menampilkan informasi pengguna di EditText pada profil
-        binding.etFirstName.setText(firstName)
-        binding.etLastName.setText(lastName)
-
-        if (phone == null) {
-            binding.etMobile.setText("")
-        } else {
-            binding.etMobile.setText(phone)
-        }
+    private fun getDataFromDB(uid: String) {
+        viewModel.setLoading(true)
+        db.collection("user")
+            .whereEqualTo("uid", uid)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { data ->
+                if (!data.isEmpty) {
+                    val user = data.documents[0]
+                    oldPhone = user.get("mobile").toString()
+                    binding.etFirstName.text = Editable.Factory.getInstance().newEditable(user.get("firstname").toString())
+                    binding.etLastName.text = Editable.Factory.getInstance().newEditable(user.get("lastname").toString())
+                    binding.etMobile.text = Editable.Factory.getInstance().newEditable(user.get("mobile").toString())
+                }
+                viewModel.setLoading(false)
+            }
     }
 
-    private fun updateDataSourceUser(
+    private fun updateDataToDB(
         userId: String, firstName: String, lastName: String, phone: String
     ) {
         // Dapatkan referensi ke dokumen pengguna di Firestore

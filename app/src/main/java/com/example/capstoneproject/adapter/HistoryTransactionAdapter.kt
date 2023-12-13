@@ -52,9 +52,9 @@ class HistoryTransactionAdapter(private val listItems: List<History>) : Recycler
                 else -> ""
             }
             binding.tvSpeed.text = when (history.idService.speed) {
-                50 -> "Speed up to 50mb/ps"
-                30 -> "Speed up to 30mb/ps"
-                15 -> "Speed up to 15mb/ps"
+                50 -> "Speed up to 50mb/s"
+                30 -> "Speed up to 30mb/s"
+                15 -> "Speed up to 15mb/s"
                 else -> ""
             }
 

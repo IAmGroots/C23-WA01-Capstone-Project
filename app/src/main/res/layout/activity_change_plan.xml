@@ -25,6 +25,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -153,7 +154,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserrat_semi_bold"
-                                            android:text="Change Plan"
+                                            android:text="Buy"
                                             android:textColor="@color/white" />
 
                                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -277,7 +278,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserrat_semi_bold"
-                                            android:text="Change Plan"
+                                            android:text="Buy"
                                             android:textColor="@color/white" />
 
                                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -401,7 +402,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserrat_semi_bold"
-                                            android:text="Change Plan"
+                                            android:text="Buy"
                                             android:textColor="@color/white" />
 
                                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -411,8 +412,20 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:translationZ="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

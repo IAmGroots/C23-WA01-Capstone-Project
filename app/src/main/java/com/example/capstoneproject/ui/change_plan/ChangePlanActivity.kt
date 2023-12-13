@@ -5,7 +5,9 @@ import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityChangePlanBinding
 import com.example.capstoneproject.ui.order.OrderActivity
@@ -16,6 +18,7 @@ import com.google.firebase.firestore.firestore
 class ChangePlanActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChangePlanBinding
+    private lateinit var viewModel: ChangePlanViewModel
     private var plan: String = ""
     private val db = Firebase.firestore
     private val userID = FirebaseAuth.getInstance().currentUser!!.uid
@@ -24,6 +27,12 @@ class ChangePlanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChangePlanBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel = ViewModelProvider(this)[ChangePlanViewModel::class.java]
+
+        viewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
 
         selectCurrentPlan(userID)
         setupToolbar()
@@ -58,7 +67,13 @@ class ChangePlanActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        binding.scrollview.visibility = if (isLoading) View.GONE else View.VISIBLE
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
     private fun selectCurrentPlan(idUser: String) {
+        viewModel.setLoading(true)
         db.collection("user")
             .whereEqualTo("uid", idUser)
             .limit(1)
@@ -69,8 +84,11 @@ class ChangePlanActivity : AppCompatActivity() {
                     val plan = userDocument.get("plan").toString()
                     Log.d("ChangePlan", "Current Plan => $plan")
                     setUICurrentPlan(plan)
+                    viewModel.setLoading(false)
                 } else {
+                    setUICurrentPlan("None")
                     Log.d("ChangePlan", "Something went wrong")
+                    viewModel.setLoading(false)
                 }
             }
     }
