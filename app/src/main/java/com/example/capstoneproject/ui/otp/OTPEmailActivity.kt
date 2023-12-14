@@ -99,17 +99,18 @@ class OTPEmailActivity : AppCompatActivity() {
                                     } else {
                                         userData["mobile"] = "" // Jika mobile kosong, simpan sebagai string kosong ("")
                                     }
-                                    DocumentReference.set(userData).addOnSuccessListener {
-                                        Log.e("SuccessRegist", "DocumentSnapshot added with ID: $userID")
-                                        Toast.makeText(this, "Regist Success! ", Toast.LENGTH_SHORT).show()
-                                    }
+                                    DocumentReference.set(userData)
+                                        .addOnSuccessListener {
+                                            Log.e("SuccessRegist", "DocumentSnapshot added with ID: $userID")
+                                            Toast.makeText(this, "Register Successful", Toast.LENGTH_SHORT).show()
+                                        }
                                         .addOnFailureListener {
-                                            Toast.makeText(this, "Regist Failed! ", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(this, "Register Failed", Toast.LENGTH_SHORT).show()
                                         }
                                     var intent= Intent(this@OTPEmailActivity, LoginActivity::class.java)
                                     startActivity(intent)
                                 } else {
-                                    Toast.makeText(this@OTPEmailActivity, it.exception?.message.toString(), Toast.LENGTH_SHORT).show()
+                                    Log.d("OTPEmail", "Error in OTP Email Activity : ${it.exception?.message.toString()}")
                                 }
                             }
                         }

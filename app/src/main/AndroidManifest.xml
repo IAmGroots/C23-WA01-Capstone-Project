@@ -46,11 +46,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.login.resetPasswordActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.otp.OTPMobileActivity"
+            android:name=".ui.login.ResetPasswordActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

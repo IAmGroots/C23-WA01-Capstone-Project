@@ -89,7 +89,7 @@ class RegisterActivity : AppCompatActivity() {
                                                 // Gagal melakukan pengecekan
                                                 Toast.makeText(
                                                     this@RegisterActivity,
-                                                    "Failed to check email existence!",
+                                                    "Failed to verify the email",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
                                             }
@@ -109,18 +109,13 @@ class RegisterActivity : AppCompatActivity() {
                                     ).show()
                                 }
                             } else {
-                                binding.etEmail.error =
-                                    "Invalid e-mail address format"
+                                binding.etEmail.error = "Invalid e-mail address format"
                             }
                         } else {
-                            Log.d("REGISTER", "MASUK DISINI")
-                            binding.etLastName.error =
-                                "Name must be a minimum of 2 characters and a maximum of 150 characters"
+                            binding.etLastName.error = "Name must be a minimum of 2 characters and a maximum of 150 characters"
                         }
                     } else {
-                        Log.d("REGISTER", "MASUK DISANA | ${firstname.length}")
-                        binding.etFirstName.error =
-                            "Name must be a minimum of 2 characters and a maximum of 150 characters"
+                        binding.etFirstName.error = "Name must be a minimum of 2 characters and a maximum of 150 characters"
                     }
                 }
             }

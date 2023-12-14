@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.MainViewModel
-import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivitySplashBinding
 import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory

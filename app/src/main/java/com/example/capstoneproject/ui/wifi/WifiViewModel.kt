@@ -3,8 +3,6 @@ package com.example.capstoneproject.ui.wifi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.capstoneproject.model.Articles
-import com.example.capstoneproject.model.DataSourceArticles
 import com.example.capstoneproject.model.DataSourceHotspot
 import com.example.capstoneproject.model.Hotspot
 

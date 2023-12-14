@@ -2,7 +2,6 @@ package com.example.capstoneproject.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.capstoneproject.databinding.BannerItemsBinding
@@ -26,10 +25,6 @@ class BannerAdapter(private val listBanner: List<Banner>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
         val banner = listBanner[position]
         holder.bind(banner)
-        // jika mau menavigasikan ke halaman lain
-//        holder.itemView.setOnClickListener { item ->
-//            Toast.makeText(item.context, "${banner.title} Clicked", Toast.LENGTH_SHORT).show()
-//        }
     }
 
     override fun getItemCount(): Int {

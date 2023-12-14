@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.BuildConfig
@@ -241,7 +240,6 @@ class OrderActivity : AppCompatActivity() {
             if (result?.resultCode == RESULT_OK) {
                 result.data?.let {
                     val transactionResult = it.getParcelableExtra<TransactionResult>(UiKitConstants.KEY_TRANSACTION_RESULT)
-//                    Toast.makeText(this, "${transactionResult?.status}", Toast.LENGTH_LONG).show()
                     if (transactionResult != null) {
                         val transaction = hashMapOf(
                             "idOrder" to orderId,
@@ -257,7 +255,7 @@ class OrderActivity : AppCompatActivity() {
 
                         when (transactionResult.status) {
                             com.midtrans.sdk.corekit.models.snap.TransactionResult.STATUS_SUCCESS -> {
-                                Toast.makeText(this, "Transaction Finished. ID: " + transactionResult.transactionId, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Transaction Successful", Toast.LENGTH_SHORT).show()
                                 db.collection("transaction")
                                     .add(transaction)
                                     .addOnSuccessListener {
@@ -275,41 +273,42 @@ class OrderActivity : AppCompatActivity() {
                                                     db.collection("user").document(document.id).update("plan", typePackage)
                                                         .addOnSuccessListener {
                                                             Log.d("Services", id_plan.toString())
-                                                            Toast.makeText(this, "Successfully Update to Firestore", Toast.LENGTH_LONG).show()
                                                         }
                                                         .addOnFailureListener {
                                                             Log.d("Services", id_plan.toString())
-                                                            Toast.makeText(this, "Failure Update to Firestore", Toast.LENGTH_LONG).show()
                                                         }
                                                 }
                                             }
                                     }
                                     .addOnFailureListener {
-                                        Toast.makeText(this, "Failure Add to Firestore", Toast.LENGTH_LONG).show()
+                                        Log.d("Services", "Failure Add to Firestore : $it")
                                     }
                             }
                             com.midtrans.sdk.corekit.models.snap.TransactionResult.STATUS_PENDING -> {
-                                Toast.makeText(this, "Transaction Pending. ID: " + transactionResult.transactionId, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Transaction Pending", Toast.LENGTH_SHORT).show()
                                 db.collection("transaction")
                                     .add(transaction)
                                     .addOnSuccessListener {
-                                        Toast.makeText(this, "Successfully Add to Firestore", Toast.LENGTH_LONG).show()
+                                        Log.d("AfterPayment", "Successfully Add to Firestore")
                                     }
                                     .addOnFailureListener {
-                                        Toast.makeText(this, "Failure Add to Firestore", Toast.LENGTH_LONG).show()
+                                        Log.d("AfterPayment", "Failure Add to Firestore")
                                     }
                             }
                             UiKitConstants.STATUS_CANCELED -> {
                                 Toast.makeText(this, "Transaction Cancelled", Toast.LENGTH_SHORT).show()
                             }
                             com.midtrans.sdk.corekit.models.snap.TransactionResult.STATUS_FAILED -> {
-                                Toast.makeText(this, "Transaction FAILED" + transactionResult.transactionId + ". Message: " + transactionResult.status, Toast.LENGTH_SHORT).show()
+                                Log.d("AfterPayment", "Transaction Failed" + transactionResult.transactionId + ". Message: " + transactionResult.status)
+                                Toast.makeText(this, "Transaction Failed", Toast.LENGTH_SHORT).show()
                             }
                             com.midtrans.sdk.corekit.models.snap.TransactionResult.STATUS_INVALID -> {
-                                Toast.makeText(this, "Transaction INVALID" + transactionResult.transactionId + ". Message: " + transactionResult.status, Toast.LENGTH_SHORT).show()
+                                Log.d("AfterPayment", "Transaction Invalid" + transactionResult.transactionId + ". Message: " + transactionResult.status)
+                                Toast.makeText(this, "Transaction Invalid", Toast.LENGTH_SHORT).show()
                             }
                             else -> {
-                                Toast.makeText(this, "Transaction INVALID" + transactionResult.transactionId + ". Message: " + transactionResult.status, Toast.LENGTH_SHORT).show()
+                                Log.d("AfterPayment", "Transaction Invalid Branch Else" + transactionResult.transactionId + ". Message: " + transactionResult.status)
+                                Toast.makeText(this, "Transaction Invalid", Toast.LENGTH_SHORT).show()
                             }
                         }
                     } else {

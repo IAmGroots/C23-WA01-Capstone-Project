@@ -9,7 +9,7 @@ import android.widget.Toast
 import com.example.capstoneproject.databinding.ActivityResetPasswordBinding
 import com.google.firebase.auth.FirebaseAuth
 
-class resetPasswordActivity : AppCompatActivity() {
+class ResetPasswordActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityResetPasswordBinding
     private lateinit var auth: FirebaseAuth

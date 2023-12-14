@@ -4,12 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.capstoneproject.databinding.HotspotItemsBinding
 import com.example.capstoneproject.model.Hotspot
-import com.example.capstoneproject.ui.articles.detail_article.DetailArticleActivity
 
 class HotspotAdapter(private val listHotspot: MutableList<Hotspot>) :
     RecyclerView.Adapter<HotspotAdapter.HotspotViewHolder>() {
@@ -44,16 +42,6 @@ class HotspotAdapter(private val listHotspot: MutableList<Hotspot>) :
         }
     }
 
-//    private fun openMaps(lat: Double, lon: Double, name: String?) {
-//        val name = name ?: "$lat,$lon"
-//        val gmmIntentUri = Uri.parse("geo:$lat,$lon:?q=" + Uri.encode("$name"))
-//        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-//        mapIntent.setPackage("com.google.android.apps.maps")
-//        mapIntent.resolveActivity(this.packageManager)?.let {
-//            startActivity(mapIntent)
-//        }
-//    }
-
     inner class HotspotViewHolder(private val binding: HotspotItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(hotspot: Hotspot) {
@@ -64,9 +52,7 @@ class HotspotAdapter(private val listHotspot: MutableList<Hotspot>) :
                 .into(binding.imgHotspot)
 
             binding.btnDetail.setOnClickListener { item ->
-
-                val gmmIntentUri =
-                    Uri.parse("google.navigation:q=" + hotspot.lat + "," + hotspot.lon + "&mode=w")
+                val gmmIntentUri = Uri.parse("google.navigation:q=" + hotspot.lat + "," + hotspot.lon + "&mode=w")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 item.context.startActivity(mapIntent)

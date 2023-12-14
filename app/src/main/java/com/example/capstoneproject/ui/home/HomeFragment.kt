@@ -5,13 +5,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -24,12 +21,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.capstoneproject.R
 import com.example.capstoneproject.adapter.BannerAdapter
-import com.example.capstoneproject.adapter.FirebaseMessageAdapter
 import com.example.capstoneproject.adapter.HomeArticlesAdapter
 import com.example.capstoneproject.databinding.FragmentHomeBinding
 import com.example.capstoneproject.model.Banner
 import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
-import com.example.capstoneproject.ui.chat.ChatActivity
 import com.example.capstoneproject.ui.usage.UsageActivity
 import com.example.capstoneproject.ui.wifi.WifiActivity
 import com.google.firebase.Firebase
@@ -71,7 +66,6 @@ class HomeFragment : Fragment() {
             getCurrentService(userID, viewLifecycleOwner)
         }
 
-        setupToolbar()
         setupBanner()
         setupAction()
         setupArticles()
@@ -361,27 +355,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    // for setup toolbar
-    private fun setupToolbar() {
-        val toolbar = binding.toolbar
-
-        toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.navigation_notifications -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "Icon Notification Click By $userID",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    true
-                }
-
-                else -> true
-            }
-        }
-    }
-
-    // Banner Start
     private val bannerList = listOf(
         Banner("Satu", "https://wow.net.id/wp-content/uploads/2023/05/3-1536x768.jpg"),
         Banner("Dua", "https://wow.net.id/wp-content/uploads/2023/05/2-1536x768.jpg"),
@@ -439,7 +412,6 @@ class HomeFragment : Fragment() {
     private fun stopSlideShow() {
         timer.cancel()
     }
-    // Banner Finish
 
     private fun setupAction() {
         binding.btnWifi.setOnClickListener {
