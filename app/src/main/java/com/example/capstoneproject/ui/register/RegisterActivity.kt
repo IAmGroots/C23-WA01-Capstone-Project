@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -61,8 +62,8 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 else -> {
-                    if (firstname.length < 2 || firstname.length > 150) {
-                        if (lastname.length < 2 || lastname.length > 150) {
+                    if (firstname.length > 2 && firstname.length < 150) {
+                        if (lastname.length > 2 && lastname.length < 150) {
                             if (isEmailValid(email)) {
                                 if (password.length >= 8) {
                                     if (password == confirmPassword) {
@@ -121,10 +122,12 @@ class RegisterActivity : AppCompatActivity() {
                                     "Invalid e-mail address format"
                             }
                         } else {
+                            Log.d("REGISTER", "MASUK DISINI")
                             binding.etLastName.error =
                                 "Name must be a minimum of 2 characters and a maximum of 150 characters"
                         }
                     } else {
+                        Log.d("REGISTER", "MASUK DISANA | ${firstname.length}")
                         binding.etFirstName.error =
                             "Name must be a minimum of 2 characters and a maximum of 150 characters"
                     }

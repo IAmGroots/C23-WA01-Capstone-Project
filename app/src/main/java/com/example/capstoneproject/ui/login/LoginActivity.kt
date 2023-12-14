@@ -162,6 +162,7 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.progressBar.visibility = View.VISIBLE
+            binding.btnLogin.isEnabled = false
 //            binding.bgBtnLogin.apply {
 //                binding.btnLogin.isEnabled = false
 //                setBackgroundResource(R.drawable.cardview_border_disabled)
@@ -172,6 +173,7 @@ class LoginActivity : AppCompatActivity() {
 //            }
         } else {
             binding.progressBar.visibility = View.GONE
+            binding.btnLogin.isEnabled = true
 //            binding.bgBtnLogin.apply {
 //                binding.btnLogin.isEnabled = true
 //                setBackgroundResource(R.drawable.cardview_border_no_padding)
