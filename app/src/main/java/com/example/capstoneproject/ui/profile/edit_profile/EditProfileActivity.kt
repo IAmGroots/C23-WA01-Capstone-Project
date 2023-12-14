@@ -57,13 +57,9 @@ class EditProfileActivity : AppCompatActivity() {
                     binding.etLastName.error = "Please enter your last name"
                 }
 
-
                 else -> {
                     if (firstName.length in 2..150) {
                         if (lastName.length in 2..150) {
-                            val sharedPreferences =
-                                getSharedPreferences("UserData", Context.MODE_PRIVATE)
-                            val oldPhone = sharedPreferences.getString("phone", "")
                             if (oldPhone == phone) {
                                 updateProfile(firstName, lastName, phone)
                             } else {
