@@ -64,36 +64,79 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewlogin" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/btnverifydotp"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/linearLayoutButton"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-
-            android:layout_gravity="center"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etOtp">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/cardview_border"
-                android:gravity="center">
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:foreground="?attr/selectableItemBackground">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_semi_bold"
-                    android:text="Verify"
-                    android:textColor="@color/white" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btnBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="25dp"
+                    app:cardElevation="0dp">
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.cardview.widget.CardView>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/cardview_border_stroke"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_semi_bold"
+                            android:text="Back"
+                            android:textColor="@color/contentColor" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:foreground="?attr/selectableItemBackground">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btnverifydotp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="25dp"
+                    app:cardElevation="0dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/cardview_border"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_semi_bold"
+                            android:text="Verify"
+                            android:textColor="@color/white" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +146,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnverifydotp">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutButton">
 
             <TextView
                 android:id="@+id/signupText"
