@@ -309,24 +309,6 @@ class LoginActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { querySnapshot ->
                 if (!querySnapshot.isEmpty) {
-                    val user = querySnapshot.documents[0]
-
-                    val firstname = user.getString("firstname")
-                    val lastname = user.getString("lastname")
-                    val email = user.getString("email")
-                    val mobile = user.getString("mobile")
-                    val plan = user.getString("plan")
-
-                    val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-                    val editor = sharedPreferences.edit()
-                    editor.putString("id", userID)
-                    editor.putString("firstName", firstname)
-                    editor.putString("lastName", lastname)
-                    editor.putString("email", email)
-                    editor.putString("phone", mobile)
-                    editor.putString("plan", plan)
-                    editor.apply()
-
                     Log.e("Success", "Save Data")
                     viewModel.saveLogin(true)
                     viewModel.saveUID(userID)

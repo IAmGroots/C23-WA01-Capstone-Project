@@ -1,7 +1,9 @@
 package com.example.capstoneproject.ui.home
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -42,7 +45,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var viewPager: ViewPager2
     private lateinit var timer: Timer
-    private val DURATION: Long = 1000
+    private val MY_LOCATION_REQUEST_CODE = 123
     private val db = Firebase.firestore
     private val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
@@ -68,14 +71,11 @@ class HomeFragment : Fragment() {
             getCurrentService(userID, viewLifecycleOwner)
         }
 
-        binding.btnChat.setOnClickListener {
-            startActivity(Intent(requireContext(), ChatActivity::class.java))
-        }
-
         setupToolbar()
         setupBanner()
         setupAction()
         setupArticles()
+        checkAccessLocation()
 
         return root
     }
@@ -88,6 +88,27 @@ class HomeFragment : Fragment() {
             binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
             binding.progressBar.visibility = View.GONE
         }
+    }
+
+    private fun checkAccessLocation() {
+        if (!isAccessLocationGranted()) {
+            requestLocationPermission()
+        }
+    }
+
+    private fun isAccessLocationGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            MY_LOCATION_REQUEST_CODE
+        )
     }
 
     private fun getCurrentService(userID: String, lifecycleOwner: LifecycleOwner) {
