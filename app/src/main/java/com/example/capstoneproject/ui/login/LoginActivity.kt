@@ -3,7 +3,6 @@ package com.example.capstoneproject.ui.login
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -23,7 +22,6 @@ import com.example.capstoneproject.databinding.ActivityLoginBinding
 import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
 import com.example.capstoneproject.preferences.dataStore
-import com.example.capstoneproject.ui.otp.OTPEmailActivity
 import com.example.capstoneproject.ui.register.RegisterActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -36,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
-    private lateinit var auth: FirebaseAuth
+    lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private var db = Firebase.firestore
     private var attemptsRemaining = 3 // Jumlah percobaan tersisa
@@ -198,7 +196,7 @@ class LoginActivity : AppCompatActivity() {
         return matcher.matches()
     }
 
-    private fun signIn(email: String, password: String) {
+    fun signIn(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
