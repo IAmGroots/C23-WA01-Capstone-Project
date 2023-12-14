@@ -11,9 +11,6 @@ import org.junit.Test
 
 class OTPMobileActivityTest {
 
-    @get:Rule
-    var ruleActivity = ActivityScenarioRule(OTPMobileActivity::class.java)
-
     @Test
     fun otpMobileTestEditText() {
         Espresso.onView(ViewMatchers.withId(R.id.etOtp))
@@ -27,14 +24,4 @@ class OTPMobileActivityTest {
         Espresso.onView(ViewMatchers.withId(R.id.btnverifydotp)).perform(ViewActions.click())
     }
 
-//    @Test
-//    fun otpMobileTestTextView() {
-////        Espresso.onView(ViewMatchers.withId(R.id.showMobile))
-////            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-//        /*Espresso.onView(ViewMatchers.withId(R.id.signupText))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-//        Espresso.onView(ViewMatchers.withId(R.id.reSendhere))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))*/
-//        /*Espresso.onView(ViewMatchers.withId(R.id.reSendhere)).perform(ViewActions.click())*/
-//    }
 }
