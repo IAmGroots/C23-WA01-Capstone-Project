@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import com.example.capstoneproject.databinding.ActivityOtpemailBinding
 import com.example.capstoneproject.ui.login.LoginActivity
+import com.example.capstoneproject.ui.register.RegisterActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.random.Random
@@ -115,6 +116,12 @@ class OTPEmailActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        binding.btnBack.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
 
         binding.reSendHere.setOnClickListener {
