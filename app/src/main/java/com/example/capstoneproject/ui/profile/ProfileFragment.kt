@@ -94,14 +94,7 @@ class ProfileFragment : Fragment() {
             viewModel.saveBiometric(isChecked)
         }
 
-        binding.containerLogout.setOnClickListener {
-            viewModel.logout()
-            FirebaseAuth.getInstance().signOut()
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        }
-
+        setupToolbar()
         loadUserData()
         setBiometric()
         setActionButton()
@@ -109,6 +102,26 @@ class ProfileFragment : Fragment() {
 
         return root
     }
+
+    private fun setupToolbar() {
+        val toolbar = binding.toolbar
+
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.navigation_logout -> {
+                    viewModel.logout()
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    true
+                }
+
+                else -> true
+            }
+        }
+    }
+
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
@@ -310,11 +323,13 @@ class ProfileFragment : Fragment() {
 
                     binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
 
-                    binding.tvCurrentLocation.text = "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                    binding.tvCurrentLocation.text =
+                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
 
                     binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
 
-                    binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
+                    binding.cardPlanElevation.cardElevation =
+                        resources.getDimension(R.dimen.elevation_2dp)
 
                 }
 
@@ -356,11 +371,13 @@ class ProfileFragment : Fragment() {
 
                     binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
 
-                    binding.tvCurrentLocation.text = "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                    binding.tvCurrentLocation.text =
+                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
 
                     binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
 
-                    binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
+                    binding.cardPlanElevation.cardElevation =
+                        resources.getDimension(R.dimen.elevation_2dp)
 
                 }
 
@@ -402,11 +419,13 @@ class ProfileFragment : Fragment() {
 
                     binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
 
-                    binding.tvCurrentLocation.text = "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                    binding.tvCurrentLocation.text =
+                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
 
                     binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
 
-                    binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
+                    binding.cardPlanElevation.cardElevation =
+                        resources.getDimension(R.dimen.elevation_2dp)
 
                 }
 

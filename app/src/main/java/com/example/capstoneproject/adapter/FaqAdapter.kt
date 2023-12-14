@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.FaqItemsBinding
 import com.example.capstoneproject.model.Faq
 
@@ -22,6 +23,20 @@ class FaqAdapter(private var listFaq: List<Faq>) :
             isAnyItemExpanded(position)
             faq.isExpandable = !faq.isExpandable
             notifyItemChanged(position , Unit)
+
+            for (i in listFaq.indices) {
+                if (i != position) {
+                    listFaq[i].isExpandable = false
+                    notifyItemChanged(i)
+                }
+            }
+        }
+
+
+        if (faq.isExpandable) {
+            holder.binding.iconExpand.setImageResource(R.drawable.icon_expand_down)
+        } else {
+            holder.binding.iconExpand.setImageResource(R.drawable.icon_expand_more)
         }
     }
 
@@ -37,7 +52,7 @@ class FaqAdapter(private var listFaq: List<Faq>) :
         }
     }
 
-    inner class FaqViewHolder(private val binding: FaqItemsBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class FaqViewHolder(val binding: FaqItemsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun collapseExpandedView(){
             binding.tvAnswers.visibility = View.GONE
         }
