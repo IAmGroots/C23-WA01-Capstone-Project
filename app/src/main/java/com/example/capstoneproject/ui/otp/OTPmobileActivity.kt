@@ -16,8 +16,11 @@ import com.example.capstoneproject.ui.profile.edit_profile.EditProfileActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
@@ -192,10 +195,25 @@ class OTPMobileActivity : AppCompatActivity() {
 
             override fun onVerificationFailed(e: FirebaseException) {
                 Log.d("Verification", e.toString())
-                val intent = Intent(this@OTPMobileActivity, EditProfileActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                Toast.makeText(this@OTPMobileActivity, "OTP code not available now, please try again later", Toast.LENGTH_SHORT).show()
+                if (e is FirebaseAuthInvalidCredentialsException) {
+                    // Invalid request
+                    val intent = Intent(this@OTPMobileActivity, EditProfileActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    Toast.makeText(this@OTPMobileActivity, "Invalid Request", Toast.LENGTH_SHORT).show()
+                } else if (e is FirebaseTooManyRequestsException) {
+                    // The SMS quota for the project has been exceeded
+                    val intent = Intent(this@OTPMobileActivity, EditProfileActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    Toast.makeText(this@OTPMobileActivity, "OTP code not available now, please try again later", Toast.LENGTH_SHORT).show()
+                } else if (e is FirebaseAuthMissingActivityForRecaptchaException) {
+                    // reCAPTCHA verification attempted with null Activity
+                    val intent = Intent(this@OTPMobileActivity, EditProfileActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    Toast.makeText(this@OTPMobileActivity, "reCAPTCHA verification attempted ", Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onCodeSent(input: String, token: PhoneAuthProvider.ForceResendingToken) {
