@@ -61,8 +61,8 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 else -> {
-                    if (firstname.length in 2..150) {
-                        if (lastname.length in 2..150) {
+                    if (firstname.length < 2 || firstname.length > 150) {
+                        if (lastname.length < 2 || lastname.length > 150) {
                             if (isEmailValid(email)) {
                                 if (password.length >= 8) {
                                     if (password == confirmPassword) {
@@ -122,11 +122,11 @@ class RegisterActivity : AppCompatActivity() {
                             }
                         } else {
                             binding.etLastName.error =
-                                "Last name must be a minimum of 2 characters and a maximum of 150 characters"
+                                "Name must be a minimum of 2 characters and a maximum of 150 characters"
                         }
                     } else {
                         binding.etFirstName.error =
-                            "First name must be a minimum of 2 characters and a maximum of 150 characters"
+                            "Name must be a minimum of 2 characters and a maximum of 150 characters"
                     }
                 }
             }
