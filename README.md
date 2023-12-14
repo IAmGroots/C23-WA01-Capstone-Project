@@ -1,4 +1,5 @@
 # Wownet Customer App
+## Background
 Wownet Customers currently communicate only through phone calls, emails, or WhatsApp to get more information about services or assistance. This process is inefficient for both us and the customers. Typically, it takes more than 10 minutes to receive help or a response, which is unacceptable in the Wownet industry.
 
 ## Project Scope
