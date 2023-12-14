@@ -1,7 +1,6 @@
 package com.example.capstoneproject.ui.profile.edit_profile
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,7 +12,6 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.databinding.ActivityEditProfileBinding
-import com.example.capstoneproject.ui.otp.OTPMobileActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -57,18 +55,18 @@ class EditProfileActivity : AppCompatActivity() {
                     binding.etLastName.error = "Please enter your last name"
                 }
 
+                phone.isEmpty() -> {
+                    binding.etMobile.error = "Please enter your mobile number"
+                }
+
                 else -> {
                     if (firstName.length in 2..150) {
                         if (lastName.length in 2..150) {
-                            if (oldPhone == phone) {
+                            if (isPhoneNumberValid(phone)) {
                                 updateProfile(firstName, lastName, phone)
                             } else {
-                                if (isPhoneNumberValid(phone)) {
-                                    redirectToOTP(firstName, lastName, phone)
-                                } else {
-                                    binding.etMobile.error =
-                                        "Invalid mobile number format"
-                                }
+                                binding.etMobile.error =
+                                    "Invalid mobile number format"
                             }
                         } else {
                             binding.etLastName.error =
@@ -114,42 +112,6 @@ class EditProfileActivity : AppCompatActivity() {
             }
     }
 
-    private fun redirectToOTP(firstName: String, lastName: String, phone: String) {
-        val firestore = FirebaseFirestore.getInstance()
-        val usersRef = firestore.collection("user")
-        val query = usersRef.whereEqualTo("mobile", phone)
-
-        query.get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val documents = task.result
-                if (documents != null && !documents.isEmpty) {
-                    // Email sudah digunakan
-                    Toast.makeText(
-                        this@EditProfileActivity,
-                        "Mobile number is already in use!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    // Email belum digunakan, lanjutkan ke verifikasi OTP
-                    val intent = Intent(
-                        this@EditProfileActivity, OTPMobileActivity::class.java
-                    )
-                    intent.putExtra("firstname", firstName)
-                    intent.putExtra("lastname", lastName)
-                    intent.putExtra("mobile", phone)
-                    startActivity(intent)
-                }
-            } else {
-                // Gagal melakukan pengecekan
-                Toast.makeText(
-                    this@EditProfileActivity,
-                    "Failed to check mobile number existence!",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
     private fun getDataFromDB(uid: String) {
         viewModel.setLoading(true)
         db.collection("user")
@@ -160,12 +122,9 @@ class EditProfileActivity : AppCompatActivity() {
                 if (!data.isEmpty) {
                     val user = data.documents[0]
                     oldPhone = user.get("mobile").toString()
-                    binding.etFirstName.text =
-                        Editable.Factory.getInstance().newEditable(user.get("firstname").toString())
-                    binding.etLastName.text =
-                        Editable.Factory.getInstance().newEditable(user.get("lastname").toString())
-                    binding.etMobile.text =
-                        Editable.Factory.getInstance().newEditable(user.get("mobile").toString())
+                    binding.etFirstName.text = Editable.Factory.getInstance().newEditable(user.get("firstname").toString())
+                    binding.etLastName.text = Editable.Factory.getInstance().newEditable(user.get("lastname").toString())
+                    binding.etMobile.text = Editable.Factory.getInstance().newEditable(user.get("mobile").toString())
                 }
                 viewModel.setLoading(false)
             }
