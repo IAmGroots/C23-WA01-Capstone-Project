@@ -46,6 +46,7 @@
                 android:id="@+id/containerProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:background="@color/lightPrimaryColor">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -385,39 +386,199 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/tvHistoryPayment"
+                    android:id="@+id/tvOthers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="H I S T O R Y  P A Y M E N T"
+                    android:text="S E T T I N G S"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/card_plan" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cardHistoryPayment"
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/card_settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/item_bg"
-                    app:layout_constraintTop_toBottomOf="@+id/tvHistoryPayment">
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOthers">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvHistoryPayment"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/containerHistoryTransaction"
                         android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:listitem="@layout/history_payment_items" />
+                        android:layout_height="50dp"
+                        android:layout_marginHorizontal="16dp">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <ImageView
+                            android:id="@+id/icHistory"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/icon_history"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/secondaryColor" />
+
+                        <TextView
+                            android:id="@+id/tvHistoryTransaction"
+                            style="@style/MontserratMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="History Transaction"
+                            android:textColor="@color/secondaryColor"
+                            app:layout_constraintBottom_toBottomOf="@+id/icHistory"
+                            app:layout_constraintStart_toEndOf="@+id/icHistory"
+                            app:layout_constraintTop_toTopOf="@+id/icHistory" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/containerBiometricFingerprint"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginHorizontal="16dp">
+
+                        <ImageView
+                            android:id="@+id/icFingerprint"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/icon_fingerprint"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/secondaryColor" />
+
+                        <TextView
+                            android:id="@+id/tvBiometricFingerprint"
+                            style="@style/MontserratMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Biometric Fingerprint"
+                            android:textColor="@color/secondaryColor"
+                            app:layout_constraintBottom_toBottomOf="@+id/icFingerprint"
+                            app:layout_constraintStart_toEndOf="@+id/icFingerprint"
+                            app:layout_constraintTop_toTopOf="@+id/icFingerprint" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchBiometric"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/containerMode"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginHorizontal="16dp">
+
+                        <ImageView
+                            android:id="@+id/icMode"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/icon_moon"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/secondaryColor" />
+
+                        <TextView
+                            android:id="@+id/tvMode"
+                            style="@style/MontserratMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Dark Mode"
+                            android:textColor="@color/secondaryColor"
+                            app:layout_constraintBottom_toBottomOf="@+id/icMode"
+                            app:layout_constraintStart_toEndOf="@+id/icMode"
+                            app:layout_constraintTop_toTopOf="@+id/icMode" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchDarkMode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/containerFaq"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginHorizontal="16dp">
+
+                        <ImageView
+                            android:id="@+id/icFaq"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/icon_faq"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/secondaryColor" />
+
+                        <TextView
+                            android:id="@+id/tvFaq"
+                            style="@style/MontserratMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Frequently Asked Questions"
+                            android:textColor="@color/secondaryColor"
+                            app:layout_constraintBottom_toBottomOf="@+id/icFaq"
+                            app:layout_constraintStart_toEndOf="@+id/icFaq"
+                            app:layout_constraintTop_toTopOf="@+id/icFaq" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/containerCustomerService"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginHorizontal="16dp">
+
+                        <ImageView
+                            android:id="@+id/icCustomerService"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/icon_customer_service"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/secondaryColor" />
+
+                        <TextView
+                            android:id="@+id/tvCustomerService"
+                            style="@style/MontserratMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Customer Service"
+                            android:textColor="@color/secondaryColor"
+                            app:layout_constraintBottom_toBottomOf="@+id/icCustomerService"
+                            app:layout_constraintStart_toEndOf="@+id/icCustomerService"
+                            app:layout_constraintTop_toTopOf="@+id/icCustomerService" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <TextView
                     android:id="@+id/tvSocialMedia"
@@ -428,7 +589,7 @@
                     android:text="S O C I A L  M E D I A"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardHistoryPayment" />
+                    app:layout_constraintTop_toBottomOf="@+id/card_settings" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cardSocialMedia"
@@ -508,176 +669,23 @@
                     </GridLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                <TextView
-                    android:id="@+id/tvOthers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:text="O T H E R S"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardSocialMedia" />
-
-
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/item_bg"
-                    android:orientation="vertical"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvOthers">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/containerHistoryTransaction"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        app:layout_constraintBottom_toTopOf="@+id/containerMode"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_goneMarginBottom="8dp">
-
-                        <ImageView
-                            android:id="@+id/icHistory"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/icon_history"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/secondaryColor" />
-
-                        <TextView
-                            android:id="@+id/tvHistoryTransaction"
-                            style="@style/MontserratMedium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="History Transaction"
-                            android:textColor="@color/secondaryColor"
-                            app:layout_constraintBottom_toBottomOf="@+id/icHistory"
-                            app:layout_constraintStart_toEndOf="@+id/icHistory"
-                            app:layout_constraintTop_toTopOf="@+id/icHistory"
-                            app:layout_constraintVertical_bias="0.6" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/containerBiometricFingerprint"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        app:layout_constraintBottom_toTopOf="@+id/containerMode"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_goneMarginBottom="8dp">
-
-                        <ImageView
-                            android:id="@+id/icFingerprint"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/icon_fingerprint"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/secondaryColor" />
-
-                        <TextView
-                            android:id="@+id/tvBiometricFingerprint"
-                            style="@style/MontserratMedium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="Biometric Fingerprint"
-                            android:textColor="@color/secondaryColor"
-                            app:layout_constraintBottom_toBottomOf="@+id/icFingerprint"
-                            app:layout_constraintStart_toEndOf="@+id/icFingerprint"
-                            app:layout_constraintTop_toTopOf="@+id/icFingerprint" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchBiometric"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/containerMode"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        app:layout_constraintBottom_toBottomOf="@id/containerLogout"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/containerBiometricFingerprint">
-
-                        <ImageView
-                            android:id="@+id/icMode"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-
-                            android:contentDescription="@null"
-                            android:src="@drawable/icon_moon"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/secondaryColor" />
-
-                        <TextView
-                            android:id="@+id/tvMode"
-                            style="@style/MontserratMedium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="Dark Mode"
-                            android:textColor="@color/secondaryColor"
-                            app:layout_constraintBottom_toBottomOf="@+id/icMode"
-                            app:layout_constraintStart_toEndOf="@+id/icMode"
-                            app:layout_constraintTop_toTopOf="@+id/icMode" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchDarkMode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/cardSocialMedia">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/containerLogout"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/containerMode">
+                        android:layout_marginHorizontal="16dp">
 
                         <ImageView
                             android:id="@+id/icLogout"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-
                             android:contentDescription="@null"
                             android:src="@drawable/icon_logout"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -695,12 +703,10 @@
                             android:textColor="@color/secondaryColor"
                             app:layout_constraintBottom_toBottomOf="@+id/icLogout"
                             app:layout_constraintStart_toEndOf="@+id/icLogout"
-                            app:layout_constraintTop_toTopOf="@+id/icLogout"
-                            app:layout_constraintVertical_bias="0.6" />
-
+                            app:layout_constraintTop_toTopOf="@+id/icLogout" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

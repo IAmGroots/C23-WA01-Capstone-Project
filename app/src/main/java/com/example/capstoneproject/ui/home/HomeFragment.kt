@@ -72,10 +72,6 @@ class HomeFragment : Fragment() {
             getCurrentService(userID, viewLifecycleOwner)
         }
 
-        binding.btnChat.setOnClickListener {
-            startActivity(Intent(requireContext(), ChatActivity::class.java))
-        }
-
         return root
     }
 

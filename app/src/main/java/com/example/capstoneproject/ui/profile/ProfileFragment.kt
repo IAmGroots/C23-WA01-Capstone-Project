@@ -1,26 +1,19 @@
 package com.example.capstoneproject.ui.profile
 
 import android.content.Intent
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieAnimationView
-import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
-import com.example.capstoneproject.adapter.HistoryPaymentAdapter
 import com.example.capstoneproject.databinding.FragmentProfileBinding
 import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
@@ -30,9 +23,9 @@ import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.profile.edit_profile.EditProfileActivity
 import androidx.biometric.BiometricManager
 import androidx.lifecycle.LifecycleOwner
+import com.example.capstoneproject.ui.chat.ChatActivity
+import com.example.capstoneproject.ui.faq.FaqActivity
 import com.example.capstoneproject.ui.history.HistoryActivity
-import com.example.capstoneproject.ui.profile.biometric.BiometricActivity
-import com.example.capstoneproject.ui.profile.theme.DarkModeActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
@@ -57,7 +50,6 @@ class ProfileFragment : Fragment() {
         loadUserData()
         setBiometric()
         setActionButton()
-        setupListHistoryPayment()
         setupSocialMediaLinks()
         getCurrentService(userID, viewLifecycleOwner)
 
@@ -73,15 +65,6 @@ class ProfileFragment : Fragment() {
             getCurrentService(userID, viewLifecycleOwner)
         }
 
-        viewModel.getTheme().observe(viewLifecycleOwner) { isDarkModeActive ->
-            AppCompatDelegate.setDefaultNightMode(if(isDarkModeActive) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
-            binding.switchDarkMode.isChecked = isDarkModeActive
-        }
-
-        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.saveTheme(isChecked)
-        }
-
         viewModel.getBiometric().observe(viewLifecycleOwner) { isBiometricActive ->
             binding.switchBiometric.isChecked = isBiometricActive
         }
@@ -90,15 +73,14 @@ class ProfileFragment : Fragment() {
             viewModel.saveBiometric(isChecked)
         }
 
-//        binding.containerBiometricFingerprint.setOnClickListener {
-//            val intent = Intent(requireContext(), BiometricActivity::class.java)
-//            startActivity(intent)
-//        }
+        viewModel.getTheme().observe(viewLifecycleOwner) { isDarkModeActive ->
+            AppCompatDelegate.setDefaultNightMode(if(isDarkModeActive) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+            binding.switchDarkMode.isChecked = isDarkModeActive
+        }
 
-//        binding.containerMode.setOnClickListener {
-//            val intent = Intent(requireContext(), DarkModeActivity::class.java)
-//            startActivity(intent)
-//        }
+        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.saveTheme(isChecked)
+        }
 
         binding.containerLogout.setOnClickListener {
             viewModel.logout()
@@ -152,6 +134,14 @@ class ProfileFragment : Fragment() {
 
         binding.containerHistoryTransaction.setOnClickListener {
             startActivity(Intent(requireActivity(), HistoryActivity::class.java))
+        }
+
+        binding.containerFaq.setOnClickListener {
+            startActivity(Intent(requireContext(), FaqActivity::class.java))
+        }
+
+        binding.containerCustomerService.setOnClickListener {
+            startActivity(Intent(requireContext(), ChatActivity::class.java))
         }
     }
 
@@ -432,16 +422,6 @@ class ProfileFragment : Fragment() {
             "facebook" -> "https://www.facebook.com/wownet.id/"
             "linkedin" -> "https://www.linkedin.com/company/wownet-wowrack-cepat-nusantara/"
             else -> ""
-        }
-    }
-
-    private fun setupListHistoryPayment() {
-        binding.rvHistoryPayment.setHasFixedSize(true)
-        binding.rvHistoryPayment.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.listHistoryPayment.observe(viewLifecycleOwner) { listHistoryPayment ->
-            val adapter = HistoryPaymentAdapter(listHistoryPayment)
-            Log.d("PROFILE", listHistoryPayment.toString())
-            binding.rvHistoryPayment.adapter = adapter
         }
     }
 }
