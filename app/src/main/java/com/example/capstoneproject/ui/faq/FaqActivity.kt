@@ -3,10 +3,7 @@ package com.example.capstoneproject.ui.faq
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.capstoneproject.R
 import com.example.capstoneproject.adapter.FaqAdapter
-import com.example.capstoneproject.adapter.HomeArticlesAdapter
-import com.example.capstoneproject.data.di.Injection
 import com.example.capstoneproject.databinding.ActivityFaqBinding
 import com.example.capstoneproject.model.DataSourceFaq
 

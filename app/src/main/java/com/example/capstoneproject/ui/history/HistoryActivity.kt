@@ -1,17 +1,11 @@
 package com.example.capstoneproject.ui.history
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.annotation.StringRes
 import com.example.capstoneproject.R
 import com.example.capstoneproject.adapter.SectionsPagerAdapter
 import com.example.capstoneproject.databinding.ActivityHistoryBinding
-import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
-import com.example.capstoneproject.ui.order.OrderActivity
 import com.google.android.material.tabs.TabLayoutMediator
-import java.util.Locale
-
 class HistoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHistoryBinding

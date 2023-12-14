@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.capstoneproject.R
 import com.example.capstoneproject.adapter.FirebaseMessageAdapter
 import com.example.capstoneproject.databinding.ActivityChatBinding
 import com.example.capstoneproject.model.Message
@@ -16,10 +14,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
-import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import java.util.Date
 
 class ChatActivity : AppCompatActivity() {

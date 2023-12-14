@@ -1,17 +1,12 @@
 package com.example.capstoneproject.ui.wifi
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.location.Location
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -21,11 +16,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
-import com.example.capstoneproject.adapter.ArticlesAdapter
 import com.example.capstoneproject.adapter.HotspotAdapter
 import com.example.capstoneproject.databinding.ActivityWifiBinding
 import com.example.capstoneproject.model.Hotspot
-
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -209,8 +202,7 @@ class WifiActivity : AppCompatActivity() {
     // get distances between two location (in kilometer)
     private fun distance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val theta = lon1 - lon2
-        var dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) +
-                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta))
+        var dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta))
         dist = Math.acos(dist)
         dist = rad2deg(dist)
         dist = dist * 60 * 1.1515 * 1.609344

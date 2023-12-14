@@ -1,7 +1,6 @@
 package com.example.capstoneproject.ui.login
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -41,7 +40,6 @@ class LoginActivity : AppCompatActivity() {
     private var isCountdownActive = false // Apakah countdown aktif
     private lateinit var countdownTimer: CountDownTimer
     private var countdownTimeLeft: Long = 0
-    private var isLoggingIn = false
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
@@ -113,46 +111,21 @@ class LoginActivity : AppCompatActivity() {
             val biometricManager = BiometricManager.from(this)
             when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
                 BiometricManager.BIOMETRIC_SUCCESS -> {
-                    Toast.makeText(
-                        this,
-                        "This app can authenticate using biometrics",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Log.d("Biometric", "This app can authenticate using biometrics")
                     createBiometricListener()
                     createPromptInfo()
                     biometricPrompt.authenticate(promptInfo)
                 }
-
-                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                    Toast.makeText(
-                        this,
-                        "There are no biometric features available on this device",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-                    Toast.makeText(
-                        this,
-                        "Currently the Biometric feature is not available",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                    Toast.makeText(this, "The device does not have biometric features", Toast.LENGTH_SHORT)
-                        .show()
-                }
-
-                else -> {
-                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
-                }
+                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> { Log.d("Biometric", "There are no biometric features available on this device") }
+                BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> { Log.d("Biometric", "Currently the Biometric feature is not available") }
+                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> { Log.d("Biometric", "The device does not have biometric features") }
+                else -> { Log.d("Biometric", "Something went wrong") }
             }
         }
 
         binding.textforgotpassword.setOnClickListener{
             val email = binding.etEmail.text.toString()
-            val intent = Intent(this, resetPasswordActivity::class.java)
+            val intent = Intent(this, ResetPasswordActivity::class.java)
             intent.putExtra("email", email)
             startActivity(intent)
         }
@@ -163,27 +136,10 @@ class LoginActivity : AppCompatActivity() {
         if (isLoading) {
             binding.progressBar.visibility = View.VISIBLE
             binding.btnLogin.isEnabled = false
-//            binding.bgBtnLogin.apply {
-//                binding.btnLogin.isEnabled = false
-//                setBackgroundResource(R.drawable.cardview_border_disabled)
-//            }
-//            binding.bgBtnBiometric.apply {
-//                binding.bgBtnBiometric.isEnabled = false
-//                setBackgroundResource(R.drawable.cardview_border_disabled)
-//            }
         } else {
             binding.progressBar.visibility = View.GONE
             binding.btnLogin.isEnabled = true
-//            binding.bgBtnLogin.apply {
-//                binding.btnLogin.isEnabled = true
-//                setBackgroundResource(R.drawable.cardview_border_no_padding)
-//            }
-//            binding.bgBtnBiometric.apply {
-//                binding.bgBtnBiometric.isEnabled = true
-//                setBackgroundResource(R.drawable.cardview_border_no_padding)
-//            }
         }
-//        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun isEmailValid(email: String): Boolean {
@@ -203,7 +159,7 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
                     setData()
                     viewModel.setLoading(false)
                 } else {
@@ -321,11 +277,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(
-                    this,
-                    "Failed retrieve firestore data: ${exception.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Log.d("Failed Retrieve Firestore", "Failed retrieve firestore data: ${exception.message}")
             }
     }
 
@@ -381,7 +333,7 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    Toast.makeText(this@LoginActivity, "Authenticated Success", Toast.LENGTH_SHORT)
+                    Toast.makeText(this@LoginActivity, "Authenticated Successful", Toast.LENGTH_SHORT)
                         .show()
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -390,14 +342,12 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    Toast.makeText(this@LoginActivity, "Authenticated Failed", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this@LoginActivity, "Authenticated Unsuccessful", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
-                    Toast.makeText(this@LoginActivity, errString.toString(), Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this@LoginActivity, errString.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
     }

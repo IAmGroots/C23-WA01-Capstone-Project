@@ -1,12 +1,9 @@
 package com.example.capstoneproject.ui.order
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.capstoneproject.data.di.Injection
-import com.example.capstoneproject.model.Package
-import com.google.firebase.firestore.Query
 
 class OrderViewModel : ViewModel() {
 

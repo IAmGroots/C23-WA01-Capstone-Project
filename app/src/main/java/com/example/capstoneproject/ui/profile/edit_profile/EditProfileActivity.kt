@@ -102,12 +102,12 @@ class EditProfileActivity : AppCompatActivity() {
                     )
 
                     updateDataToDB(user.id, firstName, lastName, phone)
-                    Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Update Profile Successful", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
                 } else {
-                    Toast.makeText(this, "Profile failed to update", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Update Profile Unsuccessful", Toast.LENGTH_SHORT).show()
                 }
             }
     }

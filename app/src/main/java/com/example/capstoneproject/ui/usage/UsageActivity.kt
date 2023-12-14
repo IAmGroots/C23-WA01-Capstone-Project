@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityUsageBinding
 import com.example.capstoneproject.ui.customView.customMarkerChart
@@ -30,22 +29,17 @@ class UsageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUsageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
+        
         setupChart()
         setupToolbar()
-
-//        getCurrentService(userID)
+        
         selectCurrentPlan(userID)
     }
 
     private fun setupChart() {
-        //Part1
+        val usage = listOf(10, 8, 16, 20, 14, 23, 25, 21, 17, 30, 25, 40)
         val entries = ArrayList<Entry>()
         val lineChart = binding.chart
-
-
-        val usage = listOf(10, 8, 16, 20, 14, 23, 25, 21, 17, 30, 25, 40)
 
         for ((index, data) in usage.withIndex()) {
             Log.d("INDEX", "$index: x | y :$data")

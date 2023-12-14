@@ -1,11 +1,7 @@
 package com.example.capstoneproject.ui.profile
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -27,16 +23,10 @@ import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.profile.edit_profile.EditProfileActivity
 import androidx.biometric.BiometricManager
-import androidx.cardview.widget.CardView
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LifecycleOwner
 import com.example.capstoneproject.ui.chat.ChatActivity
 import com.example.capstoneproject.ui.faq.FaqActivity
 import com.example.capstoneproject.ui.history.HistoryActivity
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
@@ -496,8 +486,7 @@ class ProfileFragment : Fragment() {
                 startActivity(googleIntent)
             } else {
                 // Jika tidak ada aplikasi browser yang terpasang, tampilkan pesan kesalahan
-                Toast.makeText(requireContext(), "Tidak dapat membuka browser", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(requireContext(), "Can't open the browser", Toast.LENGTH_SHORT).show()
             }
         }
     }

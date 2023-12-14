@@ -1,19 +1,11 @@
 package com.example.capstoneproject.ui.articles.detail_article
 
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.capstoneproject.MainActivity
-import com.example.capstoneproject.R
-import com.example.capstoneproject.adapter.ArticlesAdapter
 import com.example.capstoneproject.adapter.ArticlesMoreAdapter
 import com.example.capstoneproject.databinding.ActivityDetailArticlesBinding
 import com.example.capstoneproject.model.Articles

@@ -1,13 +1,10 @@
 package com.example.capstoneproject.ui.home
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.capstoneproject.data.di.Injection
-import com.example.capstoneproject.data.repository.MidtransRepository
 import com.example.capstoneproject.model.Articles
 import com.example.capstoneproject.model.DataSourceArticles
 import com.example.capstoneproject.model.Package
