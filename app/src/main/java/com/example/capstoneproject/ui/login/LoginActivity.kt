@@ -64,9 +64,6 @@ class LoginActivity : AppCompatActivity() {
         getBiometric()
         setFocusable()
 
-        viewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
 
         binding.btnLogin.setOnClickListener {
             viewModel.setLoading(true)
@@ -84,6 +81,9 @@ class LoginActivity : AppCompatActivity() {
                 else -> {
                     if (isEmailValid(email)) {
                         if (password.length >= 8) {
+                            viewModel.isLoading.observe(this) {
+                                showLoading(it)
+                            }
                             signIn(email, password)
                         } else {
                             Toast.makeText(
@@ -158,27 +158,28 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.progressBar.visibility = View.VISIBLE
-            binding.bgBtnLogin.apply {
-                binding.btnLogin.isEnabled = false
-                setBackgroundResource(R.drawable.cardview_border_disabled)
-            }
-            binding.bgBtnBiometric.apply {
-                binding.bgBtnBiometric.isEnabled = false
-                setBackgroundResource(R.drawable.cardview_border_disabled)
-            }
+//            binding.bgBtnLogin.apply {
+//                binding.btnLogin.isEnabled = false
+//                setBackgroundResource(R.drawable.cardview_border_disabled)
+//            }
+//            binding.bgBtnBiometric.apply {
+//                binding.bgBtnBiometric.isEnabled = false
+//                setBackgroundResource(R.drawable.cardview_border_disabled)
+//            }
         } else {
             binding.progressBar.visibility = View.GONE
-            binding.bgBtnLogin.apply {
-                binding.btnLogin.isEnabled = true
-                setBackgroundResource(R.drawable.cardview_border_no_padding)
-            }
-            binding.bgBtnBiometric.apply {
-                binding.bgBtnBiometric.isEnabled = true
-                setBackgroundResource(R.drawable.cardview_border_no_padding)
-            }
+//            binding.bgBtnLogin.apply {
+//                binding.btnLogin.isEnabled = true
+//                setBackgroundResource(R.drawable.cardview_border_no_padding)
+//            }
+//            binding.bgBtnBiometric.apply {
+//                binding.bgBtnBiometric.isEnabled = true
+//                setBackgroundResource(R.drawable.cardview_border_no_padding)
+//            }
         }
 //        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
@@ -307,24 +308,6 @@ class LoginActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { querySnapshot ->
                 if (!querySnapshot.isEmpty) {
-                    val user = querySnapshot.documents[0]
-
-                    val firstname = user.getString("firstname")
-                    val lastname = user.getString("lastname")
-                    val email = user.getString("email")
-                    val mobile = user.getString("mobile")
-                    val plan = user.getString("plan")
-
-                    val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-                    val editor = sharedPreferences.edit()
-                    editor.putString("id", userID)
-                    editor.putString("firstName", firstname)
-                    editor.putString("lastName", lastname)
-                    editor.putString("email", email)
-                    editor.putString("phone", mobile)
-                    editor.putString("plan", plan)
-                    editor.apply()
-
                     Log.e("Success", "Save Data")
                     viewModel.saveLogin(true)
                     viewModel.saveUID(userID)

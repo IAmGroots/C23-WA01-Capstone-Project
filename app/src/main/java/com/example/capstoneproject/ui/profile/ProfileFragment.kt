@@ -1,26 +1,24 @@
 package com.example.capstoneproject.ui.profile
 
-import android.content.Intent
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieAnimationView
-import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
-import com.example.capstoneproject.adapter.HistoryPaymentAdapter
 import com.example.capstoneproject.databinding.FragmentProfileBinding
 import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
@@ -29,10 +27,16 @@ import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.profile.edit_profile.EditProfileActivity
 import androidx.biometric.BiometricManager
+import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LifecycleOwner
+import com.example.capstoneproject.ui.chat.ChatActivity
+import com.example.capstoneproject.ui.faq.FaqActivity
 import com.example.capstoneproject.ui.history.HistoryActivity
-import com.example.capstoneproject.ui.profile.biometric.BiometricActivity
-import com.example.capstoneproject.ui.profile.theme.DarkModeActivity
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
@@ -52,12 +56,12 @@ class ProfileFragment : Fragment() {
         val root: View = binding.root
 
         val preferences = SettingPreferences.getInstance(requireActivity().application.dataStore)
-        viewModel = ViewModelProvider(this, ViewModelFactory(preferences))[ProfileViewModel::class.java]
+        viewModel =
+            ViewModelProvider(this, ViewModelFactory(preferences))[ProfileViewModel::class.java]
 
         loadUserData()
         setBiometric()
         setActionButton()
-        setupListHistoryPayment()
         setupSocialMediaLinks()
         getCurrentService(userID, viewLifecycleOwner)
 
@@ -74,7 +78,7 @@ class ProfileFragment : Fragment() {
         }
 
         viewModel.getTheme().observe(viewLifecycleOwner) { isDarkModeActive ->
-            AppCompatDelegate.setDefaultNightMode(if(isDarkModeActive) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+            AppCompatDelegate.setDefaultNightMode(if (isDarkModeActive) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
             binding.switchDarkMode.isChecked = isDarkModeActive
         }
 
@@ -90,34 +94,46 @@ class ProfileFragment : Fragment() {
             viewModel.saveBiometric(isChecked)
         }
 
-//        binding.containerBiometricFingerprint.setOnClickListener {
-//            val intent = Intent(requireContext(), BiometricActivity::class.java)
-//            startActivity(intent)
-//        }
-
-//        binding.containerMode.setOnClickListener {
-//            val intent = Intent(requireContext(), DarkModeActivity::class.java)
-//            startActivity(intent)
-//        }
-
-        binding.containerLogout.setOnClickListener {
-            viewModel.logout()
-            FirebaseAuth.getInstance().signOut()
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        }
+        setupToolbar()
+        loadUserData()
+        setBiometric()
+        setActionButton()
+        setupSocialMediaLinks()
 
         return root
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        binding.cardPackage.visibility = if (isLoading) View.GONE else View.VISIBLE
-        binding.cardPackageNone.visibility = if (isLoading) View.GONE else View.VISIBLE
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    private fun setupToolbar() {
+        val toolbar = binding.toolbar
+
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.navigation_logout -> {
+                    viewModel.logout()
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    true
+                }
+
+                else -> true
+            }
+        }
     }
 
-    private fun loadUserData(){
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_0dp)
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun loadUserData() {
         db.collection("user")
             .whereEqualTo("uid", userID)
             .limit(1)
@@ -152,6 +168,14 @@ class ProfileFragment : Fragment() {
 
         binding.containerHistoryTransaction.setOnClickListener {
             startActivity(Intent(requireActivity(), HistoryActivity::class.java))
+        }
+
+        binding.containerFaq.setOnClickListener {
+            startActivity(Intent(requireContext(), FaqActivity::class.java))
+        }
+
+        binding.containerCustomerService.setOnClickListener {
+            startActivity(Intent(requireContext(), ChatActivity::class.java))
         }
     }
 
@@ -257,116 +281,158 @@ class ProfileFragment : Fragment() {
             }
     }
 
+    @SuppressLint("ResourceType")
     private fun setUICurrentPlan(plan: String) {
-        when (plan) {
-            "Gold" -> {
-                binding.cardPackageNone.visibility = View.GONE
+        if (isAdded && context != null) {
+            when (plan) {
+                "Gold" -> {
+                    binding.backgroundNoPlan.visibility = View.GONE
 
-                binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
+                    binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
 
-                binding.tvCurrentPackage.text = "Gold"
-                binding.tvCurrentPackage.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.gold
+                    binding.tvCurrentPackage.text = "Gold"
+                    binding.tvCurrentPackage.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.gold
+                        )
                     )
-                )
 
-                binding.tvCurrentSpeed.text = "Speed up to 50 mb/s"
-                binding.tvCurrentSpeed.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.gold
+                    binding.tvCurrentSpeed.text = "Speed up to 50 mb/s"
+                    binding.tvCurrentSpeed.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.gold
+                        )
                     )
-                )
 
-                binding.tvCurrentServiceDate.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.gold
+                    binding.tvCurrentServiceDate.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.gold
+                        )
                     )
-                )
 
-                binding.tvCurrentLocation.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.gold
+                    binding.tvCurrentLocation.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.gold
+                        )
                     )
-                )
 
-                binding.btnChangePlan.backgroundTintList =
-                    ContextCompat.getColorStateList(requireContext(), R.color.gold)
-            }
+                    binding.btnChangePlan.backgroundTintList =
+                        ContextCompat.getColorStateList(requireContext(), R.color.gold)
 
-            "Silver" -> {
-                binding.cardPackageNone.visibility = View.GONE
+                    binding.tvChangePlan.text = "Change Plan"
 
-                binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
+                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
 
-                binding.tvCurrentPackage.text = "Silver"
-                binding.tvCurrentPackage.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.silver
+                    binding.tvCurrentLocation.text =
+                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
+
+                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
+
+                    binding.cardPlanElevation.cardElevation =
+                        resources.getDimension(R.dimen.elevation_2dp)
+
+                }
+
+                "Silver" -> {
+                    binding.backgroundNoPlan.visibility = View.GONE
+
+                    binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
+
+                    binding.tvCurrentPackage.text = "Silver"
+                    binding.tvCurrentPackage.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.silver
+                        )
                     )
-                )
 
-                binding.tvCurrentSpeed.text = "Speed up to 30 mb/s"
-                binding.tvCurrentSpeed.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.silver
+                    binding.tvCurrentSpeed.text = "Speed up to 30 mb/s"
+                    binding.tvCurrentSpeed.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.silver
+                        )
                     )
-                )
 
-                binding.tvCurrentServiceDate.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.silver
+                    binding.tvCurrentServiceDate.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.silver
+                        )
                     )
-                )
 
-                binding.tvCurrentLocation.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.silver
+                    binding.tvCurrentLocation.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.silver
+                        )
                     )
-                )
 
-                binding.btnChangePlan.backgroundTintList =
-                    ContextCompat.getColorStateList(requireContext(), R.color.silver)
-            }
+                    binding.btnChangePlan.backgroundTintList =
+                        ContextCompat.getColorStateList(requireContext(), R.color.silver)
 
-            "Bronze" -> {
-                binding.cardPackageNone.visibility = View.GONE
+                    binding.tvChangePlan.text = "Change Plan"
 
-                binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
+                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
 
-                binding.tvCurrentPackage.text = "Bronze"
-                binding.tvCurrentPackage.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.bronze
+                    binding.tvCurrentLocation.text =
+                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
+
+                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
+
+                    binding.cardPlanElevation.cardElevation =
+                        resources.getDimension(R.dimen.elevation_2dp)
+
+                }
+
+                "Bronze" -> {
+                    binding.backgroundNoPlan.visibility = View.GONE
+
+                    binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
+
+                    binding.tvCurrentPackage.text = "Bronze"
+                    binding.tvCurrentPackage.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.bronze
+                        )
                     )
-                )
 
-                binding.tvCurrentSpeed.text = "Speed up to 15 mb/s"
-                binding.tvCurrentSpeed.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.bronze
+                    binding.tvCurrentSpeed.text = "Speed up to 15 mb/s"
+                    binding.tvCurrentSpeed.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.bronze
+                        )
                     )
-                )
 
-                binding.tvCurrentServiceDate.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.bronze
+                    binding.tvCurrentServiceDate.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.bronze
+                        )
                     )
-                )
 
-                binding.tvCurrentLocation.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.bronze
+                    binding.tvCurrentLocation.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.bronze
+                        )
                     )
-                )
 
-                binding.btnChangePlan.backgroundTintList =
-                    ContextCompat.getColorStateList(requireContext(), R.color.bronze)
+                    binding.btnChangePlan.backgroundTintList =
+                        ContextCompat.getColorStateList(requireContext(), R.color.bronze)
 
-            }
+                    binding.tvChangePlan.text = "Change Plan"
 
-            else -> {
-                binding.cardPackage.visibility = View.GONE
+                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
+
+                    binding.tvCurrentLocation.text =
+                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
+
+                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
+
+                    binding.cardPlanElevation.cardElevation =
+                        resources.getDimension(R.dimen.elevation_2dp)
+
+                }
+
+                else -> {
+                    binding.backgroundNoPlan.visibility = View.VISIBLE
+
+                }
             }
         }
     }
@@ -432,16 +498,6 @@ class ProfileFragment : Fragment() {
             "facebook" -> "https://www.facebook.com/wownet.id/"
             "linkedin" -> "https://www.linkedin.com/company/wownet-wowrack-cepat-nusantara/"
             else -> ""
-        }
-    }
-
-    private fun setupListHistoryPayment() {
-        binding.rvHistoryPayment.setHasFixedSize(true)
-        binding.rvHistoryPayment.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.listHistoryPayment.observe(viewLifecycleOwner) { listHistoryPayment ->
-            val adapter = HistoryPaymentAdapter(listHistoryPayment)
-            Log.d("PROFILE", listHistoryPayment.toString())
-            binding.rvHistoryPayment.adapter = adapter
         }
     }
 }

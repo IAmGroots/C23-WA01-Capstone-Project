@@ -31,6 +31,7 @@ class UsageActivity : AppCompatActivity() {
         binding = ActivityUsageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         setupChart()
         setupToolbar()
 
@@ -107,7 +108,7 @@ class UsageActivity : AppCompatActivity() {
     private fun setUICurrentPlan(plan: String) {
         when (plan) {
             "Gold" -> {
-                binding.cardPackageNone.visibility = View.GONE
+                binding.backgroundNoPlan.visibility = View.GONE
 
                 binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
 
@@ -122,9 +123,17 @@ class UsageActivity : AppCompatActivity() {
                 binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(this, R.color.gold))
 
                 binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(this, R.color.gold)
+
+                binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
+
+                binding.tvCurrentLocation.text =
+                    "Location : Dharmasushada Indah VI No. 100, Surabaya"
+
+                binding.cardPlanElevation.cardElevation =
+                    resources.getDimension(R.dimen.elevation_2dp)
             }
             "Silver" -> {
-                binding.cardPackageNone.visibility = View.GONE
+                binding.backgroundNoPlan.visibility = View.GONE
 
                 binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
 
@@ -139,9 +148,17 @@ class UsageActivity : AppCompatActivity() {
                 binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(this, R.color.silver))
 
                 binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(this, R.color.silver)
+
+                binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
+
+                binding.tvCurrentLocation.text =
+                    "Location : Dharmasushada Indah VI No. 100, Surabaya"
+
+                binding.cardPlanElevation.cardElevation =
+                    resources.getDimension(R.dimen.elevation_2dp)
             }
             "Bronze" -> {
-                binding.cardPackageNone.visibility = View.GONE
+                binding.backgroundNoPlan.visibility = View.GONE
 
                 binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
 
@@ -157,9 +174,16 @@ class UsageActivity : AppCompatActivity() {
 
                 binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(this, R.color.bronze)
 
+                binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
+
+                binding.tvCurrentLocation.text =
+                    "Location : Dharmasushada Indah VI No. 100, Surabaya"
+
+                binding.cardPlanElevation.cardElevation =
+                    resources.getDimension(R.dimen.elevation_2dp)
             }
             else -> {
-                binding.cardPackage.visibility = View.GONE
+                binding.backgroundNoPlan.visibility = View.VISIBLE
             }
         }
     }

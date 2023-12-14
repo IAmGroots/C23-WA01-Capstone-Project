@@ -1,6 +1,9 @@
 package com.example.capstoneproject.ui.home
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -41,7 +45,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var viewPager: ViewPager2
     private lateinit var timer: Timer
-    private val DURATION: Long = 1000
+    private val MY_LOCATION_REQUEST_CODE = 123
     private val db = Firebase.firestore
     private val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
@@ -52,11 +56,6 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        setupToolbar()
-        setupBanner()
-        setupAction()
-        setupArticles()
 
         viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
@@ -72,17 +71,44 @@ class HomeFragment : Fragment() {
             getCurrentService(userID, viewLifecycleOwner)
         }
 
-        binding.btnChat.setOnClickListener {
-            startActivity(Intent(requireContext(), ChatActivity::class.java))
-        }
+        setupToolbar()
+        setupBanner()
+        setupAction()
+        setupArticles()
+        checkAccessLocation()
 
         return root
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.cardPackage.visibility = if (isLoading) View.GONE else View.VISIBLE
-        binding.cardPackageNone.visibility = if (isLoading) View.GONE else View.VISIBLE
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        if (isLoading) {
+            binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_0dp)
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun checkAccessLocation() {
+        if (!isAccessLocationGranted()) {
+            requestLocationPermission()
+        }
+    }
+
+    private fun isAccessLocationGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            MY_LOCATION_REQUEST_CODE
+        )
     }
 
     private fun getCurrentService(userID: String, lifecycleOwner: LifecycleOwner) {
@@ -171,6 +197,7 @@ class HomeFragment : Fragment() {
                 if (!data.isEmpty) {
                     val userDocument = data.documents[0]
                     val plan = userDocument.get("plan").toString()
+                    Log.e("PlanValue", "Plan Value: $plan")
                     setUICurrentPlan(plan)
                 } else {
                     Log.d("HomeFragment", "Something went wrong")
@@ -178,128 +205,158 @@ class HomeFragment : Fragment() {
             }
     }
 
+    @SuppressLint("ResourceType")
     private fun setUICurrentPlan(plan: String) {
-        when (plan) {
-            "Gold" -> {
-                binding.cardPackageNone.visibility = View.GONE
+        if (isAdded && context != null) {
+            when (plan) {
+                "Gold" -> {
+                    binding.backgroundNoPlan.visibility = View.GONE
 
-                binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
+                    binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
 
-                binding.tvCurrentPackage.text = "Gold"
-                binding.tvCurrentPackage.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.gold
+                    binding.tvCurrentPackage.text = "Gold"
+                    binding.tvCurrentPackage.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.gold
+                        )
                     )
-                )
 
-                binding.tvCurrentSpeed.text = "Speed up to 50 mb/s"
-                binding.tvCurrentSpeed.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.gold
+                    binding.tvCurrentSpeed.text = "Speed up to 50 mb/s"
+                    binding.tvCurrentSpeed.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.gold
+                        )
                     )
-                )
 
-                binding.tvCurrentServiceDate.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.gold
+                    binding.tvCurrentServiceDate.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.gold
+                        )
                     )
-                )
 
-                binding.tvCurrentLocation.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.gold
+                    binding.tvCurrentLocation.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.gold
+                        )
                     )
-                )
 
-                binding.btnChangePlan.backgroundTintList =
-                    ContextCompat.getColorStateList(requireContext(), R.color.gold)
-            }
+                    binding.btnChangePlan.backgroundTintList =
+                        ContextCompat.getColorStateList(requireContext(), R.color.gold)
 
-            "Silver" -> {
-                binding.cardPackageNone.visibility = View.GONE
+                    binding.tvChangePlan.text = "Change Plan"
 
-                binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
+                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
 
-                binding.tvCurrentPackage.text = "Silver"
-                binding.tvCurrentPackage.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.silver
+                    binding.tvCurrentLocation.text =
+                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
+
+                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
+
+                    binding.cardPlanElevation.cardElevation =
+                        resources.getDimension(R.dimen.elevation_2dp)
+
+                }
+
+                "Silver" -> {
+                    binding.backgroundNoPlan.visibility = View.GONE
+
+                    binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
+
+                    binding.tvCurrentPackage.text = "Silver"
+                    binding.tvCurrentPackage.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.silver
+                        )
                     )
-                )
 
-                binding.tvCurrentSpeed.text = "Speed up to 30 mb/s"
-                binding.tvCurrentSpeed.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.silver
+                    binding.tvCurrentSpeed.text = "Speed up to 30 mb/s"
+                    binding.tvCurrentSpeed.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.silver
+                        )
                     )
-                )
 
-                binding.tvCurrentServiceDate.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.silver
+                    binding.tvCurrentServiceDate.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.silver
+                        )
                     )
-                )
 
-                binding.tvCurrentLocation.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.silver
+                    binding.tvCurrentLocation.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.silver
+                        )
                     )
-                )
 
-                binding.btnChangePlan.backgroundTintList =
-                    ContextCompat.getColorStateList(requireContext(), R.color.silver)
-            }
+                    binding.btnChangePlan.backgroundTintList =
+                        ContextCompat.getColorStateList(requireContext(), R.color.silver)
 
-            "Bronze" -> {
-                binding.cardPackageNone.visibility = View.GONE
+                    binding.tvChangePlan.text = "Change Plan"
 
-                binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
+                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
 
-                binding.tvCurrentPackage.text = "Bronze"
-                binding.tvCurrentPackage.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.bronze
+                    binding.tvCurrentLocation.text =
+                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
+
+                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
+
+                    binding.cardPlanElevation.cardElevation =
+                        resources.getDimension(R.dimen.elevation_2dp)
+
+                }
+
+                "Bronze" -> {
+                    binding.backgroundNoPlan.visibility = View.GONE
+
+                    binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
+
+                    binding.tvCurrentPackage.text = "Bronze"
+                    binding.tvCurrentPackage.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.bronze
+                        )
                     )
-                )
 
-                binding.tvCurrentSpeed.text = "Speed up to 15 mb/s"
-                binding.tvCurrentSpeed.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.bronze
+                    binding.tvCurrentSpeed.text = "Speed up to 15 mb/s"
+                    binding.tvCurrentSpeed.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.bronze
+                        )
                     )
-                )
 
-                binding.tvCurrentServiceDate.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.bronze
+                    binding.tvCurrentServiceDate.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.bronze
+                        )
                     )
-                )
 
-                binding.tvCurrentLocation.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.bronze
+                    binding.tvCurrentLocation.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.bronze
+                        )
                     )
-                )
 
-                binding.btnChangePlan.backgroundTintList =
-                    ContextCompat.getColorStateList(requireContext(), R.color.bronze)
+                    binding.btnChangePlan.backgroundTintList =
+                        ContextCompat.getColorStateList(requireContext(), R.color.bronze)
 
-            }
+                    binding.tvChangePlan.text = "Change Plan"
 
-            else -> {
-                binding.cardPackage.visibility = View.GONE
+                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
+
+                    binding.tvCurrentLocation.text =
+                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
+
+                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
+
+                    binding.cardPlanElevation.cardElevation =
+                        resources.getDimension(R.dimen.elevation_2dp)
+
+                }
+
+                else -> {
+                    binding.backgroundNoPlan.visibility = View.VISIBLE
+
+                }
             }
         }
     }

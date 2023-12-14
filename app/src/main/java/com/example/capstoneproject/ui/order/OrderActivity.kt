@@ -140,6 +140,12 @@ class OrderActivity : AppCompatActivity() {
                 binding.cardPackageFrom.setBackgroundResource(R.drawable.plan_gold)
                 binding.tvPackageFrom.text = "Gold"
                 binding.tvSpeedFrom.text = "Speed up to 50mb/s"
+                binding.tvServiceDateFrom.text = "Service date : 15  September 2023"
+                binding.tvLocationFrom.text =
+                    "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                binding.cardView.cardElevation =
+                    resources.getDimension(R.dimen.elevation_2dp)
+                binding.tvChangeTo.text = "Change Plan To"
             }
             "Silver" -> {
                 val silverColor = ContextCompat.getColor(this, R.color.silver)
@@ -150,6 +156,12 @@ class OrderActivity : AppCompatActivity() {
                 binding.cardPackageFrom.setBackgroundResource(R.drawable.plan_silver)
                 binding.tvPackageFrom.text = "Silver"
                 binding.tvSpeedFrom.text = "Speed up to 30mb/s"
+                binding.tvServiceDateFrom.text = "Service date : 15  September 2023"
+                binding.tvLocationFrom.text =
+                    "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                binding.cardView.cardElevation =
+                    resources.getDimension(R.dimen.elevation_2dp)
+                binding.tvChangeTo.text = "Change Plan To"
             }
             "Bronze" -> {
                 val bronzeColor = ContextCompat.getColor(this, R.color.bronze)
@@ -160,6 +172,12 @@ class OrderActivity : AppCompatActivity() {
                 binding.cardPackageFrom.setBackgroundResource(R.drawable.plan_bronze)
                 binding.tvPackageFrom.text = "Bronze"
                 binding.tvSpeedFrom.text = "Speed up to 15mb/s"
+                binding.tvServiceDateFrom.text = "Service date : 15  September 2023"
+                binding.tvLocationFrom.text =
+                    "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                binding.cardView.cardElevation =
+                    resources.getDimension(R.dimen.elevation_2dp)
+                binding.tvChangeTo.text = "Change Plan To"
             }
             else -> {
                 binding.cardPackageFrom.visibility = View.GONE
