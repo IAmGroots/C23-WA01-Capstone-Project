@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
 import com.example.capstoneproject.databinding.ActivityRegisterBinding
@@ -112,10 +113,12 @@ class RegisterActivity : AppCompatActivity() {
                                     "Invalid e-mail address format"
                             }
                         } else {
+                            Log.d("REGISTER", "MASUK DISINI")
                             binding.etLastName.error =
                                 "Name must be a minimum of 2 characters and a maximum of 150 characters"
                         }
                     } else {
+                        Log.d("REGISTER", "MASUK DISANA | ${firstname.length}")
                         binding.etFirstName.error =
                             "Name must be a minimum of 2 characters and a maximum of 150 characters"
                     }

@@ -59,6 +59,8 @@ class ProfileFragment : Fragment() {
         viewModel =
             ViewModelProvider(this, ViewModelFactory(preferences))[ProfileViewModel::class.java]
 
+        checkHasBiometric()
+
         loadUserData()
         setBiometric()
         setActionButton()
@@ -122,7 +124,6 @@ class ProfileFragment : Fragment() {
         }
     }
 
-
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_0dp)
@@ -130,6 +131,18 @@ class ProfileFragment : Fragment() {
         } else {
             binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
             binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun checkHasBiometric() {
+        val biometricManager = BiometricManager.from(requireContext())
+        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                binding.containerBiometricFingerprint.visibility = View.VISIBLE
+            }
+            else -> {
+                binding.containerBiometricFingerprint.visibility = View.GONE
+            }
         }
     }
 
