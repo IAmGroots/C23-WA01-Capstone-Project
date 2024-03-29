@@ -5,8 +5,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -17,15 +15,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
+import com.example.capstoneproject.data.response.LoginData
 import com.example.capstoneproject.databinding.ActivityLoginBinding
-import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
-import com.example.capstoneproject.preferences.dataStore
+import com.example.capstoneproject.data.result.Result
 import com.example.capstoneproject.ui.register.RegisterActivity
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 import java.util.concurrent.Executor
 import java.util.regex.Pattern
 
@@ -34,8 +29,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
     lateinit var auth: FirebaseAuth
-    private lateinit var firestore: FirebaseFirestore
-    private var db = Firebase.firestore
+//    private lateinit var firestore: FirebaseFirestore
+//    private var db = Firebase.firestore
     private var attemptsRemaining = 3 // Jumlah percobaan tersisa
     private var isCountdownActive = false // Apakah countdown aktif
     private lateinit var countdownTimer: CountDownTimer
@@ -50,14 +45,14 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val preferences = SettingPreferences.getInstance(application.dataStore)
+        val viewModelFactory: ViewModelFactory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory(preferences)
+            viewModelFactory
         )[LoginViewModel::class.java]
 
-        auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
+//        auth = FirebaseAuth.getInstance()
+//        firestore = FirebaseFirestore.getInstance()
 
         getBiometric()
         setFocusable()
@@ -156,63 +151,87 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun signIn(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
-                    setData()
-                    viewModel.setLoading(false)
-                } else {
-                    // Jika login gagal, kurangi percobaan dan mulai countdown jika sudah 3 kali salah
-                    attemptsRemaining--
-                    Log.e("Sec", attemptsRemaining.toString())
-                    if (attemptsRemaining == 0 && isCountdownActive) {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "The data you entered is incorrect, please check again.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+        viewModel.login(email, password).observe(this) { result ->
+            result?.let {
+                when (it) {
+                    is Result.Loading -> {
+                        showLoading(true)
+                    }
 
-                        val delayInMillis: Long = 2000
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "Try again in ${countdownTimeLeft / 1000} seconds",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }, delayInMillis)
-                        viewModel.setLoading(false)
-                    } else {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "The data you entered is incorrect, please check again.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        viewModel.setLoading(false)
-
-                        if (attemptsRemaining <= 0) {
-                            val delayInMillis: Long = 2000
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                Toast.makeText(
-                                    this@LoginActivity,
-                                    "Remaining attempts: 0",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }, delayInMillis)
-                            startCountdown()
-                        } else {
-                            val delayInMillis: Long = 2000
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                Toast.makeText(
-                                    this@LoginActivity,
-                                    "Remaining attempts: $attemptsRemaining",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }, delayInMillis)
+                    is Result.Success -> {
+                        showLoading(false)
+                        Log.e("OUT", "OUT")
+                        it.data.let { response ->
+                            response.loginData?.let { loginData ->
+                                setData(loginData)
+                                Log.e("IN", "IN")
+                            }
                         }
+                    }
+
+                    is Result.Error -> {
+                        showLoading(false)
                     }
                 }
             }
+        }
+//        auth.signInWithEmailAndPassword(email, password)
+//            .addOnCompleteListener(this) { task ->
+//                if (task.isSuccessful) {
+//                    Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
+//                    setData()
+//                    viewModel.setLoading(false)
+//                } else {
+//                    // Jika login gagal, kurangi percobaan dan mulai countdown jika sudah 3 kali salah
+//                    attemptsRemaining--
+//                    Log.e("Sec", attemptsRemaining.toString())
+//                    if (attemptsRemaining == 0 && isCountdownActive) {
+//                        Toast.makeText(
+//                            this@LoginActivity,
+//                            "The data you entered is incorrect, please check again.",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//
+//                        val delayInMillis: Long = 2000
+//                        Handler(Looper.getMainLooper()).postDelayed({
+//                            Toast.makeText(
+//                                this@LoginActivity,
+//                                "Try again in ${countdownTimeLeft / 1000} seconds",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }, delayInMillis)
+//                        viewModel.setLoading(false)
+//                    } else {
+//                        Toast.makeText(
+//                            this@LoginActivity,
+//                            "The data you entered is incorrect, please check again.",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                        viewModel.setLoading(false)
+//
+//                        if (attemptsRemaining <= 0) {
+//                            val delayInMillis: Long = 2000
+//                            Handler(Looper.getMainLooper()).postDelayed({
+//                                Toast.makeText(
+//                                    this@LoginActivity,
+//                                    "Remaining attempts: 0",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                            }, delayInMillis)
+//                            startCountdown()
+//                        } else {
+//                            val delayInMillis: Long = 2000
+//                            Handler(Looper.getMainLooper()).postDelayed({
+//                                Toast.makeText(
+//                                    this@LoginActivity,
+//                                    "Remaining attempts: $attemptsRemaining",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                            }, delayInMillis)
+//                        }
+//                    }
+//                }
+//            }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -256,30 +275,58 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun setData() {
-        val userID = FirebaseAuth.getInstance().currentUser?.uid
-        db.collection("user").document(userID!!)
-        Log.e("FIX BUG", userID)
-        db.collection("user")
-            .whereEqualTo("uid", userID)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                if (!querySnapshot.isEmpty) {
-                    Log.e("Success", "Save Data")
-                    viewModel.saveLogin(true)
-                    viewModel.saveUID(userID)
+    private fun setData(loginData: LoginData) {
+        val token = loginData.accessToken ?: ""
+        val uid = loginData.profile?.uuid ?: ""
+        val firstname = loginData.profile?.firstname ?: ""
+        val lastname = loginData.profile?.lastname ?: ""
+        val email = loginData.profile?.email ?: ""
 
-                    Log.d("FIX BUG", "Login Activity : Function SetData")
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d("Failed Retrieve Firestore", "Failed retrieve firestore data: ${exception.message}")
-            }
+        viewModel.saveToken(token)
+        viewModel.saveLogin(true)
+        viewModel.saveUID(uid)
+        viewModel.saveFirstname(firstname)
+        viewModel.saveLastname(lastname)
+        viewModel.saveEmail(email)
+
+
+        Log.d("FIX BUG", "Login Activity : Function SetData")
+        Log.d("FIX BUG", "UID: $uid")
+        Log.d("FIX BUG", "UID: $firstname")
+        Log.d("FIX BUG", "UID: $lastname")
+        Log.d("FIX BUG", "UID: $email")
+
+        Log.d("FIX BUG", "Login status saved")
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
+
+//    private fun setData() {
+//        val userID = FirebaseAuth.getInstance().currentUser?.uid
+//        db.collection("user").document(userID!!)
+//        Log.e("FIX BUG", userID)
+//        db.collection("user")
+//            .whereEqualTo("uid", userID)
+//            .limit(1)
+//            .get()
+//            .addOnSuccessListener { querySnapshot ->
+//                if (!querySnapshot.isEmpty) {
+//                    Log.e("Success", "Save Data")
+//                    viewModel.saveLogin(true)
+//                    viewModel.saveUID(userID)
+//
+//                    Log.d("FIX BUG", "Login Activity : Function SetData")
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                    startActivity(intent)
+//                }
+//            }
+//            .addOnFailureListener { exception ->
+//                Log.d("Failed Retrieve Firestore", "Failed retrieve firestore data: ${exception.message}")
+//            }
+//    }
 
     private fun startCountdown() {
         binding.bgBtnLogin.apply {

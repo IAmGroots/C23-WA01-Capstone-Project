@@ -27,10 +27,10 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val preferences = SettingPreferences.getInstance(application.dataStore)
+        val viewModelFactory: ViewModelFactory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory(preferences)
+            viewModelFactory
         )[MainViewModel::class.java]
 
         viewModel.getTheme().observe(this) { isDarkModeEnabled ->

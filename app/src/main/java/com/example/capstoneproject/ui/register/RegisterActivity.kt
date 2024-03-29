@@ -7,8 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityRegisterBinding
 import com.example.capstoneproject.ui.login.LoginActivity
+import com.example.capstoneproject.data.result.Result
+import com.example.capstoneproject.preferences.ViewModelFactory
+import com.example.capstoneproject.ui.login.LoginViewModel
 import com.example.capstoneproject.ui.otp.OTPEmailActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.regex.Pattern
@@ -16,11 +21,18 @@ import java.util.regex.Pattern
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val viewModelFactory: ViewModelFactory = ViewModelFactory.getInstance(this)
+        viewModel = ViewModelProvider(
+            this,
+            viewModelFactory
+        )[RegisterViewModel::class.java]
 
         setFocusable()
 
@@ -59,41 +71,78 @@ class RegisterActivity : AppCompatActivity() {
                                 if (password.length >= 8) {
                                     if (password == confirmPassword) {
 
-                                        val firestore = FirebaseFirestore.getInstance()
-                                        val usersRef = firestore.collection("user")
-                                        val query = usersRef.whereEqualTo("email", email)
+                                        viewModel.register(firstname, lastname, email, password, confirmPassword).observe(this) { result ->
+                                            result?.let {
+                                                when (it) {
+                                                    is Result.Loading -> {
+//                                                        showLoading(true)
+                                                    }
 
-                                        query.get().addOnCompleteListener { task ->
-                                            if (task.isSuccessful) {
-                                                val documents = task.result
-                                                if (documents != null && !documents.isEmpty) {
-                                                    // Email sudah digunakan
-                                                    Toast.makeText(
-                                                        this@RegisterActivity,
-                                                        "Email is already in use!",
-                                                        Toast.LENGTH_SHORT
-                                                    ).show()
-                                                } else {
-                                                    // Email belum digunakan, lanjutkan ke verifikasi OTP
-                                                    val intent = Intent(
-                                                        this@RegisterActivity,
-                                                        OTPEmailActivity::class.java
-                                                    )
-                                                    intent.putExtra("firstname", firstname)
-                                                    intent.putExtra("lastname", lastname)
-                                                    intent.putExtra("email", email)
-                                                    intent.putExtra("password", password)
-                                                    startActivity(intent)
+                                                    is Result.Success -> {
+//                                                        showLoading(false)
+                                                        val registerResponse = it.data
+
+//                                                        if (!registerResponse.status) {
+//                                                            Toast.makeText(
+//                                                                this@RegisterActivity,
+//                                                                "Registration Succes",
+//                                                                Toast.LENGTH_SHORT
+//                                                            ).show()
+//                                                        }
+
+                                                        val intent =
+                                                            Intent(this@RegisterActivity, LoginActivity::class.java)
+                                                        startActivity(intent)
+
+                                                    }
+
+                                                    is Result.Error -> {
+//                                                        showLoading(false)
+//                                                        Toast.makeText(
+//                                                            this,
+//                                                            resources.getString(R.string.register_error),
+//                                                            Toast.LENGTH_SHORT
+//                                                        ).show()
+                                                    }
                                                 }
-                                            } else {
-                                                // Gagal melakukan pengecekan
-                                                Toast.makeText(
-                                                    this@RegisterActivity,
-                                                    "Failed to verify the email",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
                                             }
                                         }
+
+//                                        val firestore = FirebaseFirestore.getInstance()
+//                                        val usersRef = firestore.collection("user")
+//                                        val query = usersRef.whereEqualTo("email", email)
+//
+//                                        query.get().addOnCompleteListener { task ->
+//                                            if (task.isSuccessful) {
+//                                                val documents = task.result
+//                                                if (documents != null && !documents.isEmpty) {
+//                                                    // Email sudah digunakan
+//                                                    Toast.makeText(
+//                                                        this@RegisterActivity,
+//                                                        "Email is already in use!",
+//                                                        Toast.LENGTH_SHORT
+//                                                    ).show()
+//                                                } else {
+//                                                    // Email belum digunakan, lanjutkan ke verifikasi OTP
+//                                                    val intent = Intent(
+//                                                        this@RegisterActivity,
+//                                                        OTPEmailActivity::class.java
+//                                                    )
+//                                                    intent.putExtra("firstname", firstname)
+//                                                    intent.putExtra("lastname", lastname)
+//                                                    intent.putExtra("email", email)
+//                                                    intent.putExtra("password", password)
+//                                                    startActivity(intent)
+//                                                }
+//                                            } else {
+//                                                // Gagal melakukan pengecekan
+//                                                Toast.makeText(
+//                                                    this@RegisterActivity,
+//                                                    "Failed to verify the email",
+//                                                    Toast.LENGTH_SHORT
+//                                                ).show()
+//                                            }
+//                                        }
                                     } else {
                                         Toast.makeText(
                                             this,
