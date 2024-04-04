@@ -1,42 +1,41 @@
 package com.example.capstoneproject.ui.profile.edit_profile
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.databinding.ActivityEditProfileBinding
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
+import com.example.capstoneproject.preferences.ViewModelFactory
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditProfileBinding
     private lateinit var viewModel: EditProfileViewModel
-    private var db = Firebase.firestore
-    private val userID = FirebaseAuth.getInstance().currentUser!!.uid
+//    private var db = Firebase.firestore
+//    private val userID = FirebaseAuth.getInstance().currentUser!!.uid
     private lateinit var oldPhone: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[EditProfileViewModel::class.java]
+        val viewModelFactory: ViewModelFactory = ViewModelFactory.getInstance(this)
+        viewModel = ViewModelProvider(
+            this,
+            viewModelFactory
+        )[EditProfileViewModel::class.java]
 
         viewModel.isLoading.observe(this) {
             showLoading(it)
         }
 
         setFocusable()
-        getDataFromDB(userID)
+        getDataFromDB()
 
         binding.btnCancel.setOnClickListener {
             super.onBackPressed()
@@ -93,42 +92,53 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun updateProfile(firstName: String, lastName: String, phone: String) {
-        db.collection("user").whereEqualTo("uid", userID).limit(1).get()
-            .addOnSuccessListener { data ->
-                if (!data.isEmpty) {
-                    val user = data.documents[0]
-                    Log.d(
-                        "FIREBASE", "ID DOCUMENT : ${user.id} | ID USER : ${user.get("uid")}"
-                    )
-
-                    updateDataToDB(user.id, firstName, lastName, phone)
-                    Toast.makeText(this, "Update Profile Successful", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "Update Profile Unsuccessful", Toast.LENGTH_SHORT).show()
-                }
-            }
+//        db.collection("user").whereEqualTo("uid", userID).limit(1).get()
+//            .addOnSuccessListener { data ->
+//                if (!data.isEmpty) {
+//                    val user = data.documents[0]
+//                    Log.d(
+//                        "FIREBASE", "ID DOCUMENT : ${user.id} | ID USER : ${user.get("uid")}"
+//                    )
+//
+//                    updateDataToDB(user.id, firstName, lastName, phone)
+//                    Toast.makeText(this, "Update Profile Successful", Toast.LENGTH_SHORT).show()
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                    startActivity(intent)
+//                } else {
+//                    Toast.makeText(this, "Update Profile Unsuccessful", Toast.LENGTH_SHORT).show()
+//                }
+//            }
     }
 
-    private fun getDataFromDB(uid: String) {
+    private fun getDataFromDB() {
         viewModel.setLoading(true)
-        db.collection("user")
-            .whereEqualTo("uid", uid)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { data ->
-                if (!data.isEmpty) {
-                    val user = data.documents[0]
-                    oldPhone = user.get("mobile").toString()
-                    binding.etFirstName.text = Editable.Factory.getInstance().newEditable(user.get("firstname").toString())
-                    binding.etLastName.text = Editable.Factory.getInstance().newEditable(user.get("lastname").toString())
-                    binding.etMobile.text = Editable.Factory.getInstance().newEditable(user.get("mobile").toString())
+        viewModel.getFirstname().observe(this) { firstname ->
+            binding.etFirstName.text = Editable.Factory.getInstance().newEditable(firstname)
+            viewModel.getLastname().observe(this) { lastname ->
+                binding.etLastName.text = Editable.Factory.getInstance().newEditable(lastname)
+                viewModel.getEmail().observe(this) { email ->
+                    binding.etLastName.text = Editable.Factory.getInstance().newEditable(email)
                 }
-                viewModel.setLoading(false)
             }
+        }
     }
+
+//        db.collection("user")
+//            .whereEqualTo("uid", uid)
+//            .limit(1)
+//            .get()
+//            .addOnSuccessListener { data ->
+//                if (!data.isEmpty) {
+//                    val user = data.documents[0]
+//                    oldPhone = user.get("mobile").toString()
+//                    binding.etFirstName.text = Editable.Factory.getInstance().newEditable(user.get("firstname").toString())
+//                    binding.etLastName.text = Editable.Factory.getInstance().newEditable(user.get("lastname").toString())
+//                    binding.etMobile.text = Editable.Factory.getInstance().newEditable(user.get("mobile").toString())
+//                }
+//                viewModel.setLoading(false)
+//            }
+
 
     private fun updateDataToDB(
         userId: String, firstName: String, lastName: String, phone: String

@@ -36,8 +36,8 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: ProfileViewModel
-    private val db = Firebase.firestore
-    private val userID = FirebaseAuth.getInstance().currentUser!!.uid
+//    private val db = Firebase.firestore
+//    private val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -45,17 +45,20 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val preferences = SettingPreferences.getInstance(requireActivity().application.dataStore)
-        viewModel =
-            ViewModelProvider(this, ViewModelFactory(preferences))[ProfileViewModel::class.java]
+        val viewModelFactory: ViewModelFactory = ViewModelFactory.getInstance(requireContext())
+        viewModel = ViewModelProvider(
+            this,
+            viewModelFactory
+        )[ProfileViewModel::class.java]
 
         checkHasBiometric()
 
+        setupToolbar()
         loadUserData()
         setBiometric()
         setActionButton()
         setupSocialMediaLinks()
-        getCurrentService(userID, viewLifecycleOwner)
+//        getCurrentService(userID, viewLifecycleOwner)
 
         viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
@@ -64,10 +67,10 @@ class ProfileFragment : Fragment() {
         binding.scrollViewProfile.viewTreeObserver.addOnScrollChangedListener {
             binding.swipeRefresh.isEnabled = binding.scrollViewProfile.scrollY == 0
         }
-
-        binding.swipeRefresh.setOnRefreshListener {
-            getCurrentService(userID, viewLifecycleOwner)
-        }
+//
+//        binding.swipeRefresh.setOnRefreshListener {
+//            getCurrentService(userID, viewLifecycleOwner)
+//        }
 
         viewModel.getTheme().observe(viewLifecycleOwner) { isDarkModeActive ->
             AppCompatDelegate.setDefaultNightMode(if (isDarkModeActive) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
@@ -86,11 +89,8 @@ class ProfileFragment : Fragment() {
             viewModel.saveBiometric(isChecked)
         }
 
-        setupToolbar()
-        loadUserData()
-        setBiometric()
-        setActionButton()
-        setupSocialMediaLinks()
+
+
 
         return root
     }
@@ -137,23 +137,44 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadUserData() {
-        db.collection("user")
-            .whereEqualTo("uid", userID)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { data ->
-                if (!data.isEmpty) {
-                    val userDocument = data.documents[0]
-                    val firstname = userDocument.get("firstname").toString()
-                    val lastname = userDocument.get("lastname").toString()
+        viewModel.getLastname().observe(viewLifecycleOwner) { firstname ->
+            viewModel.getFirstname().observe(viewLifecycleOwner) { lastname ->
+                viewModel.getEmail().observe(viewLifecycleOwner) { email ->
                     val fullname = "$firstname $lastname"
-                    val email = userDocument.get("email").toString()
-                    binding.tvFullName.text = fullname
                     binding.tvEmail.text = email
-                } else {
-                    Log.d("FullnameProfile", "Something went wrong")
+                    binding.tvFullName.text = fullname
                 }
             }
+        }
+        // Memperbarui UI dengan nilai address dari profile
+//            profile?.let {
+//                val firstname = it.
+////                    ?: "Firstname not available" // Mengambil nilai address, atau string default jika tidak tersedia
+//                val lastname = it.lastname
+////                    ?: "Lastname not available"
+//                val fullname = "$firstname $lastname"
+//                val email = it.email
+////                    ?: "Email not available"
+//                binding.tvFullName.text = fullname
+//                binding.tvEmail.text = email
+//            }
+//        db.collection("user")
+//            .whereEqualTo("uid", userID)
+//            .limit(1)
+//            .get()
+//            .addOnSuccessListener { data ->
+//                if (!data.isEmpty) {
+//                    val userDocument = data.documents[0]
+//                    val firstname = userDocument.get("firstname").toString()
+//                    val lastname = userDocument.get("lastname").toString()
+//                    val fullname = "$firstname $lastname"
+//                    val email = userDocument.get("email").toString()
+//                    binding.tvFullName.text = fullname
+//                    binding.tvEmail.text = email
+//                } else {
+//                    Log.d("FullnameProfile", "Something went wrong")
+//                }
+//            }
     }
 
     private fun setActionButton() {
@@ -192,42 +213,42 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getCurrentService(userID: String, lifecycleOwner: LifecycleOwner) {
-        viewModel.setLoading(true)
-        db.collection("transaction")
-            .whereEqualTo("idUser", userID)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                val lastTransaction =
-                    querySnapshot.sortedByDescending { it.get("timestamp").toString() }
-                        .firstOrNull()
-                if (lastTransaction != null) {
-                    val idOrder = lastTransaction.get("idOrder").toString()
-                    val service = viewModel.getService(lastTransaction.get("idService").toString())
-                    Log.d("DataUsageActivity", "Service Here Fragment =>> $service")
-
-                    viewModel.checkStatusTransaction(idOrder)
-                    viewModel.lastTrasaction.observe(lifecycleOwner) { status ->
-                        when (status) {
-                            "Success" -> {
-                                updatePlanAfterTransaction(userID, service, idOrder, status)
-                            }
-
-                            "Expired" -> {
-                                updateLastTransaction(idOrder, status)
-                            }
-                        }
-                    }
-                    getPlanFromDb(userID)
-                    binding.btnChangePlan.isEnabled = true
-                    binding.swipeRefresh.isRefreshing = false
-                    viewModel.setLoading(false)
-                } else {
-                    setUICurrentPlan("None")
-                    binding.btnChangePlan.isEnabled = false
-                    binding.swipeRefresh.isRefreshing = false
-                    viewModel.setLoading(false)
-                }
-            }
+//        viewModel.setLoading(true)
+//        db.collection("transaction")
+//            .whereEqualTo("idUser", userID)
+//            .get()
+//            .addOnSuccessListener { querySnapshot ->
+//                val lastTransaction =
+//                    querySnapshot.sortedByDescending { it.get("timestamp").toString() }
+//                        .firstOrNull()
+//                if (lastTransaction != null) {
+//                    val idOrder = lastTransaction.get("idOrder").toString()
+//                    val service = viewModel.getService(lastTransaction.get("idService").toString())
+//                    Log.d("DataUsageActivity", "Service Here Fragment =>> $service")
+//
+//                    viewModel.checkStatusTransaction(idOrder)
+//                    viewModel.lastTrasaction.observe(lifecycleOwner) { status ->
+//                        when (status) {
+//                            "Success" -> {
+//                                updatePlanAfterTransaction(userID, service, idOrder, status)
+//                            }
+//
+//                            "Expired" -> {
+//                                updateLastTransaction(idOrder, status)
+//                            }
+//                        }
+//                    }
+//                    getPlanFromDb(userID)
+//                    binding.btnChangePlan.isEnabled = true
+//                    binding.swipeRefresh.isRefreshing = false
+//                    viewModel.setLoading(false)
+//                } else {
+//                    setUICurrentPlan("None")
+//                    binding.btnChangePlan.isEnabled = false
+//                    binding.swipeRefresh.isRefreshing = false
+//                    viewModel.setLoading(false)
+//                }
+//            }
     }
 
     private fun updatePlanAfterTransaction(
@@ -236,52 +257,52 @@ class ProfileFragment : Fragment() {
         idOrder: String,
         status: String
     ) {
-        db.collection("user")
-            .whereEqualTo("uid", idUser)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { data ->
-                if (!data.isEmpty) {
-                    val userDocument = data.documents[0]
-                    db.collection("user").document(userDocument.id).update("plan", service)
-                    updateLastTransaction(idOrder, status)
-                } else {
-                    Log.d("HomeFragment", "Something went wrong")
-                }
-            }
+//        db.collection("user")
+//            .whereEqualTo("uid", idUser)
+//            .limit(1)
+//            .get()
+//            .addOnSuccessListener { data ->
+//                if (!data.isEmpty) {
+//                    val userDocument = data.documents[0]
+//                    db.collection("user").document(userDocument.id).update("plan", service)
+//                    updateLastTransaction(idOrder, status)
+//                } else {
+//                    Log.d("HomeFragment", "Something went wrong")
+//                }
+//            }
     }
 
     private fun updateLastTransaction(idOrder: String, status: String) {
-        db.collection("transaction")
-            .whereEqualTo("idOrder", idOrder)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { data ->
-                if (!data.isEmpty) {
-                    val transactionDocument = data.documents[0]
-                    db.collection("transaction").document(transactionDocument.id)
-                        .update("status", status)
-                } else {
-                    Log.d("HomeFragment", "Something went wrong")
-                }
-            }
+//        db.collection("transaction")
+//            .whereEqualTo("idOrder", idOrder)
+//            .limit(1)
+//            .get()
+//            .addOnSuccessListener { data ->
+//                if (!data.isEmpty) {
+//                    val transactionDocument = data.documents[0]
+//                    db.collection("transaction").document(transactionDocument.id)
+//                        .update("status", status)
+//                } else {
+//                    Log.d("HomeFragment", "Something went wrong")
+//                }
+//            }
     }
 
     private fun getPlanFromDb(idUser: String) {
-        db.collection("user")
-            .whereEqualTo("uid", idUser)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { data ->
-                Log.d("HomeFragment", data.size().toString())
-                if (!data.isEmpty) {
-                    val userDocument = data.documents[0]
-                    val plan = userDocument.get("plan").toString()
-                    setUICurrentPlan(plan)
-                } else {
-                    Log.d("HomeFragment", "Something went wrong")
-                }
-            }
+//        db.collection("user")
+//            .whereEqualTo("uid", idUser)
+//            .limit(1)
+//            .get()
+//            .addOnSuccessListener { data ->
+//                Log.d("HomeFragment", data.size().toString())
+//                if (!data.isEmpty) {
+//                    val userDocument = data.documents[0]
+//                    val plan = userDocument.get("plan").toString()
+//                    setUICurrentPlan(plan)
+//                } else {
+//                    Log.d("HomeFragment", "Something went wrong")
+//                }
+//            }
     }
 
     @SuppressLint("ResourceType")
