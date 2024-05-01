@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.capstoneproject.R
+import com.example.capstoneproject.data.response.WifiLocation
 import com.example.capstoneproject.databinding.HotspotItemsBinding
 import com.example.capstoneproject.model.Hotspot
 
-class HotspotAdapter(private val listHotspot: MutableList<Hotspot>) :
+class HotspotAdapter(private val listHotspot: MutableList<WifiLocation>) :
     RecyclerView.Adapter<HotspotAdapter.HotspotViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HotspotViewHolder {
@@ -22,8 +24,12 @@ class HotspotAdapter(private val listHotspot: MutableList<Hotspot>) :
         val hotspot = listHotspot[position]
         holder.bind(hotspot)
         holder.itemView.setOnClickListener { item ->
+            var coordinates = hotspot.coordinate
+            var (latitude, longitude) = coordinates.split(" ")
+            val lat: Double = latitude.toDouble()
+            val lon: Double = longitude.toDouble()
             val gmmIntentUri =
-                Uri.parse("google.navigation:q=" + hotspot.lat + "," + hotspot.lon + "&mode=w")
+                Uri.parse("google.navigation:q=" + lat + "," + lon + "&mode=w")
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             item.context.startActivity(mapIntent)
@@ -44,15 +50,19 @@ class HotspotAdapter(private val listHotspot: MutableList<Hotspot>) :
 
     inner class HotspotViewHolder(private val binding: HotspotItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(hotspot: Hotspot) {
+        fun bind(hotspot: WifiLocation) {
             binding.nameHotspot.text = hotspot.name
-            binding.locationHotspot.text = hotspot.location
+            binding.locationHotspot.text = hotspot.description
             Glide.with(binding.root)
-                .load(hotspot.img)
+                .load(R.drawable.wifi_default)
                 .into(binding.imgHotspot)
 
             binding.btnDetail.setOnClickListener { item ->
-                val gmmIntentUri = Uri.parse("google.navigation:q=" + hotspot.lat + "," + hotspot.lon + "&mode=w")
+                var coordinates = hotspot.coordinate
+                var (latitude, longitude) = coordinates.split(" ")
+                val lat: Double = latitude.toDouble()
+                val lon: Double = longitude.toDouble()
+                val gmmIntentUri = Uri.parse("google.navigation:q=" + lat + "," + lon + "&mode=w")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 item.context.startActivity(mapIntent)

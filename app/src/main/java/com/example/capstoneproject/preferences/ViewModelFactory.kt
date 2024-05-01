@@ -10,6 +10,7 @@ import com.example.capstoneproject.ui.login.LoginViewModel
 import com.example.capstoneproject.ui.profile.ProfileViewModel
 import com.example.capstoneproject.ui.profile.edit_profile.EditProfileViewModel
 import com.example.capstoneproject.ui.register.RegisterViewModel
+import com.example.capstoneproject.ui.wifi.WifiViewModel
 
 class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
@@ -29,6 +30,9 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             }
             modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> {
                 EditProfileViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(WifiViewModel::class.java) -> {
+                WifiViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
