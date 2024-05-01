@@ -8,21 +8,26 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import com.example.capstoneproject.data.response.ListWifiResponse
 import com.example.capstoneproject.data.response.LoginResponse
 import com.example.capstoneproject.data.response.Profile
 import com.example.capstoneproject.data.response.RegisterResponse
+import com.example.capstoneproject.data.response.UpdateUserResponse
 import com.example.capstoneproject.data.retrofit.ApiService
 import com.example.capstoneproject.data.result.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import retrofit2.http.Field
 
 class UserRepository private constructor(
     private val dataStore: DataStore<Preferences>,
     private val apiService: ApiService
 ) {
 
-
-    fun login(email: String, password: String): LiveData<Result<LoginResponse>> = liveData {
+    fun login(
+        email: String,
+        password: String
+    ): LiveData<Result<LoginResponse>> = liveData {
         emit(Result.Loading)
         try {
             val result = apiService.login(email, password)
@@ -44,6 +49,37 @@ class UserRepository private constructor(
         emit(Result.Loading)
         try {
             val result = apiService.register(firstname, lastname, email, password, confirmPassword)
+            emit(Result.Success(result))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun updateUser(
+        token: String,
+        firstname: String,
+        lastname: String,
+        mobile: String,
+        user_id: String,
+        address1: String,
+        city: String,
+        state: String
+    ): LiveData<Result<UpdateUserResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val result = apiService.updateUser(token, firstname, lastname, mobile, user_id, address1, city, state)
+            emit(Result.Success(result))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun getListWifi(token: String): LiveData<Result<ListWifiResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val result = apiService.getListWifi(token)
             emit(Result.Success(result))
         } catch (e: Exception) {
             e.printStackTrace()

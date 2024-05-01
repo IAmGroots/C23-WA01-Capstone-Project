@@ -26,51 +26,116 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-        <com.example.capstoneproject.ui.customView.emailEditText
-            android:id="@+id/etEmail"
-            android:focusable="false"
-            style="@style/EditText"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutEmail"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="6dp"
             android:layout_marginEnd="16dp"
             android:hint="Email"
-            android:imeOptions="actionNext"
-            android:textSize="14sp"
-            android:textColor="@color/secondaryColor"
+            app:hintTextColor="@color/contentColor"
+            app:boxStrokeColor="@color/contentColor"
+            app:boxStrokeErrorColor="@color/red"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewlogin" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewlogin" >
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordtext"
-            style="@style/EditTextNoPadding"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            app:hintEnabled="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etEmail"
-            app:passwordToggleEnabled="true">
-
-            <com.example.capstoneproject.ui.customView.passwordEditText
-                android:id="@+id/etPassword"
-                android:focusable="false"
-                style="@style/EditTextPassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
                 android:textSize="14sp"
-                android:hint="Password"
-                android:inputType="textPassword"
+                android:maxLines="1"
                 android:textColor="@color/secondaryColor" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Password"
+            app:hintTextColor="@color/contentColor"
+            app:boxStrokeColor="@color/contentColor"
+            app:boxStrokeErrorColor="@color/red"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:passwordToggleEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutEmail" >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:textColor="@color/secondaryColor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+<!--        <com.example.capstoneproject.ui.customView.emailEditText-->
+<!--            android:id="@+id/etEmail"-->
+<!--            android:focusable="false"-->
+<!--            style="@style/EditText"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="32dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:hint="Email"-->
+<!--            android:imeOptions="actionNext"-->
+<!--            android:textSize="14sp"-->
+<!--            android:textColor="@color/secondaryColor"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/textViewlogin" />-->
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/passwordtext"-->
+<!--            style="@style/EditTextNoPadding"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            app:hintEnabled="false"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/etEmail"-->
+<!--            app:passwordToggleEnabled="true">-->
+
+<!--            <com.example.capstoneproject.ui.customView.passwordEditText-->
+<!--                android:id="@+id/etPassword"-->
+<!--                android:focusable="false"-->
+<!--                style="@style/EditTextPassword"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:imeOptions="actionNext"-->
+<!--                android:textSize="14sp"-->
+<!--                android:hint="Password"-->
+<!--                android:inputType="textPassword"-->
+<!--                android:textColor="@color/secondaryColor" />-->
+
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <TextView
             android:id="@+id/textforgotpassword"
@@ -87,7 +152,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordtext" />
+            app:layout_constraintTop_toBottomOf="@+id/layoutPassword" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -118,7 +183,7 @@
 
             <TextView
                 android:id="@+id/regishere"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="sign up"
                 android:textColor="@color/contentColor"

@@ -295,6 +295,7 @@ class LoginActivity : AppCompatActivity() {
         Log.d("FIX BUG", "UID: $firstname")
         Log.d("FIX BUG", "UID: $lastname")
         Log.d("FIX BUG", "UID: $email")
+        Log.d("FIX BUG", "UID: $token")
 
         Log.d("FIX BUG", "Login status saved")
 

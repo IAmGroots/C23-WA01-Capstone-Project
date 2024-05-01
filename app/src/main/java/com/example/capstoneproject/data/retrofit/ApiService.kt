@@ -1,13 +1,18 @@
 package com.example.capstoneproject.data.retrofit
 
 import com.example.capstoneproject.data.response.CancelTransactionResponse
+import com.example.capstoneproject.data.response.ListWifiResponse
 import com.example.capstoneproject.data.response.LoginResponse
+import com.example.capstoneproject.data.response.ProvinceResponse
+import com.example.capstoneproject.data.response.RegencyResponse
 import com.example.capstoneproject.data.response.RegisterResponse
 import com.example.capstoneproject.data.response.StatusTransactionResponse
+import com.example.capstoneproject.data.response.UpdateUserResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -35,4 +40,30 @@ interface ApiService {
         @Field("password") password: String,
         @Field("password_confirmation") confirmPassword: String
     ): RegisterResponse
+
+    @FormUrlEncoded
+    @POST("v1/update/user")
+    suspend fun updateUser(
+        @Header("Authorization") token: String,
+        @Field("firstname") firstname: String,
+        @Field("lastname") lastname: String,
+        @Field("mobile") mobile: String,
+        @Field("user_id") user_id: String,
+        @Field("address1") address1: String,
+        @Field("city") city: String,
+        @Field("state") state: String
+    ): UpdateUserResponse
+
+    @GET("v1/wifi/list")
+    suspend fun getListWifi(
+        @Header("Authorization") token: String
+    ): ListWifiResponse
+}
+
+interface ApiServiceLocation {
+    @GET("provinces.json")
+    suspend fun getProvinces(): ProvinceResponse
+
+    @GET("regencies/{provinceCode}.json")
+    suspend fun getRegencies(@Path("provinceCode") provinceCode: String): RegencyResponse
 }

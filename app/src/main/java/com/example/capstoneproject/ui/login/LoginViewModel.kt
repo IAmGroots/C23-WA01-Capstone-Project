@@ -58,9 +58,5 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-//    fun getProfile(): LiveData<Profile?> {
-//        return repository.getProfile().asLiveData()
-//    }
-
     fun login(email: String, password: String) = repository.login(email, password)
 }

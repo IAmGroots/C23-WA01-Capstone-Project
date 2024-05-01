@@ -137,8 +137,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadUserData() {
-        viewModel.getLastname().observe(viewLifecycleOwner) { firstname ->
-            viewModel.getFirstname().observe(viewLifecycleOwner) { lastname ->
+        viewModel.getFirstname().observe(viewLifecycleOwner) { firstname ->
+            viewModel.getLastname().observe(viewLifecycleOwner) { lastname ->
                 viewModel.getEmail().observe(viewLifecycleOwner) { email ->
                     val fullname = "$firstname $lastname"
                     binding.tvEmail.text = email
@@ -199,7 +199,8 @@ class ProfileFragment : Fragment() {
         }
 
         binding.containerCustomerService.setOnClickListener {
-            startActivity(Intent(requireContext(), ChatActivity::class.java))
+            Toast.makeText(requireContext(), "Fitur dalam pengembangan", Toast.LENGTH_SHORT).show()
+//            startActivity(Intent(requireContext(), ChatActivity::class.java))
         }
     }
 
