@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.example.capstoneproject.data.response.ListWifiResponse
 import com.example.capstoneproject.data.response.LoginResponse
+import com.example.capstoneproject.data.response.OtpResponse
 import com.example.capstoneproject.data.response.Profile
 import com.example.capstoneproject.data.response.RegisterResponse
 import com.example.capstoneproject.data.response.UpdateUserResponse
@@ -80,6 +81,17 @@ class UserRepository private constructor(
         emit(Result.Loading)
         try {
             val result = apiService.getListWifi(token)
+            emit(Result.Success(result))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun validateOtp(uuid: String, otp: String): LiveData<Result<OtpResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val result = apiService.validateOtp(uuid, otp)
             emit(Result.Success(result))
         } catch (e: Exception) {
             e.printStackTrace()

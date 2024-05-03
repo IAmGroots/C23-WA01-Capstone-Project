@@ -3,6 +3,7 @@ package com.example.capstoneproject.data.retrofit
 import com.example.capstoneproject.data.response.CancelTransactionResponse
 import com.example.capstoneproject.data.response.ListWifiResponse
 import com.example.capstoneproject.data.response.LoginResponse
+import com.example.capstoneproject.data.response.OtpResponse
 import com.example.capstoneproject.data.response.ProvinceResponse
 import com.example.capstoneproject.data.response.RegencyResponse
 import com.example.capstoneproject.data.response.RegisterResponse
@@ -58,6 +59,13 @@ interface ApiService {
     suspend fun getListWifi(
         @Header("Authorization") token: String
     ): ListWifiResponse
+
+    @FormUrlEncoded
+    @POST("validate/otp")
+    suspend fun validateOtp(
+        @Field("uuid") city: String,
+        @Field("otp") state: String
+    ): OtpResponse
 }
 
 interface ApiServiceLocation {
