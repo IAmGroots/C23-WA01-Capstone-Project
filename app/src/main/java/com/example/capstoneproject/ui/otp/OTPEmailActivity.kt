@@ -1,6 +1,5 @@
 package com.example.capstoneproject.ui.otp
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,14 +7,18 @@ import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.R
+import com.example.capstoneproject.data.response.OtpResponse
+import com.example.capstoneproject.data.result.Result
 import com.example.capstoneproject.databinding.ActivityOtpemailBinding
+import com.example.capstoneproject.preferences.ViewModelFactory
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.register.RegisterActivity
+import com.example.capstoneproject.ui.wifi.WifiViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.random.Random
@@ -26,6 +29,7 @@ class OTPEmailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOtpemailBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var viewModel: OtpViewModel
     private var attemptsRemainingVerify = 3 // Jumlah percobaan verifikasi tersisa
     private var attemptsRemainingResend = 3 // Jumlah percobaan resend otp tersisa
     private var isCountdownActiveResend = false // Apakah countdown aktif
@@ -46,10 +50,20 @@ class OTPEmailActivity : AppCompatActivity() {
         binding = ActivityOtpemailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val viewModelFactory: ViewModelFactory = ViewModelFactory.getInstance(this)
+        viewModel = ViewModelProvider(
+            this,
+            viewModelFactory
+        )[OtpViewModel::class.java]
+
+        viewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
         setPin()
 
-        auth=FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
+//        auth=FirebaseAuth.getInstance()
+//        firestore = FirebaseFirestore.getInstance()
 
         firstname = intent.getStringExtra("firstname").toString()
         lastname = intent.getStringExtra("lastname").toString()
@@ -65,7 +79,13 @@ class OTPEmailActivity : AppCompatActivity() {
                 otp.isEmpty() -> {
                     Toast.makeText(this@OTPEmailActivity, "Code masih kosong", Toast.LENGTH_SHORT).show()
                 } else -> {
-                    Toast.makeText(this@OTPEmailActivity, otp, Toast.LENGTH_SHORT).show()
+                    viewModel.getUUID().observe(this) {
+                        val uuid = it
+                        viewModel.validateOtp(uuid, otp).observe(this) { result ->
+                            validateOtp(result)
+                        }
+                    }
+//                    Toast.makeText(this@OTPEmailActivity, otp, Toast.LENGTH_SHORT).show()
                 }
 
 //                else -> {
@@ -150,6 +170,44 @@ class OTPEmailActivity : AppCompatActivity() {
 
 //        random()
 //        setFocusable()
+    }
+
+    private fun validateOtp(result: Result<OtpResponse>) {
+        result?.let {
+            when (it) {
+                is Result.Loading -> {
+                    viewModel.setLoading(true)
+                    println("Loading in Result.Loading")
+                }
+
+                is Result.Success -> {
+                    viewModel.setLoading(false)
+                    println("Loading in Result.Success")
+                    println(it.data.message)
+                    Toast.makeText(this@OTPEmailActivity, "Code OTP is valid", Toast.LENGTH_SHORT).show()
+                    Log.d("Profile", it.toString())
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                }
+
+                is Result.Error -> {
+                    viewModel.setLoading(false)
+                    println("Loading in Result.Error")
+                    println(it.toString())
+                    Toast.makeText(this@OTPEmailActivity, "Code OTP is not valid", Toast.LENGTH_SHORT).show()
+                    Log.d("Profile", it.error)
+                }
+            }
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 
     private fun disableVerifyOTP() {

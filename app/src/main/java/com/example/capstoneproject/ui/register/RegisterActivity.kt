@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.ActivityRegisterBinding
 import com.example.capstoneproject.ui.login.LoginActivity
@@ -35,6 +37,10 @@ class RegisterActivity : AppCompatActivity() {
         )[RegisterViewModel::class.java]
 
         setFocusable()
+
+        viewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
 
         binding.btnRegister.setOnClickListener {
             val firstname = binding.etFirstName.text.toString()
@@ -69,40 +75,38 @@ class RegisterActivity : AppCompatActivity() {
                         if (lastname.length in 2..150) {
                             if (isEmailValid(email)) {
                                 if (password.length >= 8) {
+                                    if (!(isPasswordValid(password) && isPasswordValid(confirmPassword))) {
+                                        Toast.makeText(this, "The password field must contain at least one symbol.", Toast.LENGTH_SHORT).show()
+                                        return@setOnClickListener
+                                    }
                                     if (password == confirmPassword) {
-
                                         viewModel.register(firstname, lastname, email, password, confirmPassword).observe(this) { result ->
                                             result?.let {
                                                 when (it) {
                                                     is Result.Loading -> {
-//                                                        showLoading(true)
+                                                        viewModel.setLoading(true)
                                                     }
 
                                                     is Result.Success -> {
-//                                                        showLoading(false)
+                                                        viewModel.setLoading(false)
                                                         val registerResponse = it.data
-
-//                                                        if (!registerResponse.status) {
-//                                                            Toast.makeText(
-//                                                                this@RegisterActivity,
-//                                                                "Registration Succes",
-//                                                                Toast.LENGTH_SHORT
-//                                                            ).show()
-//                                                        }
-
-                                                        val intent =
-                                                            Intent(this@RegisterActivity, LoginActivity::class.java)
+                                                        viewModel.saveUID(it.data.registerData?.id.toString())
+                                                        Log.d("Profile", it.data.toString())
+                                                        val intent = Intent(this, OTPEmailActivity::class.java)
+                                                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                                                         startActivity(intent)
-
                                                     }
 
                                                     is Result.Error -> {
+                                                        viewModel.setLoading(false)
+                                                        println(it.toString())
 //                                                        showLoading(false)
 //                                                        Toast.makeText(
 //                                                            this,
 //                                                            resources.getString(R.string.register_error),
 //                                                            Toast.LENGTH_SHORT
 //                                                        ).show()
+                                                        Log.d("Profile", it.error)
                                                     }
                                                 }
                                             }
@@ -179,6 +183,19 @@ class RegisterActivity : AppCompatActivity() {
         binding.loginhere.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun isPasswordValid(password: String): Boolean {
+        val symbolRegex = Regex("[^a-zA-Z0-9]")
+        return symbolRegex.containsMatchIn(password)
     }
 
     private fun isEmailValid(email: String): Boolean {

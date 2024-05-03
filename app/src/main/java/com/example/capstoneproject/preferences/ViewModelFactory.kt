@@ -7,6 +7,7 @@ import com.example.capstoneproject.MainViewModel
 import com.example.capstoneproject.data.di.Injection
 import com.example.capstoneproject.data.repository.UserRepository
 import com.example.capstoneproject.ui.login.LoginViewModel
+import com.example.capstoneproject.ui.otp.OtpViewModel
 import com.example.capstoneproject.ui.profile.ProfileViewModel
 import com.example.capstoneproject.ui.profile.edit_profile.EditProfileViewModel
 import com.example.capstoneproject.ui.register.RegisterViewModel
@@ -33,6 +34,9 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             }
             modelClass.isAssignableFrom(WifiViewModel::class.java) -> {
                 WifiViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(OtpViewModel::class.java) -> {
+                OtpViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
