@@ -7,7 +7,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.capstoneproject.data.repository.MidtransRepository
 import com.example.capstoneproject.data.repository.UserRepository
 import com.example.capstoneproject.data.retrofit.ApiConfig
-import com.example.capstoneproject.preferences.dataStore
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore

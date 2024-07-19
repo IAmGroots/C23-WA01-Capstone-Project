@@ -6,15 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.capstoneproject.data.repository.UserRepository
-import com.example.capstoneproject.data.response.Profile
-import com.example.capstoneproject.preferences.SettingPreferences
-import kotlinx.coroutines.flow.Flow
+import com.example.capstoneproject.data.response.UserProfile
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
+    val userProfile: LiveData<UserProfile> = repository.getProfile().asLiveData()
 
     fun setLoading(condition: Boolean) {
         _isLoading.value = condition
@@ -22,40 +21,14 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
     fun getBiometric(): LiveData<Boolean> = repository.getBiometricSetting().asLiveData()
 
-    fun saveLogin(isLogin: Boolean) {
+    fun saveProfile(profile: UserProfile) {
         viewModelScope.launch {
-            repository.saveLogin(isLogin)
+            repository.saveProfile(profile)
         }
     }
 
-    fun saveToken(token: String) {
-        viewModelScope.launch {
-            repository.saveToken(token)
-        }
-    }
-
-    fun saveUID(uid: String) {
-        viewModelScope.launch {
-            repository.saveUID(uid)
-        }
-    }
-
-    fun saveFirstname(firstname: String) {
-        viewModelScope.launch {
-            repository.saveFirstname(firstname)
-        }
-    }
-
-    fun saveLastname(lastname: String) {
-        viewModelScope.launch {
-            repository.saveLastname(lastname)
-        }
-    }
-
-    fun saveEmail(email: String) {
-        viewModelScope.launch {
-            repository.saveEmail(email)
-        }
+    fun saveLogin(isLogin: Boolean) = viewModelScope.launch {
+        repository.saveLogin(isLogin)
     }
 
     fun login(email: String, password: String) = repository.login(email, password)

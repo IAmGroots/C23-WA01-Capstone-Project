@@ -16,18 +16,15 @@
         android:background="@drawable/article_item_bg"
         android:paddingBottom="16dp">
 
-
         <ImageView
             android:id="@+id/img_articles"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="1.416:1"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
-
 
         <TextView
             android:id="@+id/title_articles"

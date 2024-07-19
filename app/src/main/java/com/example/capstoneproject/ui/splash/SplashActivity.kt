@@ -11,9 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.capstoneproject.MainActivity
 import com.example.capstoneproject.MainViewModel
 import com.example.capstoneproject.databinding.ActivitySplashBinding
-import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
-import com.example.capstoneproject.preferences.dataStore
 import com.example.capstoneproject.ui.login.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
@@ -72,5 +70,4 @@ class SplashActivity : AppCompatActivity() {
             }
         }
     }
-
 }

@@ -1,10 +1,8 @@
 package com.example.capstoneproject.ui.profile
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,28 +14,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
 import com.example.capstoneproject.R
 import com.example.capstoneproject.databinding.FragmentProfileBinding
-import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
-import com.example.capstoneproject.preferences.dataStore
-import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
 import com.example.capstoneproject.ui.login.LoginActivity
 import com.example.capstoneproject.ui.profile.edit_profile.EditProfileActivity
 import androidx.biometric.BiometricManager
-import androidx.lifecycle.LifecycleOwner
-import com.example.capstoneproject.ui.chat.ChatActivity
 import com.example.capstoneproject.ui.faq.FaqActivity
-import com.example.capstoneproject.ui.history.HistoryActivity
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.firestore
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: ProfileViewModel
-//    private val db = Firebase.firestore
-//    private val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -51,8 +39,8 @@ class ProfileFragment : Fragment() {
             viewModelFactory
         )[ProfileViewModel::class.java]
 
+        viewModel.setLoading(true)
         checkHasBiometric()
-
         setupToolbar()
         loadUserData()
         setBiometric()
@@ -68,9 +56,11 @@ class ProfileFragment : Fragment() {
             binding.swipeRefresh.isEnabled = binding.scrollViewProfile.scrollY == 0
         }
 //
-//        binding.swipeRefresh.setOnRefreshListener {
-//            getCurrentService(userID, viewLifecycleOwner)
-//        }
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.setLoading(true)
+            loadUserData()
+            binding.swipeRefresh.isRefreshing = false
+        }
 
         viewModel.getTheme().observe(viewLifecycleOwner) { isDarkModeActive ->
             AppCompatDelegate.setDefaultNightMode(if (isDarkModeActive) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
@@ -88,9 +78,6 @@ class ProfileFragment : Fragment() {
         binding.switchBiometric.setOnCheckedChangeListener { _, isChecked ->
             viewModel.saveBiometric(isChecked)
         }
-
-
-
 
         return root
     }
@@ -117,10 +104,12 @@ class ProfileFragment : Fragment() {
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_0dp)
+            binding.containerProfile.visibility = View.INVISIBLE
             binding.progressBar.visibility = View.VISIBLE
         } else {
             binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
-            binding.progressBar.visibility = View.GONE
+            binding.progressBar.visibility = View.INVISIBLE
+            binding.containerProfile.visibility = View.VISIBLE
         }
     }
 
@@ -137,44 +126,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadUserData() {
-        viewModel.getFirstname().observe(viewLifecycleOwner) { firstname ->
-            viewModel.getLastname().observe(viewLifecycleOwner) { lastname ->
-                viewModel.getEmail().observe(viewLifecycleOwner) { email ->
-                    val fullname = "$firstname $lastname"
-                    binding.tvEmail.text = email
-                    binding.tvFullName.text = fullname
-                }
-            }
+        viewModel.userProfile.observe(viewLifecycleOwner) { profile ->
+            val fullname = "${profile.firstName} ${profile.lastName}"
+            binding.tvEmail.text = profile.email
+            binding.tvFullName.text = fullname
         }
-        // Memperbarui UI dengan nilai address dari profile
-//            profile?.let {
-//                val firstname = it.
-////                    ?: "Firstname not available" // Mengambil nilai address, atau string default jika tidak tersedia
-//                val lastname = it.lastname
-////                    ?: "Lastname not available"
-//                val fullname = "$firstname $lastname"
-//                val email = it.email
-////                    ?: "Email not available"
-//                binding.tvFullName.text = fullname
-//                binding.tvEmail.text = email
-//            }
-//        db.collection("user")
-//            .whereEqualTo("uid", userID)
-//            .limit(1)
-//            .get()
-//            .addOnSuccessListener { data ->
-//                if (!data.isEmpty) {
-//                    val userDocument = data.documents[0]
-//                    val firstname = userDocument.get("firstname").toString()
-//                    val lastname = userDocument.get("lastname").toString()
-//                    val fullname = "$firstname $lastname"
-//                    val email = userDocument.get("email").toString()
-//                    binding.tvFullName.text = fullname
-//                    binding.tvEmail.text = email
-//                } else {
-//                    Log.d("FullnameProfile", "Something went wrong")
-//                }
-//            }
+        setUICurrentPlan("Bronze")
+        viewModel.setLoading(false)
     }
 
     private fun setActionButton() {
@@ -183,15 +141,16 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnChangePlan.setOnClickListener {
-            startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
+//            startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
         }
 
         binding.btnShop.setOnClickListener {
-            startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
+//            startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
         }
 
         binding.containerHistoryTransaction.setOnClickListener {
-            startActivity(Intent(requireActivity(), HistoryActivity::class.java))
+            Toast.makeText(requireContext(), "Fitur dalam pengembangan", Toast.LENGTH_SHORT).show()
+//            startActivity(Intent(requireActivity(), HistoryActivity::class.java))
         }
 
         binding.containerFaq.setOnClickListener {
@@ -213,251 +172,56 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun getCurrentService(userID: String, lifecycleOwner: LifecycleOwner) {
-//        viewModel.setLoading(true)
-//        db.collection("transaction")
-//            .whereEqualTo("idUser", userID)
-//            .get()
-//            .addOnSuccessListener { querySnapshot ->
-//                val lastTransaction =
-//                    querySnapshot.sortedByDescending { it.get("timestamp").toString() }
-//                        .firstOrNull()
-//                if (lastTransaction != null) {
-//                    val idOrder = lastTransaction.get("idOrder").toString()
-//                    val service = viewModel.getService(lastTransaction.get("idService").toString())
-//                    Log.d("DataUsageActivity", "Service Here Fragment =>> $service")
-//
-//                    viewModel.checkStatusTransaction(idOrder)
-//                    viewModel.lastTrasaction.observe(lifecycleOwner) { status ->
-//                        when (status) {
-//                            "Success" -> {
-//                                updatePlanAfterTransaction(userID, service, idOrder, status)
-//                            }
-//
-//                            "Expired" -> {
-//                                updateLastTransaction(idOrder, status)
-//                            }
-//                        }
-//                    }
-//                    getPlanFromDb(userID)
-//                    binding.btnChangePlan.isEnabled = true
-//                    binding.swipeRefresh.isRefreshing = false
-//                    viewModel.setLoading(false)
-//                } else {
-//                    setUICurrentPlan("None")
-//                    binding.btnChangePlan.isEnabled = false
-//                    binding.swipeRefresh.isRefreshing = false
-//                    viewModel.setLoading(false)
-//                }
-//            }
-    }
-
-    private fun updatePlanAfterTransaction(
-        idUser: String,
-        service: String,
-        idOrder: String,
-        status: String
-    ) {
-//        db.collection("user")
-//            .whereEqualTo("uid", idUser)
-//            .limit(1)
-//            .get()
-//            .addOnSuccessListener { data ->
-//                if (!data.isEmpty) {
-//                    val userDocument = data.documents[0]
-//                    db.collection("user").document(userDocument.id).update("plan", service)
-//                    updateLastTransaction(idOrder, status)
-//                } else {
-//                    Log.d("HomeFragment", "Something went wrong")
-//                }
-//            }
-    }
-
-    private fun updateLastTransaction(idOrder: String, status: String) {
-//        db.collection("transaction")
-//            .whereEqualTo("idOrder", idOrder)
-//            .limit(1)
-//            .get()
-//            .addOnSuccessListener { data ->
-//                if (!data.isEmpty) {
-//                    val transactionDocument = data.documents[0]
-//                    db.collection("transaction").document(transactionDocument.id)
-//                        .update("status", status)
-//                } else {
-//                    Log.d("HomeFragment", "Something went wrong")
-//                }
-//            }
-    }
-
-    private fun getPlanFromDb(idUser: String) {
-//        db.collection("user")
-//            .whereEqualTo("uid", idUser)
-//            .limit(1)
-//            .get()
-//            .addOnSuccessListener { data ->
-//                Log.d("HomeFragment", data.size().toString())
-//                if (!data.isEmpty) {
-//                    val userDocument = data.documents[0]
-//                    val plan = userDocument.get("plan").toString()
-//                    setUICurrentPlan(plan)
-//                } else {
-//                    Log.d("HomeFragment", "Something went wrong")
-//                }
-//            }
-    }
-
-    @SuppressLint("ResourceType")
     private fun setUICurrentPlan(plan: String) {
-        if (isAdded && context != null) {
-            when (plan) {
-                "Gold" -> {
-                    binding.backgroundNoPlan.visibility = View.GONE
-
-                    binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
-
-                    binding.tvCurrentPackage.text = "Gold"
-                    binding.tvCurrentPackage.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.gold
-                        )
-                    )
-
-                    binding.tvCurrentSpeed.text = "Speed up to 50 mb/s"
-                    binding.tvCurrentSpeed.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.gold
-                        )
-                    )
-
-                    binding.tvCurrentServiceDate.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.gold
-                        )
-                    )
-
-                    binding.tvCurrentLocation.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.gold
-                        )
-                    )
-
-                    binding.btnChangePlan.backgroundTintList =
-                        ContextCompat.getColorStateList(requireContext(), R.color.gold)
-
-                    binding.tvChangePlan.text = "Change Plan"
-
-                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
-
-                    binding.tvCurrentLocation.text =
-                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
-
-                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
-
-                    binding.cardPlanElevation.cardElevation =
-                        resources.getDimension(R.dimen.elevation_2dp)
-
-                }
-
-                "Silver" -> {
-                    binding.backgroundNoPlan.visibility = View.GONE
-
-                    binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
-
-                    binding.tvCurrentPackage.text = "Silver"
-                    binding.tvCurrentPackage.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.silver
-                        )
-                    )
-
-                    binding.tvCurrentSpeed.text = "Speed up to 30 mb/s"
-                    binding.tvCurrentSpeed.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.silver
-                        )
-                    )
-
-                    binding.tvCurrentServiceDate.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.silver
-                        )
-                    )
-
-                    binding.tvCurrentLocation.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.silver
-                        )
-                    )
-
-                    binding.btnChangePlan.backgroundTintList =
-                        ContextCompat.getColorStateList(requireContext(), R.color.silver)
-
-                    binding.tvChangePlan.text = "Change Plan"
-
-                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
-
-                    binding.tvCurrentLocation.text =
-                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
-
-                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
-
-                    binding.cardPlanElevation.cardElevation =
-                        resources.getDimension(R.dimen.elevation_2dp)
-
-                }
-
-                "Bronze" -> {
-                    binding.backgroundNoPlan.visibility = View.GONE
-
-                    binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
-
-                    binding.tvCurrentPackage.text = "Bronze"
-                    binding.tvCurrentPackage.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.bronze
-                        )
-                    )
-
-                    binding.tvCurrentSpeed.text = "Speed up to 15 mb/s"
-                    binding.tvCurrentSpeed.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.bronze
-                        )
-                    )
-
-                    binding.tvCurrentServiceDate.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.bronze
-                        )
-                    )
-
-                    binding.tvCurrentLocation.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.bronze
-                        )
-                    )
-
-                    binding.btnChangePlan.backgroundTintList =
-                        ContextCompat.getColorStateList(requireContext(), R.color.bronze)
-
-                    binding.tvChangePlan.text = "Change Plan"
-
-                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
-
-                    binding.tvCurrentLocation.text =
-                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
-
-                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
-
-                    binding.cardPlanElevation.cardElevation =
-                        resources.getDimension(R.dimen.elevation_2dp)
-
-                }
-
-                else -> {
-                    binding.backgroundNoPlan.visibility = View.VISIBLE
-
-                }
+        when (plan) {
+            "Gold" -> {
+                binding.cardPlanElevation.visibility = View.VISIBLE
+                binding.cardPackageNone.visibility = View.GONE
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
+                binding.tvCurrentPackage.text = "Gold"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+                binding.tvCurrentSpeed.text = "Speed up to 50 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gold)
+                binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
+                binding.tvCurrentLocation.text = "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
+            }
+            "Silver" -> {
+                binding.cardPlanElevation.visibility = View.VISIBLE
+                binding.cardPackageNone.visibility = View.GONE
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
+                binding.tvCurrentPackage.text = "Silver"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+                binding.tvCurrentSpeed.text = "Speed up to 30 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.silver)
+                binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
+                binding.tvCurrentLocation.text = "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
+            }
+            "Bronze" -> {
+                binding.cardPlanElevation.visibility = View.VISIBLE
+                binding.cardPackageNone.visibility = View.GONE
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
+                binding.tvCurrentPackage.text = "Bronze"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+                binding.tvCurrentSpeed.text = "Speed up to 15 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.bronze)
+                binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
+                binding.tvCurrentLocation.text = "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
+            }
+            else -> {
+                binding.cardPackageNone.visibility = View.VISIBLE
+                binding.cardPlanElevation.visibility = View.GONE
             }
         }
     }
