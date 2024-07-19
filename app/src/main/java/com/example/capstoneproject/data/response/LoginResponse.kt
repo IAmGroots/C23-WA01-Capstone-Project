@@ -94,3 +94,15 @@ data class LoginData(
 	@field:SerializedName("expires_in")
 	val expiresIn: Int? = null
 )
+
+data class UserProfile(
+	val token: String,
+	val uid: String,
+	val firstName: String,
+	val lastName: String,
+	val email: String,
+	val mobile: String,
+	val state: String,
+	val city: String,
+	val address: String
+)

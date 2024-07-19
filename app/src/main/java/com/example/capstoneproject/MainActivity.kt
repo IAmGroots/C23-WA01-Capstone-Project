@@ -9,9 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.capstoneproject.databinding.ActivityMainBinding
-import com.example.capstoneproject.preferences.SettingPreferences
 import com.example.capstoneproject.preferences.ViewModelFactory
-import com.example.capstoneproject.preferences.dataStore
+import com.example.capstoneproject.ui.profile.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,5 +42,13 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         navView.setupWithNavController(navController)
+
+        if (intent.getBooleanExtra("navigateToProfile", false)) {
+            // Navigate to FragmentProfile
+            navView.selectedItemId = R.id.navigation_profile
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, ProfileFragment())
+                .commit()
+        }
     }
 }

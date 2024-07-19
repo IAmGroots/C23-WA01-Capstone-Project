@@ -1,5 +1,6 @@
 package com.example.capstoneproject.ui.profile.edit_profile
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,9 +8,10 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.capstoneproject.data.repository.LocationRepository
 import com.example.capstoneproject.data.repository.UserRepository
+import com.example.capstoneproject.data.response.UpdateUserResponse
+import com.example.capstoneproject.data.response.UserProfile
+import com.example.capstoneproject.data.result.Result
 import com.example.capstoneproject.data.retrofit.ApiConfig
-import com.example.capstoneproject.data.retrofit.ApiService
-import com.example.capstoneproject.data.retrofit.ApiServiceLocation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,56 +22,69 @@ class EditProfileViewModel(private val repository: UserRepository) : ViewModel()
     val provinceNames: MutableList<String> = mutableListOf()
     val cityNames: MutableList<String> = mutableListOf()
     val provinceDictionary: MutableMap<String, String> = mutableMapOf()
+    val userProfile: LiveData<UserProfile> = repository.getProfile().asLiveData()
+
     fun updateUser(
         token: String,
         firstname: String,
         lastname: String,
         mobile: String,
-        user_id: String,
         address1: String,
         city: String,
         state: String
-    ) = repository.updateUser(token, firstname, lastname, mobile, user_id, address1, city, state)
-
+    ): LiveData<Result<UpdateUserResponse>> {
+        return repository.updateUser(token, firstname, lastname, mobile, address1, city, state)
+    }
 
     fun getProvinces() {
         viewModelScope.launch {
-            try {
-                val provinceResponse = withContext(Dispatchers.IO) {
-                    locationRepository.getProvinces()
-                }
-                provinceResponse.data?.forEach { province ->
-                    province?.code?.let { code ->
-                        province?.name?.let { name ->
-                            provinceDictionary[code] = name
+            when (val result = withContext(Dispatchers.IO) { locationRepository.getProvinces() }) {
+                is Result.Success -> {
+                    setLoading(false)
+                    result.data.data?.forEach { province ->
+                        province?.code?.let { code ->
+                            province?.name?.let { name ->
+                                provinceDictionary[code] = name
+                            }
                         }
+                        province?.name?.let { provinceNames.add(it) }
+                        Log.d("profile", "Province Code: ${province?.code}")
+                        Log.d("profile", "Province Name: ${province?.name}")
                     }
-                    province?.name?.let { provinceNames.add(it) }
-//                    println("Province Code: ${province?.code}")
-//                    println("Province Name: ${province?.name}")
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
+                is Result.Error -> {
+                    setLoading(false)
+                    Log.e("profile", "Error fetching provinces: ${result.error}")
+                }
+                Result.Loading -> {
+                    setLoading(true)
+                }
             }
         }
     }
 
     fun getCity(provinceCode: String) {
         viewModelScope.launch {
-            try {
-                val regencyResponse = withContext(Dispatchers.IO) {
-                    locationRepository.getCity(provinceCode)
+            when (val result = withContext(Dispatchers.IO) { locationRepository.getCity(provinceCode) }) {
+                is Result.Success -> {
+                    setLoading(false)
+                    result.data.data?.forEach { city ->
+                        city?.name?.let { cityNames.add(it) }
+                        Log.d("profile", "City Code: ${city?.code}")
+                        Log.d("profile", "City Name: ${city?.name}")
+                    }
                 }
-                regencyResponse.data?.forEach { city ->
-                    city?.name?.let { cityNames.add(it) }
-//                    println("City Code: ${city?.code}")
-//                    println("City Name: ${city?.name}")
+                is Result.Error -> {
+                    setLoading(false)
+                    Log.e("profile", "Error fetching cities: ${result.error}")
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
+                Result.Loading -> {
+                    setLoading(true)
+                }
             }
         }
     }
+
 
     private val _isCityActive = MutableLiveData<Boolean>()
     val isCityActive: LiveData<Boolean> = _isCityActive
@@ -85,36 +100,9 @@ class EditProfileViewModel(private val repository: UserRepository) : ViewModel()
         _isLoading.value = condition
     }
 
-    fun getToken(): LiveData<String> {
-        return repository.getToken().asLiveData()
-    }
-
-    fun getUserId(): LiveData<String> {
-        return repository.getUID().asLiveData()
-    }
-
-    fun getFirstname(): LiveData<String> {
-        return repository.getFirstname().asLiveData()
-    }
-
-    fun getLastname(): LiveData<String> {
-        return repository.getLastname().asLiveData()
-    }
-
-    fun getEmail(): LiveData<String> {
-        return repository.getEmail().asLiveData()
-    }
-
-    fun saveFirstname(firstname: String) {
+    fun saveProfile(profile: UserProfile) {
         viewModelScope.launch {
-            repository.saveFirstname(firstname)
+            repository.saveProfile(profile)
         }
     }
-
-    fun saveLastname(lastname: String) {
-        viewModelScope.launch {
-            repository.saveLastname(lastname)
-        }
-    }
-
 }

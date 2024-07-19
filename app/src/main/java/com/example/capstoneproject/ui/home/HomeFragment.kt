@@ -1,7 +1,6 @@
 package com.example.capstoneproject.ui.home
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -12,37 +11,29 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.capstoneproject.R
-import com.example.capstoneproject.adapter.BannerAdapter
+import com.example.capstoneproject.adapter.BannerSliderAdapter
+import com.example.capstoneproject.adapter.BannerSliderItem
 import com.example.capstoneproject.adapter.HomeArticlesAdapter
+import com.example.capstoneproject.data.result.Result
 import com.example.capstoneproject.databinding.FragmentHomeBinding
-import com.example.capstoneproject.model.Banner
-import com.example.capstoneproject.ui.change_plan.ChangePlanActivity
+import com.example.capstoneproject.preferences.ViewModelFactory
 import com.example.capstoneproject.ui.usage.UsageActivity
 import com.example.capstoneproject.ui.wifi.WifiActivity
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.firestore
-import java.util.Timer
-import java.util.TimerTask
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
+import com.smarteist.autoimageslider.SliderAnimations
+import com.smarteist.autoimageslider.SliderView
+import koleton.api.hideSkeleton
+import koleton.api.loadSkeleton
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: HomeViewModel by viewModels()
-    private lateinit var viewPager: ViewPager2
-    private lateinit var timer: Timer
+    private lateinit var viewModel: HomeViewModel
     private val MY_LOCATION_REQUEST_CODE = 123
-//    private val db = Firebase.firestore
-//    private val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,36 +43,87 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val viewModelFactory: ViewModelFactory = ViewModelFactory.getInstance(requireContext())
+        viewModel = ViewModelProvider(
+            this,
+            viewModelFactory
+        )[HomeViewModel::class.java]
+
         viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
-
-//        getCurrentService(userID, viewLifecycleOwner)
 
         binding.scrollView.viewTreeObserver.addOnScrollChangedListener {
             binding.swipeRefresh.isEnabled = binding.scrollView.scrollY == 0
         }
 
-//        binding.swipeRefresh.setOnRefreshListener {
-//            getCurrentService(userID, viewLifecycleOwner)
-//        }
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.setLoading(true)
+            setupBanner()
+            setupArticles()
+            checkAccessLocation()
+            setUICurrentPlan("Bronze")
+            viewModel.userProfile.observe(requireActivity()) { profile ->
+                Log.d("Articles", profile.token)
+                val tokens = "Bearer ${profile.token}"
+                viewModel.fetchArticles(tokens)
+                binding.swipeRefresh.isRefreshing = false
+            }
+        }
 
+        viewModel.setLoading(true)
         setupBanner()
         setupAction()
         setupArticles()
         checkAccessLocation()
+        setUICurrentPlan("Bronze")
 
+        viewModel.userProfile.observe(requireActivity()) { profile ->
+            Log.d("Articles", profile.token)
+            val tokens = "Bearer ${profile.token}"
+            viewModel.fetchArticles(tokens)
+        }
+//        viewModel.setLoading(false)
         return root
     }
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_0dp)
-            binding.progressBar.visibility = View.VISIBLE
+            showSkeleton()
         } else {
-            binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
-            binding.progressBar.visibility = View.GONE
+            hideSkeleton()
         }
+    }
+
+    private fun showSkeleton() {
+        binding.skeleton.visibility = View.VISIBLE
+        binding.content.visibility = View.INVISIBLE
+        binding.layoutBannerSkeleton.loadSkeleton {
+            color(R.color.skeleton)
+        }
+        binding.layoutMenuSkeleton.loadSkeleton {
+            color(R.color.skeleton)
+        }
+        binding.layoutCardPlanSkeleton.loadSkeleton {
+            color(R.color.skeleton)
+        }
+        binding.rvArticlesSkeleton.setHasFixedSize(true)
+        binding.rvArticlesSkeleton.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = HomeArticlesAdapter(emptyList())
+        binding.rvArticlesSkeleton.adapter = adapter
+        binding.rvArticlesSkeleton.loadSkeleton(R.layout.home_article_items) {
+            itemCount(4)
+            color(R.color.skeleton)
+        }
+    }
+
+    private fun hideSkeleton() {
+        binding.content.visibility = View.VISIBLE
+        binding.skeleton.visibility = View.INVISIBLE
+        binding.layoutBannerSkeleton.hideSkeleton()
+        binding.layoutMenuSkeleton.hideSkeleton()
+        binding.layoutCardPlanSkeleton.hideSkeleton()
+        binding.rvArticlesSkeleton.hideSkeleton()
     }
 
     private fun checkAccessLocation() {
@@ -105,312 +147,74 @@ class HomeFragment : Fragment() {
         )
     }
 
-//    private fun getCurrentService(userID: String, lifecycleOwner: LifecycleOwner) {
-//        viewModel.setLoading(true)
-//        db.collection("transaction")
-//            .whereEqualTo("idUser", userID)
-//            .get()
-//            .addOnSuccessListener { querySnapshot ->
-//                val lastTransaction =
-//                    querySnapshot.sortedByDescending { it.get("timestamp").toString() }
-//                        .firstOrNull()
-//                if (lastTransaction != null) {
-//                    val idOrder = lastTransaction.get("idOrder").toString()
-//                    val service = viewModel.getService(lastTransaction.get("idService").toString())
-//                    Log.d("DataUsageActivity", "Service Here Fragment =>> $service")
-//
-//                    viewModel.checkStatusTransaction(idOrder)
-//                    viewModel.lastTrasaction.observe(lifecycleOwner) { status ->
-//                        when (status) {
-//                            "Success" -> {
-//                                updatePlanAfterTransaction(userID, service, idOrder, status)
-//                            }
-//
-//                            "Expired" -> {
-//                                updateLastTransaction(idOrder, status)
-//                            }
-//                        }
-//                    }
-//                    getPlanFromDb(userID)
-//                    binding.btnChangePlan.isEnabled = true
-//                    binding.swipeRefresh.isRefreshing = false
-//                    viewModel.setLoading(false)
-//                } else {
-//                    setUICurrentPlan("None")
-//                    binding.btnChangePlan.isEnabled = false
-//                    binding.swipeRefresh.isRefreshing = false
-//                    viewModel.setLoading(false)
-//                }
-//            }
-//    }
-
-//    private fun updatePlanAfterTransaction(
-//        idUser: String,
-//        service: String,
-//        idOrder: String,
-//        status: String
-//    ) {
-//        db.collection("user")
-//            .whereEqualTo("uid", idUser)
-//            .limit(1)
-//            .get()
-//            .addOnSuccessListener { data ->
-//                if (!data.isEmpty) {
-//                    val userDocument = data.documents[0]
-//                    db.collection("user").document(userDocument.id).update("plan", service)
-//                    updateLastTransaction(idOrder, status)
-//                } else {
-//                    Log.d("HomeFragment", "Something went wrong")
-//                }
-//            }
-//    }
-
-//    private fun updateLastTransaction(idOrder: String, status: String) {
-//        db.collection("transaction")
-//            .whereEqualTo("idOrder", idOrder)
-//            .limit(1)
-//            .get()
-//            .addOnSuccessListener { data ->
-//                if (!data.isEmpty) {
-//                    val transactionDocument = data.documents[0]
-//                    db.collection("transaction").document(transactionDocument.id)
-//                        .update("status", status)
-//                } else {
-//                    Log.d("HomeFragment", "Something went wrong")
-//                }
-//            }
-//    }
-
-//    private fun getPlanFromDb(idUser: String) {
-//        db.collection("user")
-//            .whereEqualTo("uid", idUser)
-//            .limit(1)
-//            .get()
-//            .addOnSuccessListener { data ->
-//                Log.d("HomeFragment", data.size().toString())
-//                if (!data.isEmpty) {
-//                    val userDocument = data.documents[0]
-//                    val plan = userDocument.get("plan").toString()
-//                    Log.e("PlanValue", "Plan Value: $plan")
-//                    setUICurrentPlan(plan)
-//                } else {
-//                    Log.d("HomeFragment", "Something went wrong")
-//                }
-//            }
-//    }
-
-    @SuppressLint("ResourceType")
     private fun setUICurrentPlan(plan: String) {
-        if (isAdded && context != null) {
-            when (plan) {
-                "Gold" -> {
-                    binding.backgroundNoPlan.visibility = View.GONE
-
-                    binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
-
-                    binding.tvCurrentPackage.text = "Gold"
-                    binding.tvCurrentPackage.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.gold
-                        )
-                    )
-
-                    binding.tvCurrentSpeed.text = "Speed up to 50 mb/s"
-                    binding.tvCurrentSpeed.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.gold
-                        )
-                    )
-
-                    binding.tvCurrentServiceDate.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.gold
-                        )
-                    )
-
-                    binding.tvCurrentLocation.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.gold
-                        )
-                    )
-
-                    binding.btnChangePlan.backgroundTintList =
-                        ContextCompat.getColorStateList(requireContext(), R.color.gold)
-
-                    binding.tvChangePlan.text = "Change Plan"
-
-                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
-
-                    binding.tvCurrentLocation.text =
-                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
-
-                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
-
-                    binding.cardPlanElevation.cardElevation =
-                        resources.getDimension(R.dimen.elevation_2dp)
-
-                }
-
-                "Silver" -> {
-                    binding.backgroundNoPlan.visibility = View.GONE
-
-                    binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
-
-                    binding.tvCurrentPackage.text = "Silver"
-                    binding.tvCurrentPackage.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.silver
-                        )
-                    )
-
-                    binding.tvCurrentSpeed.text = "Speed up to 30 mb/s"
-                    binding.tvCurrentSpeed.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.silver
-                        )
-                    )
-
-                    binding.tvCurrentServiceDate.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.silver
-                        )
-                    )
-
-                    binding.tvCurrentLocation.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.silver
-                        )
-                    )
-
-                    binding.btnChangePlan.backgroundTintList =
-                        ContextCompat.getColorStateList(requireContext(), R.color.silver)
-
-                    binding.tvChangePlan.text = "Change Plan"
-
-                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
-
-                    binding.tvCurrentLocation.text =
-                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
-
-                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
-
-                    binding.cardPlanElevation.cardElevation =
-                        resources.getDimension(R.dimen.elevation_2dp)
-
-                }
-
-                "Bronze" -> {
-                    binding.backgroundNoPlan.visibility = View.GONE
-
-                    binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
-
-                    binding.tvCurrentPackage.text = "Bronze"
-                    binding.tvCurrentPackage.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.bronze
-                        )
-                    )
-
-                    binding.tvCurrentSpeed.text = "Speed up to 15 mb/s"
-                    binding.tvCurrentSpeed.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.bronze
-                        )
-                    )
-
-                    binding.tvCurrentServiceDate.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.bronze
-                        )
-                    )
-
-                    binding.tvCurrentLocation.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.bronze
-                        )
-                    )
-
-                    binding.btnChangePlan.backgroundTintList =
-                        ContextCompat.getColorStateList(requireContext(), R.color.bronze)
-
-                    binding.tvChangePlan.text = "Change Plan"
-
-                    binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
-
-                    binding.tvCurrentLocation.text =
-                        "Location : Dharmasushada Indah VI No. 100, Surabaya"
-
-                    binding.btnChangePlanStyle.setBackgroundResource(R.drawable.cardview_change_plan_border)
-
-                    binding.cardPlanElevation.cardElevation =
-                        resources.getDimension(R.dimen.elevation_2dp)
-
-                }
-
-                else -> {
-                    binding.backgroundNoPlan.visibility = View.VISIBLE
-
-                }
+        when (plan) {
+            "Gold" -> {
+                binding.cardPlanElevation.visibility = View.VISIBLE
+                binding.cardPackageNone.visibility = View.GONE
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_gold)
+                binding.tvCurrentPackage.text = "Gold"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+                binding.tvCurrentSpeed.text = "Speed up to 50 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.gold))
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gold)
+                binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
+                binding.tvCurrentLocation.text = "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
+            }
+            "Silver" -> {
+                binding.cardPlanElevation.visibility = View.VISIBLE
+                binding.cardPackageNone.visibility = View.GONE
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_silver)
+                binding.tvCurrentPackage.text = "Silver"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+                binding.tvCurrentSpeed.text = "Speed up to 30 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.silver))
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.silver)
+                binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
+                binding.tvCurrentLocation.text = "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
+            }
+            "Bronze" -> {
+                binding.cardPlanElevation.visibility = View.VISIBLE
+                binding.cardPackageNone.visibility = View.GONE
+                binding.cardPackage.setBackgroundResource(R.drawable.plan_bronze)
+                binding.tvCurrentPackage.text = "Bronze"
+                binding.tvCurrentPackage.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+                binding.tvCurrentSpeed.text = "Speed up to 15 mb/s"
+                binding.tvCurrentSpeed.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+                binding.tvCurrentServiceDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+                binding.tvCurrentLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.bronze))
+                binding.btnChangePlan.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.bronze)
+                binding.tvCurrentServiceDate.text = "Service date : 15  September 2023"
+                binding.tvCurrentLocation.text = "Location : Dharmasushada Indah VI No. 100, Surabaya"
+                binding.cardPlanElevation.cardElevation = resources.getDimension(R.dimen.elevation_2dp)
+            }
+            else -> {
+                binding.cardPackageNone.visibility = View.VISIBLE
+                binding.cardPlanElevation.visibility = View.GONE
             }
         }
     }
 
-    private val bannerList = listOf(
-        Banner("Satu", "https://wow.net.id/wp-content/uploads/2023/05/3-1536x768.jpg"),
-        Banner("Dua", "https://wow.net.id/wp-content/uploads/2023/05/2-1536x768.jpg"),
-        Banner("Tiga", "https://wow.net.id/wp-content/uploads/2023/05/1-1536x768.jpg")
-    )
-
     private fun setupBanner() {
-        viewPager = binding.banner
-        val adapter = BannerAdapter(bannerList)
-        viewPager.adapter = adapter
+        var sliderList = arrayListOf(
+            BannerSliderItem(R.drawable.banner_1),
+            BannerSliderItem(R.drawable.banner_2),
+            BannerSliderItem(R.drawable.banner_3)
+        )
 
-        // Supaya gambar ga load dulu
-        val requestManager = Glide.with(this)
-        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                // Preload gambar untuk memuat ke dalam cache
-                val preloadItems = bannerList.subList(positionStart, positionStart + itemCount)
-                preloadItems.forEach { banner ->
-                    requestManager.load(banner.url)
-                        .diskCacheStrategy(DiskCacheStrategy.DATA) // atau jenis lainnya
-                        .preload()
-                }
-            }
-        })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        startSlideShow()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        stopSlideShow()
-    }
-
-    private fun startSlideShow() {
-        val slideDelay = 4000L
-        timer = Timer()
-        timer.schedule(object : TimerTask() {
-            override fun run() {
-                requireActivity().runOnUiThread {
-                    val currentItem = viewPager.currentItem
-                    if (currentItem == bannerList.size - 1) {
-                        viewPager.currentItem = 0
-                    } else {
-                        viewPager.currentItem = currentItem + 1
-                    }
-                }
-            }
-        }, slideDelay)
-    }
-
-    private fun stopSlideShow() {
-        timer.cancel()
+        var bannerSliderAdapter = BannerSliderAdapter(sliderList)
+        val bannerSliderView: SliderView = binding.imageSlider
+        bannerSliderView.setSliderAdapter(bannerSliderAdapter)
+        bannerSliderView.setIndicatorAnimation(IndicatorAnimationType.WORM)
+        bannerSliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
+        bannerSliderView.scrollTimeInSec = 3
+        bannerSliderView.startAutoCycle()
     }
 
     private fun setupAction() {
@@ -419,24 +223,38 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnUsage.setOnClickListener {
+//            Log.d("HomeFragmet","Masuk ke Usage")
             startActivity(Intent(requireContext(), UsageActivity::class.java))
         }
 
         binding.btnChangePlan.setOnClickListener {
-            startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
+//            startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
         }
 
         binding.btnShop.setOnClickListener {
-            startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
+//            startActivity(Intent(requireContext(), ChangePlanActivity::class.java))
         }
     }
 
     private fun setupArticles() {
-        viewModel.listArticle.observe(viewLifecycleOwner) { listArticles ->
-            binding.rvArticles.setHasFixedSize(true)
-            binding.rvArticles.layoutManager = LinearLayoutManager(requireContext())
-            val adapter = HomeArticlesAdapter(listArticles)
-            binding.rvArticles.adapter = adapter
+        viewModel.listArticles.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Result.Loading -> {
+                    Log.d("articles", "Loading")
+                }
+                is Result.Success -> {
+                    Log.d("articles", "Success Get Data : ${result.data}")
+                    binding.rvArticles.setHasFixedSize(true)
+                    binding.rvArticles.layoutManager = LinearLayoutManager(requireContext())
+                    val adapter = HomeArticlesAdapter(result.data.data?.take(4))
+                    binding.rvArticles.adapter = adapter
+                    viewModel.setLoading(false)
+                }
+                is Result.Error -> {
+                    viewModel.setLoading(false)
+                    Log.d("articles", "Error : ${result.error}")
+                }
+            }
         }
     }
 }

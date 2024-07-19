@@ -45,377 +45,483 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lightPrimaryColor">
+                android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/card_banner"
+                    android:visibility="invisible"
+                    android:id="@+id/skeleton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/primaryColor"
-                    android:paddingBottom="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@color/lightPrimaryColor"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/banner"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintDimensionRatio="4:2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/linearLayoutButton"
+                    <LinearLayout
+                        android:id="@+id/layout_banner_skeleton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/banner">
+                        android:background="@color/primaryColor"
+                        android:paddingBottom="16dp"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/btn_wifi"
+                            android:id="@+id/banner_skeleton"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginRight="4dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/skeleton"
+                            app:cardCornerRadius="8dp"
+                            app:cardElevation="0dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginHorizontal="16dp"
+                            app:layout_constraintTop_toTopOf="parent"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_menu_skeleton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp"
+                        android:paddingBottom="16dp"
+                        android:background="@color/primaryColor"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_banner_skeleton">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/btn_wifi_skeleton"
                             android:layout_width="0dp"
                             android:layout_height="48dp"
                             android:layout_marginEnd="4dp"
                             android:layout_weight="1"
-                            android:foreground="?attr/selectableItemBackground"
+                            android:backgroundTint="@color/skeleton"
                             app:cardCornerRadius="25dp"
-                            app:cardElevation="0dp">
-
-                            <androidx.appcompat.widget.LinearLayoutCompat
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/contentColor"
-                                android:gravity="center">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="8dp"
-                                    android:fontFamily="@font/montserrat_semi_bold"
-                                    android:text="WiFi"
-                                    android:textSize="14sp"
-                                    android:textColor="@android:color/white" />
-
-                                <ImageView
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:layout_marginEnd="-4dp"
-                                    android:src="@drawable/icon_wifi"
-                                    app:tint="@color/white" />
-
-                            </androidx.appcompat.widget.LinearLayoutCompat>
-                        </androidx.cardview.widget.CardView>
-
+                            app:cardElevation="0dp"/>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/btn_usage"
+                            android:id="@+id/btn_usage_skeleton"
                             android:layout_width="0dp"
                             android:layout_height="48dp"
                             android:layout_marginStart="4dp"
                             android:layout_weight="1"
-                            android:foreground="?attr/selectableItemBackground"
+                            android:backgroundTint="@color/skeleton"
                             app:cardCornerRadius="25dp"
-                            app:cardElevation="0dp">
+                            app:cardElevation="0dp"/>
+                    </LinearLayout>
 
-                            <androidx.appcompat.widget.LinearLayoutCompat
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/contentColor"
-                                android:gravity="center">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="8dp"
-                                    android:fontFamily="@font/montserrat_semi_bold"
-                                    android:text="Traffic Usage"
-                                    android:textSize="14sp"
-                                    android:textColor="@android:color/white" />
-
-                                <ImageView
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:layout_marginEnd="-4dp"
-                                    android:src="@drawable/icon_chart"
-                                    app:tint="@color/white" />
-
-                            </androidx.appcompat.widget.LinearLayoutCompat>
-                        </androidx.cardview.widget.CardView>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/tvCurrentPlan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:text="C U R R E N T  P L A N"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/card_plan"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/card_banner" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/card_plan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/item_bg"
-                    app:layout_constraintTop_toBottomOf="@+id/tvCurrentPlan"
-                    tools:layout_editor_absoluteX="-186dp">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardPlanElevation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        app:cardCornerRadius="15dp"
-                        app:cardElevation="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/card_package"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:minHeight="175dp"
-                            app:layout_constraintTop_toBottomOf="@+id/content">
-
-                            <TextView
-                                android:id="@+id/tvCurrentPackage"
-                                style="@style/MontserratSemiBold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="32dp"
-                                android:textColor="@color/silver"
-                                android:textSize="50sp"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/tvCurrentSpeed"
-                                style="@style/MontserratSemiBold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="-8dp"
-                                android:textColor="@color/silver"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tvCurrentPackage" />
-
-                            <TextView
-                                android:id="@+id/tvCurrentServiceDate"
-                                style="@style/MontserratSemiBold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:textColor="@color/silver"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tvCurrentSpeed" />
-
-                            <TextView
-                                android:id="@+id/tvCurrentLocation"
-                                style="@style/MontserratSemiBold"
-                                android:layout_width="200dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:textColor="@color/silver"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tvCurrentServiceDate" />
-
-                            <androidx.appcompat.widget.LinearLayoutCompat
-                                android:id="@+id/linearLayoutButton2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <FrameLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="48dp"
-                                    android:layout_weight="1">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:id="@+id/btnChangePlan"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:foreground="?attr/selectableItemBackground"
-                                        app:cardCornerRadius="15dp"
-                                        app:cardElevation="0dp">
-
-                                        <androidx.appcompat.widget.LinearLayoutCompat
-                                            android:id="@+id/btnChangePlanStyle"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="center"
-                                            tools:ignore="TooDeepLayout">
-
-                                            <TextView
-                                                android:id="@+id/tvChangePlan"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/montserrat_semi_bold"
-                                                android:textColor="@color/white" />
-
-                                        </androidx.appcompat.widget.LinearLayoutCompat>
-                                    </androidx.cardview.widget.CardView>
-                                </FrameLayout>
-                            </androidx.appcompat.widget.LinearLayoutCompat>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/card_package_none"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        app:cardCornerRadius="15dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/backgroundNoPlan"
-                            android:visibility="gone"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/plan_none"
-                            android:minHeight="175dp"
-                            app:layout_constraintTop_toBottomOf="@+id/content">
-
-                            <TextView
-                                android:id="@+id/tvNoPlan"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="48dp"
-                                android:textColor="@color/lightGray2"
-                                android:fontFamily="@font/montserrat_semi_bold"
-                                android:text="You don't have any plans for now"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <androidx.appcompat.widget.LinearLayoutCompat
-                                android:id="@+id/linearLayoutButton3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tvNoPlan">
-
-                                <FrameLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="48dp"
-                                    android:layout_weight="1">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:id="@+id/btnShop"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:backgroundTint="@color/lightGray2"
-                                        android:foreground="?attr/selectableItemBackground"
-                                        app:cardCornerRadius="15dp"
-                                        app:cardElevation="0dp">
-
-                                        <androidx.appcompat.widget.LinearLayoutCompat
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:background="@drawable/cardview_change_plan_border"
-                                            android:gravity="center">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/montserrat_semi_bold"
-                                                android:text="See Package"
-                                                android:textColor="@color/white" />
-
-                                        </androidx.appcompat.widget.LinearLayoutCompat>
-                                    </androidx.cardview.widget.CardView>
-                                </FrameLayout>
-                            </androidx.appcompat.widget.LinearLayoutCompat>
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:attr/progressBarStyle"
+                    <TextView
+                        android:id="@+id/tvCurrentPlan_skeleton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:translationZ="2dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="C U R R E N T  P L A N"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/layout_menu_skeleton" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_card_plan_skeleton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/primaryColor"
+                        android:paddingBottom="16dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvCurrentPlan_skeleton">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_plan_skeleton"
+                            android:layout_width="match_parent"
+                            android:layout_height="175dp"
+                            android:layout_marginRight="4dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/skeleton"
+                            app:cardCornerRadius="8dp"
+                            app:cardElevation="0dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginHorizontal="16dp"
+                            app:layout_constraintTop_toTopOf="parent"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvNewsArticle_skeleton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="N E W S  A R T I C L E S"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_card_plan_skeleton" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/card_news_skeleton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/item_bg"
+                        app:layout_constraintTop_toBottomOf="@+id/tvNewsArticle_skeleton">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_articles_skeleton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/tvNewsArticle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:text="N E W S  A R T I C L E S"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/card_plan" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/card_news"
+                    android:visibility="visible"
+                    android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/item_bg"
-                    app:layout_constraintTop_toBottomOf="@+id/tvNewsArticle">
+                    android:background="@color/lightPrimaryColor"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_articles"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/card_banner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:background="@color/primaryColor"
+                        android:paddingBottom="16dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.smarteist.autoimageslider.SliderView
+                            android:id="@+id/imageSlider"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginTop="16dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:sliderAnimationDuration="600"
+                            app:sliderAutoCycleDirection="right"
+                            app:sliderAutoCycleEnabled="true"
+                            app:sliderIndicatorAnimationDuration="300"
+                            app:sliderIndicatorGravity="center_horizontal|bottom"
+                            app:sliderIndicatorMargin="15dp"
+                            app:sliderIndicatorOrientation="horizontal"
+                            app:sliderIndicatorPadding="3dp"
+                            app:sliderIndicatorRadius="2dp"
+                            app:sliderIndicatorSelectedColor="@color/contentColor"
+                            app:sliderIndicatorUnselectedColor="@color/white"
+                            app:sliderStartAutoCycle="true" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/linearLayoutButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="16dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageSlider">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/btn_wifi"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_marginEnd="4dp"
+                                android:layout_weight="1"
+                                android:foreground="?attr/selectableItemBackground"
+                                app:cardCornerRadius="25dp"
+                                app:cardElevation="0dp">
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/contentColor"
+                                    android:gravity="center">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="8dp"
+                                        android:fontFamily="@font/montserrat_semi_bold"
+                                        android:text="WiFi"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/white" />
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_marginEnd="-4dp"
+                                        android:src="@drawable/icon_wifi"
+                                        app:tint="@color/white" />
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/btn_usage"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_weight="1"
+                                android:foreground="?attr/selectableItemBackground"
+                                app:cardCornerRadius="25dp"
+                                app:cardElevation="0dp">
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/contentColor"
+                                    android:gravity="center">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="8dp"
+                                        android:fontFamily="@font/montserrat_semi_bold"
+                                        android:text="Traffic Usage"
+                                        android:textSize="14sp"
+                                        android:textColor="@android:color/white" />
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_marginEnd="-4dp"
+                                        android:src="@drawable/icon_chart"
+                                        app:tint="@color/white" />
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+                            </androidx.cardview.widget.CardView>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tvCurrentPlan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="C U R R E N T  P L A N"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/card_plan"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/card_banner" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/card_plan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/item_bg"
+                        app:layout_constraintTop_toBottomOf="@+id/tvCurrentPlan"
+                        tools:layout_editor_absoluteX="-186dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardPlanElevation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardCornerRadius="15dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/card_package"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:minHeight="175dp"
+                                android:background="@drawable/plan_bronze">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="center_vertical"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent">
+
+                                    <TextView
+                                        android:id="@+id/tvCurrentPackage"
+                                        style="@style/MontserratSemiBold"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="16dp"
+                                        android:textSize="50sp"
+                                        android:textStyle="bold"
+                                        android:text="Bronze"
+                                        android:textColor="@color/bronze" />
+
+                                    <TextView
+                                        android:id="@+id/tvCurrentSpeed"
+                                        style="@style/MontserratSemiBold"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="16dp"
+                                        android:layout_marginTop="-8dp"
+                                        android:textSize="11sp"
+                                        android:textStyle="bold"
+                                        android:text="Speed up to 15 mb/s"
+                                        android:textColor="@color/bronze" />
+
+                                    <TextView
+                                        android:id="@+id/tvCurrentServiceDate"
+                                        style="@style/MontserratSemiBold"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="16dp"
+                                        android:textSize="11sp"
+                                        android:textStyle="bold"
+                                        android:text="Service date : 15  September 2023"
+                                        android:textColor="@color/bronze" />
+
+                                    <TextView
+                                        android:id="@+id/tvCurrentLocation"
+                                        style="@style/MontserratSemiBold"
+                                        android:layout_width="300dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="16dp"
+                                        android:textSize="11sp"
+                                        android:textStyle="bold"
+                                        android:text="Location : Dharmasushada Indah VI No. 100, Surabaya"
+                                        android:textColor="@color/bronze" />
+
+                                </LinearLayout>
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/btnChangePlan"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginRight="16dp"
+                                    app:cardCornerRadius="25dp"
+                                    app:cardElevation="0dp"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/cardview_border"
+                                        android:foreground="?attr/selectableItemBackground"
+                                        android:gravity="center"
+                                        android:paddingVertical="8dp"
+                                        android:text="Upgrade"
+                                        android:textColor="@color/white"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </androidx.cardview.widget.CardView>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:visibility="gone"
+                            android:id="@+id/card_package_none"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardElevation="0dp"
+                            app:cardCornerRadius="16dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/backgroundNoPlan"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/plan_none"
+                                android:minHeight="175dp"
+                                app:layout_constraintTop_toBottomOf="@+id/content">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="center_horizontal"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent">
+
+                                    <TextView
+                                        android:id="@+id/tvNoPlan"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/montserrat_semi_bold"
+                                        android:text="You don't have any plan for now"
+                                        android:textColor="@color/lightGray2" />
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        app:cardCornerRadius="25dp"
+                                        app:cardElevation="0dp">
+
+                                        <TextView
+                                            android:id="@+id/btnShop"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:background="@drawable/cardview_border"
+                                            android:foreground="?attr/selectableItemBackground"
+                                            android:gravity="center"
+                                            android:paddingVertical="8dp"
+                                            android:text="Buy Plan"
+                                            android:textColor="@color/white"
+                                            android:textSize="16sp"
+                                            android:textStyle="bold" />
+                                    </androidx.cardview.widget.CardView>
+
+                                </LinearLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.cardview.widget.CardView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tvNewsArticle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="N E W S  A R T I C L E S"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/card_plan" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/card_news"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/item_bg"
+                        app:layout_constraintTop_toBottomOf="@+id/tvNewsArticle">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_articles"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

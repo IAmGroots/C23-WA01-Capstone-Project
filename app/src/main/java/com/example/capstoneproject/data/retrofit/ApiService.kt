@@ -1,5 +1,7 @@
 package com.example.capstoneproject.data.retrofit
 
+import com.example.capstoneproject.data.response.OneArticlesResponse
+import com.example.capstoneproject.data.response.ArticlesResponse
 import com.example.capstoneproject.data.response.CancelTransactionResponse
 import com.example.capstoneproject.data.response.ListWifiResponse
 import com.example.capstoneproject.data.response.LoginResponse
@@ -49,7 +51,6 @@ interface ApiService {
         @Field("firstname") firstname: String,
         @Field("lastname") lastname: String,
         @Field("mobile") mobile: String,
-        @Field("user_id") user_id: String,
         @Field("address1") address1: String,
         @Field("city") city: String,
         @Field("state") state: String
@@ -59,6 +60,17 @@ interface ApiService {
     suspend fun getListWifi(
         @Header("Authorization") token: String
     ): ListWifiResponse
+
+    @GET("v1/article/list")
+    suspend fun getListArticle(
+        @Header("Authorization") token: String
+    ): ArticlesResponse
+
+    @GET("v1/article/{id}")
+    suspend fun getArticle(
+        @Path("id") id: String,
+        @Header("Authorization") token: String
+    ): OneArticlesResponse
 
     @FormUrlEncoded
     @POST("validate/otp")

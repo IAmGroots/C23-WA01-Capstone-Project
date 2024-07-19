@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.capstoneproject.R
+import com.example.capstoneproject.data.response.ArticleItem
 import com.example.capstoneproject.databinding.HomeArticleItemsBinding
-import com.example.capstoneproject.model.Articles
 import com.example.capstoneproject.ui.articles.detail_article.DetailArticleActivity
 
-class HomeArticlesAdapter(private val listArticles: List<Articles>) : RecyclerView.Adapter<HomeArticlesAdapter.ArticleViewHolder>() {
+class HomeArticlesAdapter(private val listArticles:List<ArticleItem?>?) : RecyclerView.Adapter<HomeArticlesAdapter.ArticleViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val binding = HomeArticleItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -17,38 +18,46 @@ class HomeArticlesAdapter(private val listArticles: List<Articles>) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        val article = listArticles[position]
+        val article = listArticles?.get(position)
         holder.bind(article)
         holder.itemView.setOnClickListener { item ->
             val detailArticle = Intent(item.context, DetailArticleActivity::class.java)
-            detailArticle.putExtra(DetailArticleActivity.EXTRA_ARTICLE, article)
+            if (article != null) {
+                detailArticle.putExtra(DetailArticleActivity.EXTRA_ARTICLE, article.id.toString())
+//                Toast.makeText(item.context, article.id.toString(), Toast.LENGTH_SHORT).show()
+            }
             item.context.startActivity(detailArticle)
         }
     }
 
     override fun getItemCount(): Int {
-        return listArticles.size
+        return listArticles?.size ?: 0
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
             0 -> ViewType.FIRST_ITEM.ordinal
-            listArticles.size - 1 -> ViewType.LAST_ITEM.ordinal
+            (listArticles?.size ?: 0) - 1 -> ViewType.LAST_ITEM.ordinal
             else -> ViewType.OTHER_ITEMS.ordinal
         }
     }
 
     inner class ArticleViewHolder(private val binding: HomeArticleItemsBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(article: Articles) {
-            binding.titleArticles.text = article.title
-            binding.publishDate.text = article.publishDate
+        fun bind(article: ArticleItem?) {
+            if (article != null) {
+                binding.titleArticles.text = article.title
+            }
+            binding.publishDate.text = "01 Januari 2023"
             Glide.with(binding.root)
-                .load(article.image)
+                .load(R.drawable.example_image_article)
                 .into(binding.imgArticles)
 
             binding.btnDetail.setOnClickListener {
                 val detailArticle = Intent(it.context, DetailArticleActivity::class.java)
-                detailArticle.putExtra(DetailArticleActivity.EXTRA_ARTICLE, article)
+                if (article != null) {
+                    detailArticle.putExtra(DetailArticleActivity.EXTRA_ARTICLE, article.id.toString())
+//                Toast.makeText(it.context, article.id.toString(), Toast.LENGTH_SHORT).show()
+                }
                 it.context.startActivity(detailArticle)
             }
 

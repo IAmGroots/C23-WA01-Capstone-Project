@@ -64,7 +64,7 @@ class WifiActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000).apply {
         setWaitForAccurateLocation(false)
-        setMinUpdateIntervalMillis(1000)
+        setMinUpdateIntervalMillis(5000)
         setMaxUpdateDelayMillis(10000)
     }.build()
 
@@ -98,8 +98,8 @@ class WifiActivity : AppCompatActivity() {
                 val infoWindowLayout = LayoutInflater.from(this@WifiActivity).inflate(R.layout.custom_info_window, null)
                 val binding = CustomInfoWindowBinding.bind(infoWindowLayout)
                 if (wifiData?.ssid.toString() == "Your Location" || wifiData?.ssid.toString() == "Clicked Location") {
-                    binding.tvWifiName.text = wifiData?.name
-                    binding.tvDescription.visibility = View.GONE
+                    binding.tvWifiName.visibility = View.GONE
+                    binding.tvDescription.text = wifiData?.name
                     binding.tvCity.visibility = View.GONE
                 } else {
                     binding.tvWifiName.text = wifiData?.name
@@ -140,8 +140,8 @@ class WifiActivity : AppCompatActivity() {
             showLoading(it)
         }
 
-        viewModel.getToken().observe(this) { token ->
-            val tokens = "Bearer $token"
+        viewModel.userProfile.observe(this) { profile ->
+            val tokens = "Bearer ${profile.token}"
             viewModel.getListWifi(tokens).observe(this) { result ->
                 Log.d("Wifi", "Token: $tokens")
                 getListWifi(result)

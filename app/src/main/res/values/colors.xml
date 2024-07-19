@@ -18,4 +18,5 @@
     <color name="lightGray3">#EFEFED</color>
     <color name="green">#00B700</color>
     <color name="darkBlue">#254077</color>
+    <color name="skeleton">#B4C8DC</color>
 </resources>

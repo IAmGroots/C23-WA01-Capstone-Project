@@ -110,6 +110,12 @@ dependencies {
     // chart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
+    // slider
+    implementation("com.github.smarteist:autoimageslider:1.4.0")
+
+    // skeleton
+    implementation("com.ericktijerou.koleton:koleton:1.0.0-beta01")
+
     // testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

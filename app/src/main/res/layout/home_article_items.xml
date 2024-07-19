@@ -4,26 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="16dp"
     android:layout_marginTop="16dp"
-    android:layout_marginRight="16dp"
-    android:backgroundTint="@color/primaryColor">
+    android:layout_marginHorizontal="16dp"
+    android:backgroundTint="@color/black">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:cardCornerRadius="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
-        android:backgroundTint="@color/primaryColor"
+        android:backgroundTint="@color/skeleton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/img_articles"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:scaleType="centerCrop"
             tools:src="@tools:sample/avatars" />
 
@@ -43,8 +42,7 @@
             android:id="@+id/publish_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sample_publish_date"
-            android:fontFamily="@font/montserrat_medium"
+            android:text="01 Januari 2023"
             android:textColor="@color/secondaryColor"
             android:textSize="12sp" />
 
@@ -55,8 +53,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textSize="14sp"
-            android:fontFamily="@font/montserrat_bold"
-            android:text="@string/sample_title_articles"
+            android:text="Tips dan Trik Cara Memilih Internet Service Provider"
             android:textColor="@color/secondaryColor" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 

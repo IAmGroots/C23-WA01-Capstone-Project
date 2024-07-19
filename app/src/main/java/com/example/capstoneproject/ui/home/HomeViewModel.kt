@@ -1,25 +1,17 @@
 package com.example.capstoneproject.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.capstoneproject.data.di.Injection
-import com.example.capstoneproject.model.Articles
-import com.example.capstoneproject.model.DataSourceArticles
-import com.example.capstoneproject.model.Package
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.capstoneproject.data.repository.UserRepository
+import com.example.capstoneproject.data.response.ArticlesResponse
+import com.example.capstoneproject.data.response.UserProfile
+import com.example.capstoneproject.data.result.Result
+import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
-
-    private val midtransRepository = Injection.provideRepository()
-    private val db = Injection.provideDatabaseFirestore()
-    private val listService = mutableListOf<Package>()
-
-    private val _listArticle = MutableLiveData<List<Articles>>()
-    val listArticle: LiveData<List<Articles>> = _listArticle
-
-    private val _isLastTransaction = MutableLiveData<String>()
-    val lastTrasaction: LiveData<String> = _isLastTransaction
+class HomeViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -28,48 +20,15 @@ class HomeViewModel : ViewModel() {
         _isLoading.value = condition
     }
 
-    init {
-        getMoreArticles(4)
-        getAllService()
-    }
+    val userProfile: LiveData<UserProfile> = repository.getProfile().asLiveData()
 
-    fun getMoreArticles(total: Int) {
-        _listArticle.value = DataSourceArticles.dataArticles.take(total)
-    }
+    private val _listArticles = MutableLiveData<Result<ArticlesResponse>>()
+    val listArticles: LiveData<Result<ArticlesResponse>> = _listArticles
 
-    fun getAllService() {
-        db.collection("services")
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                for (document in querySnapshot) {
-                    val service = Package(
-                        document.get("id").toString(),
-                        document.get("name").toString(),
-                        document.get("speed").toString().toInt(),
-                        document.get("period").toString().toInt(),
-                        document.get("price").toString().toInt(),
-                    )
-                    listService.add(service)
-                }
-            }
-            .addOnFailureListener {
-                Log.e("MainViewModel", "Error: ${it.message}", it)
-            }
-    }
-
-    fun getService(idService: String): String {
-        return listService.find { it.id == idService }?.name ?: "None"
-    }
-
-    fun checkStatusTransaction(idOrder: String) {
-        midtransRepository.getStatusTransaction(idOrder) { response ->
-            response?.let {
-                _isLastTransaction.value = when (response.transactionStatus.toString()) {
-                    "settlement" -> "Success"
-                    "pending" -> "Pending"
-                    else -> "Expired"
-                }
-                Log.d("HomeViewModel", "Something wrong")
+    fun fetchArticles(token: String) {
+        viewModelScope.launch {
+            repository.getListArticle(token).observeForever {
+                _listArticles.postValue(it)
             }
         }
     }
