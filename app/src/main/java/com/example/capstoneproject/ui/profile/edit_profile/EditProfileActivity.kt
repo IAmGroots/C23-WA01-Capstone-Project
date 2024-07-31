@@ -110,7 +110,6 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun getDataFromDB() {
-        viewModel.setLoading(false)
         viewModel.userProfile.observe(this) { profile ->
             binding.etFirstName.text = Editable.Factory.getInstance().newEditable(profile.firstName)
             binding.etLastName.text = Editable.Factory.getInstance().newEditable(profile.lastName)
@@ -147,6 +146,7 @@ class EditProfileActivity : AppCompatActivity() {
             val tokens = "Bearer ${profile.token}"
             viewModel.updateUser(tokens, firstName, lastName, mobile, address, city, state).observe(this) { result ->
                 Log.e("Profile", result.toString())
+//                viewModel.setLoading(true)
                 when (result) {
                     is Result.Loading -> {
                         Log.e("Profile", "Loading")
@@ -154,7 +154,6 @@ class EditProfileActivity : AppCompatActivity() {
                     }
 
                     is Result.Success -> {
-                        viewModel.setLoading(false)
                         Log.e("Profile", "OUT")
                         val newProfile = result.data
                         Log.d("profile", "New Profile : ${newProfile}")
@@ -176,18 +175,14 @@ class EditProfileActivity : AppCompatActivity() {
                         )
                         viewModel.saveProfile(profile)
                         Toast.makeText(this, "Update Profile Successful", Toast.LENGTH_LONG).show()
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        intent.putExtra("navigateToProfile", true)
-                        startActivity(intent)
+//                        viewModel.setLoading(false)
+                        finish()
                     }
 
                     is Result.Error -> {
-                        viewModel.setLoading(false)
+//                        viewModel.setLoading(false)
                         Toast.makeText(this, "Terjadi Error", Toast.LENGTH_LONG).show()
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(intent)
+                        finish()
                         Log.d("profile", "Error : ${result.error}")
                     }
                 }

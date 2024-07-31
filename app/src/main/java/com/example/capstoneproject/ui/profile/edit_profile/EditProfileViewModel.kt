@@ -40,7 +40,7 @@ class EditProfileViewModel(private val repository: UserRepository) : ViewModel()
         viewModelScope.launch {
             when (val result = withContext(Dispatchers.IO) { locationRepository.getProvinces() }) {
                 is Result.Success -> {
-                    setLoading(false)
+//                    setLoading(false)
                     result.data.data?.forEach { province ->
                         province?.code?.let { code ->
                             province?.name?.let { name ->
@@ -53,11 +53,11 @@ class EditProfileViewModel(private val repository: UserRepository) : ViewModel()
                     }
                 }
                 is Result.Error -> {
-                    setLoading(false)
+//                    setLoading(false)
                     Log.e("profile", "Error fetching provinces: ${result.error}")
                 }
                 Result.Loading -> {
-                    setLoading(true)
+//                    setLoading(true)
                 }
             }
         }
@@ -67,7 +67,7 @@ class EditProfileViewModel(private val repository: UserRepository) : ViewModel()
         viewModelScope.launch {
             when (val result = withContext(Dispatchers.IO) { locationRepository.getCity(provinceCode) }) {
                 is Result.Success -> {
-                    setLoading(false)
+//                    setLoading(false)
                     result.data.data?.forEach { city ->
                         city?.name?.let { cityNames.add(it) }
                         Log.d("profile", "City Code: ${city?.code}")
@@ -75,11 +75,11 @@ class EditProfileViewModel(private val repository: UserRepository) : ViewModel()
                     }
                 }
                 is Result.Error -> {
-                    setLoading(false)
+//                    setLoading(false)
                     Log.e("profile", "Error fetching cities: ${result.error}")
                 }
                 Result.Loading -> {
-                    setLoading(true)
+//                    setLoading(true)
                 }
             }
         }

@@ -53,8 +53,8 @@ class WifiActivity : AppCompatActivity() {
     private var mapFragment: SupportMapFragment? = null
     private var latitudeUser: Double = 0.0
     private var longitudeUser: Double = 0.0
-    private var radius: Double = 500.0 // 50000000.0 //dalam meter
-    private var zoom: Float = 16f
+    private var radius: Double = 1000.0 // 50000000.0 //dalam meter
+    private var zoom: Float = 15f
     private var isUserMarkerSet = false
     private lateinit var circleOptions: CircleOptions
     private var listNearestWifi: MutableList<WifiLocation> = mutableListOf()
@@ -84,7 +84,7 @@ class WifiActivity : AppCompatActivity() {
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isIndoorLevelPickerEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
-//        mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+//        mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style))
         updateOnClickMaps()
 

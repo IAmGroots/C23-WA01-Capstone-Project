@@ -3,7 +3,6 @@ package com.example.capstoneproject.ui.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -116,10 +115,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.textforgotpassword.setOnClickListener {
-            val email = binding.etEmail.text.toString()
-            val intent = Intent(this, ResetPasswordActivity::class.java)
-            intent.putExtra("email", email)
-            startActivity(intent)
+//            val email = binding.etEmail.text.toString()
+//            val intent = Intent(this, ResetPasswordActivity::class.java)
+//            intent.putExtra("email", email)
+//            startActivity(intent)
         }
     }
 

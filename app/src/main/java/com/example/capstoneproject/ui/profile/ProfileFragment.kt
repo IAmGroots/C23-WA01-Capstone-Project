@@ -1,6 +1,7 @@
 package com.example.capstoneproject.ui.profile
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -131,7 +132,7 @@ class ProfileFragment : Fragment() {
             binding.tvEmail.text = profile.email
             binding.tvFullName.text = fullname
         }
-        setUICurrentPlan("Bronze")
+        setUICurrentPlan("")
         viewModel.setLoading(false)
     }
 
@@ -254,38 +255,22 @@ class ProfileFragment : Fragment() {
         }
     }
 
-
     private fun openSocialMedia(socialMedia: String) {
-        val intent = Intent(Intent.ACTION_VIEW)
         val url = getSocialMediaURL(socialMedia)
-        intent.data = Uri.parse(url)
-
-        if (intent.resolveActivity(requireContext().packageManager) != null) {
-            startActivity(intent)
-        } else {
-            // Jika aplikasi tidak terpasang, arahkan ke Google menggunakan browser
-            val googleURL = "https://www.google.com/search?q=$socialMedia"
-            val googleIntent = Intent(Intent.ACTION_VIEW)
-            googleIntent.data = Uri.parse(googleURL)
-
-            if (googleIntent.resolveActivity(requireContext().packageManager) != null) {
-                startActivity(googleIntent)
-            } else {
-                // Jika tidak ada aplikasi browser yang terpasang, tampilkan pesan kesalahan
-                Toast.makeText(requireContext(), "Can't open the browser", Toast.LENGTH_SHORT).show()
-            }
-        }
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
 
     private fun getSocialMediaURL(socialMedia: String): String {
         // Fungsi untuk mengembalikan URL dari media sosial sesuai dengan yang dipilih
         return when (socialMedia) {
-            "twitter" -> "https://twitter.com/wownetid/"
+            "twitter" -> "https://x.com/wownetid?t=FQU58MvlmpVZ5Gr04ti37Q&s=09"
             "instagram" -> "https://www.instagram.com/wownet.id/"
             "facebook" -> "https://www.facebook.com/wownet.id/"
             "linkedin" -> "https://www.linkedin.com/company/wownet-wowrack-cepat-nusantara/"
             else -> ""
         }
     }
+
 }

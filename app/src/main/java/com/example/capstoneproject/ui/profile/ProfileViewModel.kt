@@ -31,8 +31,8 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
     }
 
     fun logout() {
-            viewModelScope.launch {
-                repository.clearProfile()
-            }
+        viewModelScope.launch {
+            repository.clearProfile()
+        }
     }
 }
