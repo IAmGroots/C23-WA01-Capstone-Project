@@ -21,6 +21,9 @@ class ApiConfig {
                 .addInterceptor(authInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
+//              Define the Base URL for the API in local.properties.
+//              Replace this with the appropriate API key for development or production environment.
+//              Example: BASE_URL_API=https://...
                 .baseUrl(BuildConfig.BASE_URL_API)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)

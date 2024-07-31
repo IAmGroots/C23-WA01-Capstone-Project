@@ -37,9 +37,14 @@
              project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
              "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
         -->
+
+<!--    Define the Google Maps API key in local.properties.
+        Replace this with the appropriate API key for development or production environment.
+        Example: GMP_KEY=AIza...
+-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCx4EGtGSBurUtNPvbRmLw9u8rSPJcIssU" />
+            android:value="${GMP_KEY}" />
 
         <activity
             android:name=".ui.chat.ChatActivity"
