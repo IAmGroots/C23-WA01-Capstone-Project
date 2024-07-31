@@ -19,11 +19,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "BASE_URL_MIDTRANS", "\"https://api.sandbox.midtrans.com/\"")
-        buildConfigField("String", "BASE_URL_API", "\"https://hotspot.wownet.id/api/\"")
-        buildConfigField("String", "AUTH_KEY_MIDTRANS", "\"Basic U0ItTWlkLXNlcnZlci00bEJGU0NTUmRLa3NYaFJfaEk4Uk5maDM6\"")
-        buildConfigField("String", "MERCHANT_SERVER", "\"https://capstone-project-wa01.000webhostapp.com/response.php/\"")
-        buildConfigField("String", "CLIENT_KEY", "\"SB-Mid-client-P-eU9iD-yy1yuJFw\"")
+        buildConfigField("String", "BASE_URL_MIDTRANS", "\"...\"")
+        buildConfigField("String", "AUTH_KEY_MIDTRANS", "\"...\"")
+        buildConfigField("String", "MERCHANT_SERVER", "\"...\"")
+        buildConfigField("String", "CLIENT_KEY", "\"...\"")
     }
 
     buildTypes {
