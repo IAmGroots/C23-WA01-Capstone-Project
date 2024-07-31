@@ -39,7 +39,7 @@ class UsageActivity : AppCompatActivity() {
         setupChart()
         setupToolbar()
         setupAction()
-        setUICurrentPlan("Bronze")
+        setUICurrentPlan("")
     }
 
     private fun setupAction() {

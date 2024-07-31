@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
             setupBanner()
             setupArticles()
             checkAccessLocation()
-            setUICurrentPlan("Bronze")
+            setUICurrentPlan("")
             viewModel.userProfile.observe(requireActivity()) { profile ->
                 Log.d("Articles", profile.token)
                 val tokens = "Bearer ${profile.token}"
@@ -76,7 +76,7 @@ class HomeFragment : Fragment() {
         setupAction()
         setupArticles()
         checkAccessLocation()
-        setUICurrentPlan("Bronze")
+        setUICurrentPlan("")
 
         viewModel.userProfile.observe(requireActivity()) { profile ->
             Log.d("Articles", profile.token)
